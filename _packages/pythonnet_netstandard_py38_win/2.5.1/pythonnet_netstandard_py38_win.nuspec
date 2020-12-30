@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>pythonnet_netstandard_py38_win</id>
+    <version>2.5.1</version>
+    <authors>pythonnet</authors>
+    <owners>pythonnet</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/pythonnet/pythonnet/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/pythonnet/pythonnet</projectUrl>
+    <iconUrl>https://api.nuget.org/v3-flatcontainer/pythonnet/2.3.0-py35-dotnet/icon</iconUrl>
+    <description>Python and CLR (.NET and Mono) cross-platform language interop. Compiled against .NetStandard 2.0 and CPython 3.8 (win64)</description>
+    <releaseNotes>Packaged for Nuget by Henon aka Meinrad Recheis. Please get the release notes from the project site</releaseNotes>
+    <copyright>Copyright (c) 2006-2020 the contributors of the 'Python for .NET' project</copyright>
+    <tags>python interop dynamic dlr Mono pinvoke</tags>
+  </metadata>
+</package>

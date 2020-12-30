@@ -1,0 +1,46 @@
+<Project>
+
+    <!-- AssemblyInfo and key file -->
+
+    <PropertyGroup>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Primavera.Public.Private.snk</AssemblyOriginatorKeyFile>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    </PropertyGroup>
+
+    <!-- .tfignore -->
+
+    <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)\.tfignore')" >
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\.tfignore" />
+    </ItemGroup>
+
+    <!-- global.editorconfig -->
+
+    <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)\global.editorconfig')" >
+        <EditorConfigFiles Include="$(MSBuildThisFileDirectory)\global.editorconfig" />
+    </ItemGroup>
+
+    <!-- Analyzers rule set -->
+
+    <PropertyGroup>
+        <Features>IOperation</Features>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Primavera.Analyzers.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    
+    <!-- Analyzers packages -->
+
+    <PropertyGroup>
+        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+        <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+        <RunAnalyzers>true</RunAnalyzers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" PrivateAssets="All" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.55" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>

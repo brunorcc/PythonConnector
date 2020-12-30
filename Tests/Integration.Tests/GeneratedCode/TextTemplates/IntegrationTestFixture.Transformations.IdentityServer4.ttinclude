@@ -1,0 +1,54 @@
+﻿<#+
+
+// *** TransformServiceModelIdentityServer4
+
+public void TransformServiceModelIdentityServer4(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.AuthorizationMode == AuthorizationMode.Off)
+    {
+        targetModel.WithComment("This file is empty because the service model authorization model is off.");
+        return;
+    }
+
+    if (sourceModel.AuthorityServerVersion != AuthorityServerVersion.IdentityServer4)
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer4"))
+        .WithNamespaceImport(new NamespaceImportModel("IS4 = IdentityServer4"));
+
+
+    ClassModel baseFixtureClass = targetModel.Namespace.Classes.FirstOrDefault(c => c.Name.EqualsNoCase("IntegrationTestFixtureBase"));
+
+    baseFixtureClass
+        .AddMethod(new MethodModel("AddAdditionalApiResources")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Allows adding additional API resources to the authority server test host configuration.")
+        })
+            .WithParameter(new MethodParameterModel("apiResources", "IList<IS4.Models.ApiResource>")
+            {
+                Documentation = new DocumentationModel("The list of API resources.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("AddAdditionalClients")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Allows adding additional clients to the authority server test host configuration.")
+        })
+            .WithParameter(new MethodParameterModel("clients", "IList<IS4.Models.Client>")
+            {
+                Documentation = new DocumentationModel("The list of clients.")
+            })
+            .ParentModelAs<ClassModel>();
+}
+
+#>

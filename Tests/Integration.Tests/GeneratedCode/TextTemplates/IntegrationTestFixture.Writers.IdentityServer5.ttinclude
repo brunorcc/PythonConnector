@@ -1,0 +1,68 @@
+﻿<#+
+
+// *** WriteBuildAuthorityServerIdentityServer5
+
+public void WriteBuildAuthorityServerIdentityServer5(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            IList<Duende5.Models.ApiScope> apiScopes = new List<Duende5.Models.ApiScope>()
+            {
+                new Duende5.Models.ApiScope(Scopes.DefaultScope),
+<#+
+
+    foreach (AuthorizationPolicy authorizationPolicy in serviceModel.AuthorizationPolicies.Where(i => i.Kind == AuthorizationPolicyKind.Scope).OrderBy(i => i.Name))
+    {
+
+#>
+                new Duende5.Models.ApiScope(Scopes.<#= authorizationPolicy.Name #>),
+<#+
+
+    }
+
+#>
+            };
+
+            this.AddAdditionalApiScopes(apiScopes);
+
+            IList<Duende5.Models.ApiResource> apiResources = new List<Duende5.Models.ApiResource>()
+            {
+                new Duende5.Models.ApiResource(Scopes.DefaultScope)
+                {
+                    Scopes = apiScopes.Select(i => i.Name).ToArray()
+                }
+            };
+
+            this.AddAdditionalApiResources(apiResources);
+
+            IList<Duende5.Models.Client> clients = new List<Duende5.Models.Client>()
+            {
+                new Duende5.Models.Client()
+                {
+                    ClientId = clientId,
+                    ClientSecrets = new List<Duende5.Models.Secret>()
+                    {
+                        new Duende5.Models.Secret(
+                            ComputeHashString.Sha256(
+                                clientSecret))
+                    },
+                    AllowedGrantTypes = Duende5.Models.GrantTypes.ClientCredentials,
+                    AllowedScopes = apiScopes.Select(i => i.Name).ToArray()
+                }
+            };
+
+            this.AddAdditionalClients(clients);
+
+            return IdentityServer5TestHostBuilder
+                .Create()
+                .UseApiScopes(apiScopes)
+                .UseApiResources(apiResources)
+                .UseClients(clients)
+                .Build();
+<#+
+
+}
+
+#>

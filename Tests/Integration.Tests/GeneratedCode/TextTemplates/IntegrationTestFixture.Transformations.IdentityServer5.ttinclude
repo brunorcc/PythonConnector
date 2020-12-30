@@ -1,0 +1,64 @@
+﻿<#+
+
+// *** TransformServiceModelIdentityServer5
+
+public void TransformServiceModelIdentityServer5(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.AuthorizationMode == AuthorizationMode.Off)
+    {
+        targetModel.WithComment("This file is empty because the service model authorization model is off.");
+        return;
+    }
+
+    if (sourceModel.AuthorityServerVersion != AuthorityServerVersion.IdentityServer5)
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System.Linq"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5"))
+        .WithNamespaceImport(new NamespaceImportModel("Duende5 = Duende.IdentityServer"));
+
+    ClassModel baseFixtureClass = targetModel.Namespace.Classes.FirstOrDefault(c => c.Name.EqualsNoCase("IntegrationTestFixtureBase"));
+
+    baseFixtureClass
+        .AddMethod(new MethodModel("AddAdditionalApiScopes")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Allows adding additional API scopes to the authority server test host configuration.")
+        })
+            .WithParameter(new MethodParameterModel("apiScopes", "IList<Duende5.Models.ApiScope>")
+            {
+                Documentation = new DocumentationModel("The list of API scopes.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("AddAdditionalApiResources")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Allows adding additional API resources to the authority server test host configuration.")
+        })
+            .WithParameter(new MethodParameterModel("apiResources", "IList<Duende5.Models.ApiResource>")
+            {
+                Documentation = new DocumentationModel("The list of API resources.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("AddAdditionalClients")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Allows adding additional clients to the authority server test host configuration.")
+        })
+            .WithParameter(new MethodParameterModel("clients", "IList<Duende5.Models.Client>")
+            {
+                Documentation = new DocumentationModel("The list of clients.")
+            })
+            .ParentModelAs<ClassModel>();
+}
+
+#>

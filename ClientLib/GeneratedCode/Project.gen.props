@@ -1,0 +1,32 @@
+﻿<Project>
+
+    <!-- Assembly name and namespace -->
+
+    <PropertyGroup>
+        <RootNamespace>Primavera.Lithium.PythonConnector</RootNamespace>
+        <AssemblyName>Primavera.Lithium.PythonConnector</AssemblyName>
+    </PropertyGroup>
+
+    <!-- Output path and XML documentation file -->
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- NuGet properties -->
+
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+        <Authors>PRIMAVERA Business Software Solutions, S.A.</Authors>
+        <Description>Class library that provides the client library to access the Python Connector Service.</Description>
+        <Copyright>Copyright © 2018-2020 PRIMAVERA</Copyright>
+        <PackageTags>PRIMAVERA;Lithium</PackageTags>
+    </PropertyGroup>
+
+</Project>

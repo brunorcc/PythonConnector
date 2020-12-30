@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.DesignTime.IntegrationTesting</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources">
+            <summary>
+            Defines constants that identify external resources used in tests.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources">
+            <summary>
+            Defines constants that identity Windows Azure resources.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.AzureAuthorityServer">
+            <summary>
+            The address of the Azure Active Directory that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.ClassicTableStorageConnectionString">
+            <summary>
+            The connection string to the classic table storage that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.CosmosDbTableStorageConnectionString">
+            <summary>
+            The connection string to the CosmosDb table storage that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultUrl">
+            <summary>
+            The URL of the Key Value that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultSecretName">
+            <summary>
+            The name of one secret stored in the key vault that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultKeyName">
+            <summary>
+            The name of one key stored in the key vault that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultCertificateName">
+            <summary>
+            The name of one certificate stored in the key vault that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultClientApplicationId">
+            <summary>
+            The application id of the client application that is being used to communicate with the key vault used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultClientApplicationKey">
+            <summary>
+            The application key of the client application that is being used to communicate with the key vault used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.KeyVaultResourceName">
+            <summary>
+            The name of the resource (OAuth) to access the KeyVault that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.AppInsightsInstrumentationKey">
+            <summary>
+            The instrumentation key for the Application Insights that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.RedisCacheConnectionString">
+            <summary>
+            The connection string to the REDIS cache that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.SearchServiceName">
+            <summary>
+            The name of the Azure Search service used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.SearchServiceApiKey">
+            <summary>
+            The API key of the Azure Search service used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.ServiceBusConnectionString">
+            <summary>
+            The connection string to the service Bus instance that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.ServiceBusPath">
+            <summary>
+            The service bus instance path (i.e. topic) that should be used in publish-subscribe tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.ServiceBusSubscription1">
+            <summary>
+            The service bus instance subscription that should be used in publish-subscribe tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.ServiceBusSubscription2">
+            <summary>
+            The service bus instance subscription that should be used in publish-subscribe tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.CosmosDbConnectionString">
+            <summary>
+            The connection string to the CosmosDb instance that should be used in tests.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AzureResources.AzureAppConfigurationConnectionString">
+            <summary>
+            The connection string to the Azure AppConfiguration instance that should be used in tests.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AuthorityServers">
+            <summary>
+            Defines constants that identity authority servers.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AuthorityServers.IdentityServerProduction">
+            <summary>
+            The base address of Identity Server (production) (HTTPS).
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.AuthorityServers.IdentityServerStaging">
+            <summary>
+            The base address of Identity Server (staging) (HTTP).
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other">
+            <summary>
+            Defines constants that identity additional resources.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.SmtpServerHostAddress">
+            <summary>
+            The SMTP server host address.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.SmtpServerUserName">
+            <summary>
+            The SMTP server user name.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.SmtpServerPassword">
+            <summary>
+            The SMTP server password.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.TwilioAccountSid">
+            <summary>
+            The Twilio account SID.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.TwilioAuthorizationToken">
+            <summary>
+            The Twilio account authorization token.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.TimeServerHostAddress">
+            <summary>
+            The time server host address.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.DesignTime.IntegrationTesting.ExternalTestResources.Other.TimeServerHostAddressUS">
+            <summary>
+            The time server host address.
+            </summary>
+        </member>
+    </members>
+</doc>

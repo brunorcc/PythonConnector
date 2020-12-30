@@ -1,0 +1,107 @@
+﻿<#@ template debug="true" hostspecific="true" inherits="Microsoft.VisualStudio.TextTemplating.VSHost.ModelingTextTransformation" #>
+<#@ output extension=".gen.cs" #>
+<#@ ServiceDesigner processor="ServiceDesignerDirectiveProcessor" requires="FileName=''" #>
+<#
+
+// Build the transformations
+
+ServiceModelTransformations<CSharpFileModel> transformations = new ServiceModelTransformations<CSharpFileModel>(this.ServiceModel);
+
+transformations.Add(
+    (s, t) => true,
+    (s, t) => { return s is ServiceModel; },
+    this.TransformServiceModel);
+
+transformations.Add(
+    (s, t) => true,
+    (s, t) => { return s is ServiceModel; },
+    this.TransformServiceModelIdentityServer4);
+
+transformations.Add(
+    (s, t) => true,
+    (s, t) => { return s is ServiceModel; },
+    this.TransformServiceModelIdentityServer5);
+
+// Transform
+
+CSharpFileModel targetModel = new CSharpFileModel(this.ServiceModel);
+transformations.TransformTo(targetModel);
+
+// Create controller
+
+ModelWriterController controller = new ModelWriterController(this.GenerationEnvironment);
+
+// Add writers
+
+controller.AddModelWriter<ConstructorBodyModel>(
+    (w, m) =>
+    {
+        ConstructorModel parentConstructor = m.ParentModelAs<ConstructorModel>();
+        ClassModel parentClass = parentConstructor.ParentModelAs<ClassModel>();
+        return parentClass.Name.EqualsNoCase("IntegrationTestFixtureBase");
+    }, 
+    this.WriteBaseFixtureClassConstructor);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("Dispose") && parentMethod.Modifiers.HasFlag(MethodModifiers.Protected);
+    }, 
+    this.WriteDisposeProtected);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("Initialize");
+    }, 
+    this.WriteInitialize);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("GetServiceClientAsync");
+    }, 
+    this.WriteGetServiceClientAsync);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("BuildApplication");
+    }, 
+    this.WriteBuildApplication);
+
+if (this.ServiceModel.AuthorityServerVersion == AuthorityServerVersion.IdentityServer4)
+{
+
+    controller.AddModelWriter<MethodBodyModel>(
+        (w, m) =>
+        {
+            MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+            return parentMethod.Name.EqualsNoCase("BuildAuthorityServer");
+        }, 
+        this.WriteBuildAuthorityServerIdentityServer4);
+
+}
+
+if (this.ServiceModel.AuthorityServerVersion == AuthorityServerVersion.IdentityServer5)
+{
+
+    controller.AddModelWriter<MethodBodyModel>(
+        (w, m) =>
+        {
+            MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+            return parentMethod.Name.EqualsNoCase("BuildAuthorityServer");
+        }, 
+        this.WriteBuildAuthorityServerIdentityServer5);
+
+}
+
+// Generate code
+
+controller.Write(targetModel);
+
+#>

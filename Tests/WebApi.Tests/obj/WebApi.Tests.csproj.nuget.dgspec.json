@@ -1,0 +1,326 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Tests\\WebApi.Tests\\WebApi.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\Models.csproj",
+        "projectName": "Primavera.Lithium.PythonConnector.Models",
+        "projectPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\Models.csproj",
+        "packagesPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\_packages",
+        "outputPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\.nuget\\NuGet.Config",
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\NuGet.Config",
+          "C:\\Users\\Bruno.Cunha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "http://api.nuget.org/v3/index.json": {},
+          "http://nuget.primaverabss.com:82/nuget/General": {},
+          "http://nuget.primaverabss.com:82/nuget/Hydrogen": {},
+          "http://nuget.primaverabss.com:82/nuget/IdentityServer/": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Microsoft.VisualStudio.Threading.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[16.8.55, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Primavera.Hydrogen.Core": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "Primavera.Hydrogen.DesignTime.Configuration": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.0.43, )"
+            },
+            "Primavera.Hydrogen.Primitives.PhoneNumbers": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "Primavera.Hydrogen.Rest": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "StyleCop.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.1.118, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Tests\\WebApi.Tests\\WebApi.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Tests\\WebApi.Tests\\WebApi.Tests.csproj",
+        "projectName": "Primavera.Lithium.PythonConnector.WebApi.Tests",
+        "projectPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Tests\\WebApi.Tests\\WebApi.Tests.csproj",
+        "packagesPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\_packages",
+        "outputPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Tests\\WebApi.Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\.nuget\\NuGet.Config",
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\NuGet.Config",
+          "C:\\Users\\Bruno.Cunha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "http://api.nuget.org/v3/index.json": {},
+          "http://nuget.primaverabss.com:82/nuget/General": {},
+          "http://nuget.primaverabss.com:82/nuget/Hydrogen": {},
+          "http://nuget.primaverabss.com:82/nuget/IdentityServer/": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\WebApi.csproj": {
+                "projectPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\WebApi.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[16.8.0, )"
+            },
+            "Microsoft.VisualStudio.Threading.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[16.8.55, )"
+            },
+            "Primavera.Hydrogen.Core": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "Primavera.Hydrogen.DesignTime.Configuration": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.0.43, )"
+            },
+            "Primavera.Hydrogen.DesignTime.UnitTesting": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "StyleCop.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.1.118, )"
+            },
+            "coverlet.msbuild": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "xunit": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\WebApi.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\WebApi.csproj",
+        "projectName": "Primavera.Lithium.PythonConnector.WebApi",
+        "projectPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\WebApi.csproj",
+        "packagesPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\_packages",
+        "outputPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\WebApi\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\.nuget\\NuGet.Config",
+          "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\NuGet.Config",
+          "C:\\Users\\Bruno.Cunha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "http://api.nuget.org/v3/index.json": {},
+          "http://nuget.primaverabss.com:82/nuget/General": {},
+          "http://nuget.primaverabss.com:82/nuget/Hydrogen": {},
+          "http://nuget.primaverabss.com:82/nuget/IdentityServer/": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {},
+          "http://nuget.primaverabss.com:82/nuget/public-lithium-general": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\Models.csproj": {
+                "projectPath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Models\\Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Microsoft.VisualStudio.Threading.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[16.8.55, )"
+            },
+            "Primavera.Hydrogen.AspNetCore.Azure": {
+              "target": "Package",
+              "version": "[2.0.5.328, )"
+            },
+            "Primavera.Hydrogen.DesignTime.Configuration": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.0.43, )"
+            },
+            "StyleCop.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.1.118, )"
+            },
+            "pythonnet_netstandard_py38_win": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

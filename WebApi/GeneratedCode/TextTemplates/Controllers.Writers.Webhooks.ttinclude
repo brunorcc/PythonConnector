@@ -1,0 +1,321 @@
+﻿<#+
+
+// *** WriteCreateSubscriptionAsync
+
+public void WriteCreateSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult<string> result = await this.WebhooksSubscriptionsService
+                .CreateSubscriptionAsync(
+                    request)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.EventAlreadySubscribed))
+            {
+                // Conflict
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // Created
+
+            return this.Created(
+                this.HttpContext.Request.GetWebhookSubscriptionLocationUri(
+                    request.ClientId, 
+                    result.Data),
+                result.Data);
+<#+
+
+}
+
+// *** WriteUpdateSubscriptionAsync
+
+public void WriteUpdateSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult result = await this.WebhooksSubscriptionsService
+                .UpdateSubscriptionAsync(
+                    request)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailureWith(WebhooksErrorCodes.EventAlreadySubscribed))
+            {
+                // Conflict
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // OK
+
+            return this.Ok();
+<#+
+
+}
+
+// *** WriteGetSubscriptionAsync
+
+public void WriteGetSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult<WebhookSubscription> result = await this.WebhooksSubscriptionsService
+                .GetSubscriptionAsync(
+                    clientId, 
+                    subscriptionId)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // OK
+
+            return this.Ok(
+                result.Data);
+<#+
+
+}
+
+// *** WriteDeleteSubscriptionAsync
+
+public void WriteDeleteSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult result = await this.WebhooksSubscriptionsService
+                .DeleteSubscriptionAsync(
+                    clientId, 
+                    subscriptionId)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // NoContent
+
+            return this.NoContent();
+<#+
+
+}
+
+// *** WriteGetSubscriptionsAsync
+
+public void WriteGetSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult<IList<WebhookSubscription>> result = await this.WebhooksSubscriptionsService
+                .GetSubscriptionsAsync(
+                    clientId)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionsNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // OK
+
+            return this.Ok(
+                result.Data);
+<#+
+
+}
+
+// *** WriteDeleteSubscriptionsAsync
+
+public void WriteDeleteSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult result = await this.WebhooksSubscriptionsService
+                .DeleteSubscriptionsAsync(
+                    clientId)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionsNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(
+                        result));
+            }
+
+            // NoContent
+
+            return this.NoContent();
+<#+
+
+}
+
+// *** WritePingSubscriptionAsync
+
+public void WritePingSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult result = await this.WebhooksSubscriptionsService
+                .PingSubscriptionAsync(
+                    clientId,
+                    subscriptionId)
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailureWith(WebhooksErrorCodes.SubscriptionNotFound))
+            {
+                // NotFound
+
+                return this.NotFound(
+                    ServiceError.FromOperationResult(result));
+            }
+            else if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(result));
+            }
+
+            // OK
+
+            return this.Ok();
+<#+
+
+}
+
+// *** WriteGetWebhooksMetadataAsync
+
+public void WriteGetWebhooksMetadataAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Use service
+
+            OperationResult<IList<WebhookMetadata>> result = await this.WebhooksSubscriptionsService
+                .GetWebhooksMetadataAsync()
+                .ConfigureAwait(false);
+
+            // Failure?
+
+            if (result.IsFailure)
+            {
+                // BadRequest
+
+                return this.BadRequest(
+                    ServiceError.FromOperationResult(result));
+            }
+
+            // OK
+
+            return this.Ok(
+                result.Data);
+<#+
+
+}
+
+#>

@@ -1,0 +1,195 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (!sourceModel.GenerateClientLibrary)
+    {
+        targetModel.WithComment("This file is empty because the service model does not generate a client library.");
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Diagnostics.CodeAnalysis"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Net"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Routing"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Client"));
+
+    if (RequiresPhoneNumbersPrimitives(sourceModel))
+    {
+        targetModel
+            .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Primitives.PhoneNumbers"));
+    }
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace);
+
+    // Monitoring classes
+
+    if (sourceModel.GenerateWebApi)
+    {
+        ClassModel baseClassModel = targetModel.Namespace.AddClass(new ClassModel("MonitoringOperationsBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Abstract | ClassModifiers.Partial,
+            Inheritance = "IMonitoringOperations, IDisposable",
+            Documentation = new DocumentationModel("Defines the base class for the type that provides monitoring operations on the service.")
+            {
+                SeeAlso = new List<string>(new string[] { "IMonitoringOperations", "IDisposable" })
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .WithProperty(new PropertyModel("Client", "{0}ClientBase".Format(sourceModel.Name))
+            {
+                Modifiers = PropertyModifiers.Protected | PropertyModifiers.Virtual,
+                GetAccessor = new PropertyGetAccessorModel(),
+                SetAccessor = new PropertySetAccessorModel(),
+                Documentation = new DocumentationModel("Gets or sets the service client.")
+            })
+            .WithProperty(new PropertyModel("Actions", "ServiceClientActions<{0}ClientBase>".Format(sourceModel.Name))
+            {
+                Modifiers = PropertyModifiers.Protected | PropertyModifiers.Virtual,
+                GetAccessor = new PropertyGetAccessorModel(),
+                SetAccessor = new PropertySetAccessorModel(),
+                Documentation = new DocumentationModel("Gets or sets the service client actions.")
+            })
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Protected,
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringOperationsBase\" /> class.")
+            })
+                .WithParameter(new MethodParameterModel("client", "{0}ClientBase".Format(sourceModel.Name))
+                {
+                    Documentation = new DocumentationModel("The service client.")
+                })
+                .WithParameter(new MethodParameterModel("actions", "ServiceClientActions<{0}ClientBase>".Format(sourceModel.Name))
+                {
+                    Documentation = new DocumentationModel("The service client actions.")
+                })
+                .ParentModelAs<ClassModel>()
+            .WithMethod(MethodModel.Templates.Dispose)
+            .AddMethod(new MethodModel("Dispose")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Releases unmanaged and - optionally - managed resources.")
+            })
+                .WithParameter(new MethodParameterModel("disposing", "bool")
+                {
+                    Documentation = new DocumentationModel("<c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.")
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("Initialize", "void")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Performs additional initialization.")
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("ProbeAsync", "Task<ServiceOperationResult<string>>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                {
+                    DefaultValue = "default(CancellationToken)"
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("DiagnosticsAsync", "Task<ServiceOperationResult<string>>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                {
+                    DefaultValue = "default(CancellationToken)"
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("EndpointsAsync", "Task<ServiceOperationResult<IEnumerable<EndpointInfo>>>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                {
+                    DefaultValue = "default(CancellationToken)"
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("ConfigurationAsync", "Task<ServiceOperationResult<string>>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                {
+                    DefaultValue = "default(CancellationToken)"
+                })
+                .ParentModelAs<ClassModel>();
+
+        if (sourceModel.GenerateSyncActions)
+        {
+            baseClassModel
+                .AddMethod(new MethodModel("Probe", "ServiceOperationResult<string>")
+                {
+                    Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                    Documentation = new DocumentationModel(true)
+                })
+                    .ParentModelAs<ClassModel>()
+                .AddMethod(new MethodModel("Diagnostics", "ServiceOperationResult<string>")
+                {
+                    Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                    Documentation = new DocumentationModel(true)
+                })
+                    .ParentModelAs<ClassModel>()
+                .AddMethod(new MethodModel("Endpoints", "ServiceOperationResult<IEnumerable<EndpointInfo>>")
+                {
+                    Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                    Documentation = new DocumentationModel(true)
+                })
+                    .ParentModelAs<ClassModel>()
+                .AddMethod(new MethodModel("Configuration", "ServiceOperationResult<string>")
+                {
+                    Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+                    Documentation = new DocumentationModel(true)
+                });
+        }
+
+        ClassModel classModel = targetModel.Namespace.AddClass(new ClassModel("MonitoringOperations")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial,
+            Inheritance = "MonitoringOperationsBase",
+            Documentation = new DocumentationModel("Provides monitoring operations on the service.")
+            {
+                SeeAlso = new List<string>(new string[] { "MonitoringOperationsBase" })
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Public,
+                Inheritance = "base(client, actions)",
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringOperations\" /> class.")
+            })
+                .WithParameter(new MethodParameterModel("client", "{0}ClientBase".Format(sourceModel.Name))
+                {
+                    Documentation = new DocumentationModel("The service client.")
+                })
+                .WithParameter(new MethodParameterModel("actions", "ServiceClientActions<{0}ClientBase>".Format(sourceModel.Name))
+                {
+                    Documentation = new DocumentationModel("The service client actions.")
+                })
+                .ParentModelAs<ClassModel>();
+    }
+}
+
+#>

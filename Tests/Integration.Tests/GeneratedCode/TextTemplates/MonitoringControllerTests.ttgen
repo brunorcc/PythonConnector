@@ -1,0 +1,94 @@
+﻿<#@ template debug="true" hostspecific="true" inherits="Microsoft.VisualStudio.TextTemplating.VSHost.ModelingTextTransformation" #>
+<#@ output extension=".gen.cs" #>
+<#@ ServiceDesigner processor="ServiceDesignerDirectiveProcessor" requires="FileName=''" #>
+<#
+
+// Build the transformations
+
+ServiceModelTransformations<CSharpFileModel> transformations = new ServiceModelTransformations<CSharpFileModel>(this.ServiceModel);
+
+transformations.Add(
+    (s, t) => true,
+    (s, t) => { return s is ServiceModel; },
+    this.TransformServiceModel);
+
+// Transform
+
+CSharpFileModel targetModel = new CSharpFileModel(this.ServiceModel);
+transformations.TransformTo(targetModel);
+
+// Create controller
+
+ModelWriterController controller = new ModelWriterController(this.GenerationEnvironment);
+
+// Add writers
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("MonitoringController_ProbeAsync");
+    }, 
+    this.WriteMonitoringProbe);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("MonitoringController_DiagnosticsAsync");
+    }, 
+    this.WriteMonitoringDiagnostics);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("MonitoringController_EndpointsAsync");
+    }, 
+    this.WriteMonitoringEndpoints);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("MonitoringController_ConfigurationAsync");
+    }, 
+    this.WriteMonitoringConfiguration);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("TestProbeAsync");
+    }, 
+    this.WriteTestProbeAsync);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("TestDiagnosticsAsync");
+    }, 
+    this.WriteTestDiagnosticsAsync);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("TestEndpointsAsync");
+    }, 
+    this.WriteTestEndpointsAsync);
+
+controller.AddModelWriter<MethodBodyModel>(
+    (w, m) =>
+    {
+        MethodModel parentMethod = m.ParentModelAs<MethodModel>();
+        return parentMethod.Name.EqualsNoCase("TestConfigurationAsync");
+    }, 
+    this.WriteTestConfigurationAsync);
+
+// Generate code
+
+controller.Write(targetModel);
+
+#>

@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder">
+            <summary>
+            Allows building instances of <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IWebApplicationTestHost"/> to bootstrap an authority server in memory
+            to execute integration tests.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.IdentityResources">
+            <inheritdoc />
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ApiScopes">
+            <inheritdoc />
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ApiResources">
+            <inheritdoc />
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Clients">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Create">
+            <summary>
+            Creates a new instance of the builder.
+            </summary>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseIdentityResource(Duende.IdentityServer.Models.IdentityResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseIdentityResources(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.IdentityResource})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseApiScope(Duende.IdentityServer.Models.ApiScope)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseApiScopes(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.ApiScope})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseApiResource(Duende.IdentityServer.Models.ApiResource)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseApiResources(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.ApiResource})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseClient(Duende.IdentityServer.Models.Client)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseClients(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.Client})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseSetting(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.CaptureStartupErrors(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.UseEnvironment(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureAppConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureAppConfiguration(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureServices(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureLogging(System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.ConfigureLogging(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.Logging.ILoggingBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Configure(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Build">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IdentityServer5TestHostBuilder.Build``1">
+            <inheritdoc />
+        </member>
+        <member name="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder">
+            <summary>
+            Allows building instances of <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IWebApplicationTestHost"/> to bootstrap an authority server in memory
+            to execute integration tests.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.IdentityResources">
+            <summary>
+            Gets the identity resources configured.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ApiScopes">
+            <summary>
+            Gets the API scopes configured.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ApiResources">
+            <summary>
+            Gets the API resources configured.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.Clients">
+            <summary>
+            Gets the clients configured.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseIdentityResource(Duende.IdentityServer.Models.IdentityResource)">
+            <summary>
+            Configures the identity resource that should be configured.
+            </summary>
+            <param name="resource">The identity resources.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseIdentityResources(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.IdentityResource})">
+            <summary>
+            Configures the identity resources that should be configured.
+            </summary>
+            <param name="resources">The identity resources.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseApiScope(Duende.IdentityServer.Models.ApiScope)">
+            <summary>
+            Configures the API scope that should be configured.
+            </summary>
+            <param name="scope">The API scope.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseApiScopes(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.ApiScope})">
+            <summary>
+            Configures the API scopes that should be configured.
+            </summary>
+            <param name="scopes">The API scopes.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseApiResource(Duende.IdentityServer.Models.ApiResource)">
+            <summary>
+            Configures the identity resource that should be configured.
+            </summary>
+            <param name="resource">The identity resources.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseApiResources(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.ApiResource})">
+            <summary>
+            Configures the identity resources that should be configured.
+            </summary>
+            <param name="resources">The identity resources.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseClient(Duende.IdentityServer.Models.Client)">
+            <summary>
+            Configures the client that should be configured.
+            </summary>
+            <param name="client">The client.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseClients(System.Collections.Generic.IEnumerable{Duende.IdentityServer.Models.Client})">
+            <summary>
+            Configures the clients that should be configured.
+            </summary>
+            <param name="clients">The clients.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.CaptureStartupErrors(System.Boolean)">
+            <summary>
+            Sets whether startup errors should be captured in the configuration settings of the host.
+            When enabled, startup exceptions will be caught and an error page will be returned.
+            If disabled, startup exceptions will be propagated.
+            </summary>
+            <param name="captureStartupErrors">A value whether the startup error page should be used.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseSetting(System.String,System.String)">
+            <summary>
+            Adds or replaces a setting in the configuration.
+            </summary>
+            <param name="key">The setting key.</param>
+            <param name="value">The setting value.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.UseEnvironment(System.String)">
+            <summary>
+            Specifies the environment that should be used by the host.
+            </summary>
+            <param name="environment">The environment.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureAppConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance.
+            </summary>
+            <param name="configureDelegate">The delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureAppConfiguration(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance.
+            </summary>
+            <param name="configureDelegate">The delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureLogging(System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">
+            <summary>
+            Adds a delegate for configuring the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> instance.
+            </summary>
+            <param name="configureLogging">The delegate for configuring the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureLogging(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.Logging.ILoggingBuilder})">
+            <summary>
+            Adds a delegate for configuring the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> instance.
+            </summary>
+            <param name="configureLogging">The delegate for configuring the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <summary>
+            Adds a delegate for configuring additional services for the application.
+            </summary>
+            <param name="configureServices">The delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.ConfigureServices(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <summary>
+            Adds a delegate for configuring additional services for the application.
+            </summary>
+            <param name="configureServices">The delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <summary>
+            Adds a delegate for configuring the application.
+            </summary>
+            <param name="configureApp">The delegate for configuring the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.Configure(System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <summary>
+            Adds a delegate for configuring the application.
+            </summary>
+            <param name="configureApp">The delegate for configuring the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.Build">
+            <summary>
+            Builds the test host.
+            </summary>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IWebApplicationTestHost"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5.IIdentityServer5TestHostBuilder.Build``1">
+            <summary>
+            Builds the test host.
+            </summary>
+            <typeparam name="THost">The type of the test host that should be built.</typeparam>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IWebApplicationTestHost" /> instance.
+            </returns>
+        </member>
+    </members>
+</doc>

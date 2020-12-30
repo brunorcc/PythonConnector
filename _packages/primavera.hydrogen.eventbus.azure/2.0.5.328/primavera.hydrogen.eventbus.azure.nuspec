@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Primavera.Hydrogen.EventBus.Azure</id>
+    <version>2.0.5.328</version>
+    <authors>PRIMAVERA Business Software Solutions, S.A.</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Class library that contains types that define generic event bus services that use Microsoft Azure Service Bus.</description>
+    <tags>PRIMAVERA Elevation Lithium Hydrogen</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Primavera.Hydrogen.EventBus.Abstractions" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.ServiceBus" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

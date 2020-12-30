@@ -1,0 +1,37 @@
+﻿<#+
+
+public void WriteSettings(ModelWriter modelWriter, ServiceModel model)
+{
+    if (model == null)
+    {
+        return;
+    }
+
+#>
+{
+    "Logging": {
+        "IncludeScopes": false,
+        "Debug": {
+            "LogLevel": {
+                "Default": "Warning",
+                "Primavera": "Warning"
+            }
+        },
+        "Console": {
+            "LogLevel": {
+                "Default": "Warning",
+                "Primavera": "Warning"
+            }
+        }
+    },
+    "ApplicationConfiguration": {
+        "Environments": {
+            "LocalServiceBaseUri": "https://localhost:20001"
+        }
+    }
+}
+<#+
+
+}
+
+#>

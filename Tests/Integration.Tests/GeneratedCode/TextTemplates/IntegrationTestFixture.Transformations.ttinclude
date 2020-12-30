@@ -1,0 +1,180 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.AuthorizationMode == AuthorizationMode.Off)
+    {
+        targetModel.WithComment("This file is empty because the service model authorization model is off.");
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.IdentityModel.Client.Caching"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Client.Authentication"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Security.Cryptography"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore"))
+        .WithNamespaceImport(new NamespaceImportModel(sourceModel.Namespace + ".Models.Metadata"));
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace + ".Integration.Tests");
+
+    // Fixture
+
+    ClassModel baseFixtureClass = targetModel.Namespace
+        .AddClass(new ClassModel("IntegrationTestFixtureBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Abstract | ClassModifiers.Partial,
+            Inheritance = "IDisposable",
+            Documentation = new DocumentationModel("Defines the base class for a test fixture used for integration tests.")
+            {
+                SeeAlso = new List<string> { "System.IDisposable" }
+            }
+        })
+            .WithField(new FieldModel("fieldClientId", "string", "Guid.NewGuid().ToString()"))
+            .WithField(new FieldModel("fieldClientSecret", "string", "\"secret\""))
+            .WithField(new FieldModel("disposed", "bool"))
+            .WithProperty(new PropertyModel("ClientId", "string")
+            {
+                Modifiers = PropertyModifiers.Public,
+                GetAccessor = new PropertyGetAccessorModel()
+                {
+                    Body = new PropertyAccessorBodyModel("return this.fieldClientId;")
+                },
+                SetAccessor = new PropertySetAccessorModel()
+                {
+                    Modifiers = PropertyAccessorModifiers.Protected,
+                    Body = new PropertyAccessorBodyModel("this.fieldClientId = value;")
+                },
+                Documentation = new DocumentationModel("Gets or sets the client identifier.")
+            })
+            .WithProperty(new PropertyModel("ClientSecret", "string")
+            {
+                Modifiers = PropertyModifiers.Public,
+                GetAccessor = new PropertyGetAccessorModel()
+                {
+                    Body = new PropertyAccessorBodyModel("return this.fieldClientSecret;")
+                },
+                SetAccessor = new PropertySetAccessorModel()
+                {
+                    Modifiers = PropertyAccessorModifiers.Protected,
+                    Body = new PropertyAccessorBodyModel("this.fieldClientSecret = value;")
+                },
+                Documentation = new DocumentationModel("Gets or sets the client secret.")
+            })
+            .WithProperty(new PropertyModel("CurrentOperation", "string")
+            {
+                Modifiers = PropertyModifiers.Public | PropertyModifiers.Virtual,
+                GetAccessor = new PropertyGetAccessorModel(),
+                SetAccessor = new PropertySetAccessorModel(),
+                Documentation = new DocumentationModel("Gets or sets the operation being tested.")
+            })
+            .WithProperty(new PropertyModel("AuthorityServer", "IWebApplicationTestHost")
+            {
+                Modifiers = PropertyModifiers.Public | PropertyModifiers.Virtual,
+                GetAccessor = new PropertyGetAccessorModel(),
+                SetAccessor = new PropertySetAccessorModel()
+                {
+                    Modifiers = PropertyAccessorModifiers.Protected,
+                },
+                Documentation = new DocumentationModel("Gets the authority server test host.")
+            })
+            .WithProperty(new PropertyModel("Application", "IWebApplicationTestHost")
+            {
+                Modifiers = PropertyModifiers.Public | PropertyModifiers.Virtual,
+                GetAccessor = new PropertyGetAccessorModel(),
+                SetAccessor = new PropertySetAccessorModel()
+                {
+                    Modifiers = PropertyAccessorModifiers.Protected,
+                },
+                Documentation = new DocumentationModel("Gets the application test host.")
+            })
+            .WithConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Protected,
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"IntegrationTestFixtureBase\"/> class.")
+            })
+            .WithMethod(MethodModel.Templates.Dispose)
+            .AddMethod(new MethodModel("Dispose")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Releases unmanaged and - optionally - managed resources.")
+            })
+                .WithParameter(new MethodParameterModel("disposing", "bool")
+                {
+                    Documentation = new DocumentationModel("<c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.")
+                })
+                .ParentModelAs<ClassModel>()
+            .WithMethod(new MethodModel("Initialize", "void")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Initializes the fixture.")
+            })
+            .AddMethod(new MethodModel("GetServiceClientAsync", "Task<{0}Client>".Format(sourceModel.Name))
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Returns an instance of the service client.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("BuildAuthorityServer", "IWebApplicationTestHost")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Builds the authority server test host.")
+                {
+                    Returns = "The <see cref=\"IWebApplicationTestHost\"/> instance."
+                }
+            })
+                .WithParameter(new MethodParameterModel("clientId", "string")
+                {
+                    Documentation = new DocumentationModel("The client identifier.")
+                })
+                .WithParameter(new MethodParameterModel("clientSecret", "string")
+                {
+                    Documentation = new DocumentationModel("The client secret.")
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("BuildApplication", "IWebApplicationTestHost")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Builds the application test host.")
+                {
+                    Returns = "The <see cref=\"IWebApplicationTestHost\"/> instance."
+                }
+            })
+                .ParentModelAs<ClassModel>();
+
+    // Fixture
+
+    ClassModel fixtureClass = targetModel.Namespace
+        .AddClass(new ClassModel("IntegrationTestFixture")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial,
+            Inheritance = "IntegrationTestFixtureBase",
+            Documentation = new DocumentationModel("Defines a test fixture used for integration tests.")
+            {
+                SeeAlso = new List<string> { "IntegrationTestFixtureBase" }
+            }
+        })
+            .WithConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Public,
+                Inheritance = "base()",
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"IntegrationTestFixture\"/> class.")
+            });
+
+}
+
+#>

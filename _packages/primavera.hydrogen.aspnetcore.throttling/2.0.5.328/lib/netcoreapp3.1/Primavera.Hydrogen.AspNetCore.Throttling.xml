@@ -1,0 +1,292 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.AspNetCore.Throttling</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.CustomClientRateLimitConfiguration">
+            <summary>
+            Defines a custom <see cref="T:AspNetCoreRateLimit.RateLimitConfiguration"/> that allows extracting the client
+            identifier from the user claims.
+            </summary>
+            <seealso cref="T:AspNetCoreRateLimit.RateLimitConfiguration" />
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.CustomClientRateLimitConfiguration.RegisterResolvers">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.CustomClientRateLimitConfiguration.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Options.IOptions{AspNetCoreRateLimit.IpRateLimitOptions},Microsoft.Extensions.Options.IOptions{AspNetCoreRateLimit.ClientRateLimitOptions})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.CustomClientRateLimitConfiguration"/> class.
+            </summary>
+            <param name="httpContextAccessor">The HTTP context accessor.</param>
+            <param name="ipOptions">The IP options.</param>
+            <param name="clientOptions">The client options.</param>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.JwtClaimClientResolveContributor">
+            <summary>
+            Defines a custom <see cref="T:AspNetCoreRateLimit.IClientResolveContributor"/> that allows extracting the client
+            identifier from the user claims.
+            </summary>
+            <seealso cref="T:AspNetCoreRateLimit.IClientResolveContributor" />
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.JwtClaimClientResolveContributor.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.JwtClaimClientResolveContributor" /> class.
+            </summary>
+            <param name="httpContextAccessor">The HTTP context accessor.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.JwtClaimClientResolveContributor.ResolveClient">
+            <inheritdoc />
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingApplicationBuilderExtensions">
+            <summary>
+            Provides extensions methods for the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> that allow
+            configuring throttling.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingApplicationBuilderExtensions.UseThrottlingOnClientRate(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Adds throttling based on client rate limiting to the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>
+            request execution pipeline.
+            </summary>
+            <param name="app">The application.</param>
+            <returns>
+            The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance.
+            </returns>
+            <remarks>
+            Be aware that, for client rate limiting to work on client identifiers set by OAuth,
+            the throttling middleware must be placed AFTER authentication and authorization
+            in the request execution pipeline.
+            </remarks>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingCachingOptions">
+            <summary>
+            Defines the configuration options used by throttling services for
+            caching.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingCachingOptions.ClientRulePrefix">
+            <summary>
+            Gets or sets the prefix that should be used for the client rules
+            cache keys.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingCachingOptions.RateLimitCounterPrefix">
+            <summary>
+            Gets or sets the prefix that should be used for the rate limit counters
+            cache keys.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingCachingOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingCachingOptions"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions">
+            <summary>
+            Defines the configuration options used by throttling services for
+            client rate limiting.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions.Enabled">
+            <summary>
+            Gets or sets a value indicating whether throttling based on client rate limiting is enabled.
+            The default value is true.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions.ClientWhitelist">
+            <summary>
+            Gets or sets the list containing the client identifiers that should be white-listed.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions.GeneralRules">
+            <summary>
+            Gets or sets the general rules.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions.ClientRules">
+            <summary>
+            Gets or sets the client rules.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitingOptions"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitPolicy">
+            <summary>
+            Defines a policy for throttling based on client rate limiting.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitPolicy.ClientId">
+            <summary>
+            Gets or sets the client identifier.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitPolicy.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingClientRateLimitPolicy"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions">
+            <summary>
+            Defines the configuration options used by throttling services.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions.Enabled">
+            <summary>
+            Gets or sets a value indicating whether throttling is enabled.
+            The default value is true.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions.ClientRateLimiting">
+            <summary>
+            Gets or sets the options for throttling based on client rate limiting.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions.Caching">
+            <summary>
+            Gets or sets the options for caching.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitPolicy">
+            <summary>
+            Defines a policy for throttling based on rate limiting.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitPolicy.Rules">
+            <summary>
+            Gets or sets the rules that should be applied.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitPolicy.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitPolicy"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitRule">
+            <summary>
+            Defines a rule for throttling based on rate limiting.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitRule.Endpoint">
+            <summary>
+            Gets or sets the endpoint to which the rule applies.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitRule.Period">
+            <summary>
+            Gets or sets the period to which the limit applies.
+            </summary>
+            <remarks>
+            This value should be formatted in the form {Value}{PeriodType} where
+            PeriodType can be: s (seconds), m (minutes), h (hours), d (days).
+            </remarks>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingRateLimitRule.Limit">
+            <summary>
+            Gets or sets the limit that should be applied.
+            When exceeded, the requests will be rejected.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingServiceCollectionExtensions">
+            <summary>
+            Provides extensions methods for the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> that allow
+            configuring throttling services.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingServiceCollectionExtensions.AddThrottlingOnClientRate(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds throttling services to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> that will
+            use client rate limiting.
+            </summary>
+            <param name="services">The service collection.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingServiceCollectionExtensions.AddThrottlingOnClientRate(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Primavera.Hydrogen.AspNetCore.Throttling.ThrottlingOptions})">
+            <summary>
+            Adds throttling services to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> that will
+            use client rate limiting.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="configureDelegate">The configuration delegate.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_ClientRateLimiting_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. The client rate limiting options are missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_ClientRule_ClientId_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. There is at least one client rule whose client identifier is missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_ClientRule_Rules_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. There is at least one client rule whose rules are missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_ClientRulePrefix_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. The cache client rule prefix is missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_GeneralRules_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. The client rate limiting general rules are missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_RateLimitCounterPrefix_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. The cache rate limit counter prefix is missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_Rule_Endpoint_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. There is at least one rule whose endpoint is missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_Rule_Limit_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. There is at least one rule whose period is missing..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_Rule_Period_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. There is at least one rule whose period is invalid (it should be greater than zero)..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Throttling.Properties.Resources.RES_Exception_Configuration_Rules_Required">
+            <summary>
+              Looks up a localized string similar to The throttling configuration options are invalid. At least one rule (general or client-specific) is required..
+            </summary>
+        </member>
+    </members>
+</doc>

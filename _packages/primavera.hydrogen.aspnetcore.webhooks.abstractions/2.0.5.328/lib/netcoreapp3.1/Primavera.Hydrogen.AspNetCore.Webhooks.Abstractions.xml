@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.AspNetCore.Webhooks.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksService">
+            <summary>
+            Defines the interface of the webhooks service.
+            This service is responsible for publishing webhooks events to the corresponding subscribers in response
+            from a request from the application.
+            </summary>
+            <remarks>
+            The application triggers the webhook by invoking this service and providing the name of the event along
+            with the data payload (required). The service will publish the event to all client application that subscribed
+            the event previously.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksService.PublishEventAsync``1(System.String,``0,System.Threading.CancellationToken)">
+            <summary>
+            Publishes the specified webhook event.
+            </summary>
+            <typeparam name="T">The type of the webhook payload.</typeparam>
+            <param name="eventName">The name of the webhook event.</param>
+            <param name="payload">The webhook payload.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService">
+            <summary>
+            Defines the interface of the webhooks subscriptions service.
+            This service is responsible for storing the subscriptions of client applications
+            on webhooks events.
+            </summary>
+            <remarks>
+            The client application should invoke this service to create, update or delete
+            subscriptions on one or more events supported by the webhooks application.
+            This service is used by <see cref="T:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksService"/> to determine the subscriber
+            for a particular webhook event when the application publishes it.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.CreateSubscriptionAsync(Primavera.Hydrogen.Rest.Webhooks.CreateWebhookSubscriptionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Creates a new webhook subscription.
+            </summary>
+            <param name="request">The webhook subscription that should be created.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            If succeeded, the result contains the identifier of the new webhook subscription.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.UpdateSubscriptionAsync(Primavera.Hydrogen.Rest.Webhooks.UpdateWebhookSubscriptionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Updates the specified webhook subscription.
+            </summary>
+            <param name="request">The webhook subscription that should be updated.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.DeleteSubscriptionAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the specified webhook subscription.
+            </summary>
+            <param name="clientId">The client application identifier.</param>
+            <param name="subscriptionId">The webhook subscription identifier.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.DeleteSubscriptionsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes all the webhook subscriptions for the specified client application.
+            </summary>
+            <param name="clientId">The client application identifier.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.GetSubscriptionAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the specified webhook subscription.
+            </summary>
+            <param name="clientId">The client application identifier.</param>
+            <param name="subscriptionId">The webhook subscription identifier.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            If succeeded, the result contains the webhook subscription.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.GetSubscriptionsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all the webhook subscriptions for the specified client application.
+            </summary>
+            <param name="clientId">The client application identifier.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            If succeeded, the result contains the webhook subscriptions.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.PingSubscriptionAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sends a ping to the specified webhook subscription callback.
+            </summary>
+            <param name="clientId">The client application identifier.</param>
+            <param name="subscriptionId">The webhook subscription identifier.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Webhooks.IWebhooksSubscriptionsService.GetWebhooksMetadataAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves metadata about all the webhooks available.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The operation result.
+            If succeeded, the result contains the metadata about all the webhooks.
+            </returns>
+        </member>
+    </members>
+</doc>

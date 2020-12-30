@@ -1,0 +1,35 @@
+﻿<#+
+
+internal class ScopesTransformation : ServiceModelTransformation<CSharpFileModel>
+{
+    // *** Overrides
+
+    public override bool CanTransform(DomainModelElement sourceElement, CSharpFileModel targetModel)
+    {
+        if (sourceElement is AuthorizationPolicy policy)
+        {
+            return policy.ServiceModel.AuthorizationMode == AuthorizationMode.On && policy.Kind == AuthorizationPolicyKind.Scope;
+        }
+        
+        return false;
+    }
+
+    public override void Transform(DomainModelElement sourceElement, CSharpFileModel targetModel)
+    {
+        if (targetModel == null)
+        {
+            return;
+        }
+
+        if (sourceElement is AuthorizationPolicy policy)
+        {
+            targetModel.Namespace.Classes[0].WithConstant(new ConstantModel(policy.Name, "string", "\"{0}\"".Format(policy.Scope.ToLowerInvariant()))
+            {
+                Modifiers = ConstantModifiers.Public,
+                Documentation = new DocumentationModel(policy.Summary)
+            });
+        }
+    }
+}
+
+#>

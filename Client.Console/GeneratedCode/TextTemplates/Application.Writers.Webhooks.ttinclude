@@ -1,0 +1,516 @@
+﻿<#+
+
+// *** WriteShowWebhooksMenuAsync
+
+public void WriteShowWebhooksMenuAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Menu
+
+            bool terminate = false;
+            bool cont = true;
+            while (cont)
+            {
+                ConsoleHelper.WriteLine();
+                ConsoleHelper.WriteLine("========================================");
+                ConsoleHelper.WriteLine("Webhooks Menu");
+                ConsoleHelper.WriteLine("========================================");
+                ConsoleHelper.WriteLine();
+                ConsoleHelper.WriteLine("1. Get webhook subscription.");
+                ConsoleHelper.WriteLine("2. Create webhook subscription.");
+                ConsoleHelper.WriteLine("3. Update webhook subscription.");
+                ConsoleHelper.WriteLine("4. Delete webhook subscription.");
+                ConsoleHelper.WriteLine("5. Get all webhook subscriptions.");
+                ConsoleHelper.WriteLine("6. Delete all webhook subscriptions.");
+                ConsoleHelper.WriteLine("7. Ping webhook subscription.");
+                ConsoleHelper.WriteLine("8. Get webhooks metadata.");
+                ConsoleHelper.WriteLine("<. Back.");
+                ConsoleHelper.WriteLine("Q. Quit.");
+                ConsoleHelper.Write(">> ");
+
+                ConsoleKeyInfo key = ConsoleHelper.ReadKey();
+                ConsoleHelper.WriteLine();
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.Q:
+                        cont = false;
+                        terminate = true;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        cont = false;
+                        break;
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
+                        await this.GetWebhookSubscriptionAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        await this.CreateWebhookSubscriptionAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        await this.UpdateWebhookSubscriptionAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
+                        await this.DeleteWebhookSubscriptionAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
+                        await this.GetWebhookSubscriptionsAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D6:
+                    case ConsoleKey.NumPad6:
+                        await this.DeleteWebhookSubscriptionsAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D7:
+                    case ConsoleKey.NumPad7:
+                        await this.PingWebhookSubscriptionAsync().ConfigureAwait(false);
+                        break;
+                    case ConsoleKey.D8:
+                    case ConsoleKey.NumPad8:
+                        await this.GetWebhooksMetadataAsync().ConfigureAwait(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            // Result
+
+            return terminate;
+<#+
+
+}
+
+// *** WriteGetWebhookSubscriptionAsync
+
+public void WriteGetWebhookSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            string clientId = this.GetValueString("client id", this.fieldLastClientId);
+            string subscriptionId = this.GetValueString("subscription id", this.fieldLastSubscriptionId);
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult<WebhookSubscription> response = await this.Client.Webhooks
+                    .GetSubscriptionAsync(
+                        clientId, 
+                        subscriptionId)
+                    .ConfigureAwait(false);
+
+                WebhookSubscription result = response.Body;
+
+                ConsoleHelper.WriteInformationLine("Web API returned the result. See below.");
+                this.WriteWebhookSubscription(string.Empty, result);
+
+                this.fieldLastClientId = result.ClientId;
+                this.fieldLastSubscriptionId = result.SubscriptionId;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteGetWebhooksSubscriptionsAsync
+
+public void WriteGetWebhookSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            string clientId = this.GetValueString("client id", this.fieldLastClientId);
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult<IEnumerable<WebhookSubscription>> response = await this.Client.Webhooks
+                    .GetSubscriptionsAsync(
+                        clientId)
+                    .ConfigureAwait(false);
+
+                IEnumerable<WebhookSubscription> result = response.Body;
+
+                ConsoleHelper.WriteInformationLine("Web API returned the result. See below.");
+                this.WriteWebhookSubscriptions(result);
+
+                this.fieldLastClientId = clientId;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteGetWebhooksMetadataAsync
+
+public void WriteGetWebhooksMetadataAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult<IEnumerable<WebhookMetadata>> response = await this.Client.Webhooks
+                    .GetWebhooksMetadataAsync()
+                    .ConfigureAwait(false);
+
+                IEnumerable<WebhookMetadata> result = response.Body;
+
+                ConsoleHelper.WriteInformationLine("Web API returned the result. See below.");
+                this.WriteWebhookMetadatas(result);
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteDeleteWebhookSubscriptionAsync
+
+public void WriteDeleteWebhookSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            string clientId = this.GetValueString("client id", this.fieldLastClientId);
+            string subscriptionId = this.GetValueString("subscription id", this.fieldLastSubscriptionId);
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult response = await this.Client.Webhooks
+                    .DeleteSubscriptionAsync(
+                        clientId, 
+                        subscriptionId)
+                    .ConfigureAwait(false);
+
+                ConsoleHelper.WriteInformationLine("Web API call succeeded.");
+
+                this.fieldLastClientId = clientId;
+                this.fieldLastSubscriptionId = subscriptionId;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteDeleteWebhookSubscriptionsAsync
+
+public void WriteDeleteWebhookSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            string clientId = this.GetValueString("client id", this.fieldLastClientId);
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult response = await this.Client.Webhooks
+                    .DeleteSubscriptionsAsync(
+                        clientId)
+                    .ConfigureAwait(false);
+
+                ConsoleHelper.WriteInformationLine("Web API call succeeded.");
+
+                this.fieldLastClientId = clientId;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WritePingWebhookSubscriptionAsync
+
+public void WritePingWebhookSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            string clientId = this.GetValueString("client id", this.fieldLastClientId);
+            string subscriptionId = this.GetValueString("subscription id", this.fieldLastSubscriptionId);
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult response = await this.Client.Webhooks
+                    .PingSubscriptionAsync(
+                        clientId, 
+                        subscriptionId)
+                    .ConfigureAwait(false);
+
+                ConsoleHelper.WriteInformationLine("Web API call succeeded.");
+
+                this.fieldLastClientId = clientId;
+                this.fieldLastSubscriptionId = subscriptionId;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteCreateWebhookSubscriptionAsync
+
+public void WriteCreateWebhookSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            CreateWebhookSubscriptionRequest request = new CreateWebhookSubscriptionRequest()
+            {
+                ClientId = this.GetValueString("client id", this.fieldLastClientId),
+                EventNames = new List<string>(this.GetValuesString("event", true, this.fieldLastEventName)),
+                CallbackUrl = this.GetValueUri("callback URL", this.fieldLastCallbackUrl),
+                Active = this.GetValueBoolean("active", defaultValue: true),
+                Secret = this.GetValueString("secret", this.fieldLastSecret)
+            };
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult<string> response = await this.Client.Webhooks
+                    .CreateSubscriptionAsync(
+                        request)
+                    .ConfigureAwait(false);
+
+                ConsoleHelper.WriteInformationLine("Web API call succeeded. Result: {0}.", response.Body);
+
+                this.fieldLastClientId = request.ClientId;
+                this.fieldLastSubscriptionId = response.Body;
+                this.fieldLastEventName = request.EventNames[0];
+                this.fieldLastSecret = request.Secret;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteUpdateWebhookSubscriptionAsync
+
+public void WriteUpdateWebhookSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Get the input
+
+            ConsoleHelper.WriteLine();
+
+            UpdateWebhookSubscriptionRequest request = new UpdateWebhookSubscriptionRequest()
+            {
+                ClientId = this.GetValueString("client id", this.fieldLastClientId),
+                SubscriptionId = this.GetValueString("subscription id", this.fieldLastSubscriptionId),
+                EventNames = new List<string>(this.GetValuesString("event", true, this.fieldLastEventName)),
+                CallbackUrl = this.GetValueUri("callback URL", this.fieldLastCallbackUrl),
+                Active = this.GetValueBoolean("active", defaultValue: true),
+                Secret = this.GetValueString("secret", this.fieldLastSecret)
+            };
+
+            // Call the Web API
+
+            ConsoleHelper.WriteLine();
+            ConsoleHelper.WriteInformationLine("Calling the Web API...");
+
+            try
+            {
+                ServiceOperationResult response = await this.Client.Webhooks
+                    .UpdateSubscriptionAsync(
+                        request)
+                    .ConfigureAwait(false);
+
+                ConsoleHelper.WriteInformationLine("Web API call succeeded.");
+
+                this.fieldLastClientId = request.ClientId;
+                this.fieldLastSubscriptionId = request.SubscriptionId;
+                this.fieldLastEventName = request.EventNames[0];
+                this.fieldLastCallbackUrl = request.CallbackUrl;
+                this.fieldLastSecret = request.Secret;
+            }
+            catch (ServiceException ex)
+            {
+                this.WriteServiceException(ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleHelper.WriteErrorLine(ex);
+            }
+<#+
+
+}
+
+// *** WriteWriteWebhookSubscription
+
+public void WriteWriteWebhookSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            ConsoleHelper.WriteInformationLine(spacing + "Subscription....:");
+            ConsoleHelper.WriteInformationLine(spacing + "..ClientId......: {0}", subscription.ClientId);
+            ConsoleHelper.WriteInformationLine(spacing + "..SubscriptionId: {0}", subscription.SubscriptionId);
+            ConsoleHelper.WriteInformationLine(spacing + "..ClientId......: {0}", subscription.ClientId);
+            ConsoleHelper.WriteInformationLine(spacing + "..EventNames....: {0}", string.Join(";", subscription.EventNames));
+            ConsoleHelper.WriteInformationLine(spacing + "..CallbackUrl...: {0}", subscription.CallbackUrl);
+            ConsoleHelper.WriteInformationLine(spacing + "..Secret........: {0}", subscription.Secret);
+            ConsoleHelper.WriteInformationLine(spacing + "..Active........: {0}", subscription.Active);
+            ConsoleHelper.WriteInformationLine(spacing + "..ModifiedOn....: {0}", subscription.ModifiedOn);
+            ConsoleHelper.WriteInformationLine(spacing + "..LastResponse..:");
+            ConsoleHelper.WriteInformationLine(spacing + "....Status......: {0}", subscription.LastResponse.Status);
+            ConsoleHelper.WriteInformationLine(spacing + "....Code........: {0}", subscription.LastResponse.Code);
+            ConsoleHelper.WriteInformationLine(spacing + "....Message.....: {0}", subscription.LastResponse.Message);
+            ConsoleHelper.WriteInformationLine(spacing + "....Timestamp...: {0}", subscription.LastResponse.Timestamp);
+            ConsoleHelper.WriteInformationLine(spacing + "....Tries.......: {0}", subscription.LastResponse.Tries);
+<#+
+
+}
+
+// *** WriteWriteWebhookSubscriptions
+
+public void WriteWriteWebhookSubscriptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            ConsoleHelper.WriteInformationLine("Subscriptions:");
+
+            if (subscriptions != null)
+            {
+                foreach (WebhookSubscription subscription in subscriptions.OrderBy(i => i.ModifiedOn))
+                {
+                    this.WriteWebhookSubscription("..", subscription);
+                }
+            }
+<#+
+
+}
+
+// *** WriteWriteWebhookMetadata
+
+public void WriteWriteWebhookMetadata(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            ConsoleHelper.WriteInformationLine(spacing + "Metadata:");
+            ConsoleHelper.WriteInformationLine(spacing + "..EventName.........: {0}", metadata.EventName);
+            ConsoleHelper.WriteInformationLine(spacing + "..EventDescription..: {0}", metadata.EventDescription);
+            ConsoleHelper.WriteInformationLine(spacing + "..PayloadDescription: {0}", metadata.PayloadDescription);
+<#+
+
+}
+
+// *** WriteWriteWebhookMetadatas
+
+public void WriteWriteWebhookMetadatas(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            ConsoleHelper.WriteInformationLine("Webhooks:");
+
+            if (metadata != null)
+            {
+                foreach (WebhookMetadata webhook in metadata.OrderBy(e => e.EventName))
+                {
+                    this.WriteWebhookMetadata("..", webhook);
+                }
+            }
+<#+
+
+}
+
+#>

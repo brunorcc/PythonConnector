@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<serviceModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Library" dslVersion="2.0.0.0" Id="6d4a300c-cc85-4e01-a9bd-65cb4efc56a1" name="PythonConnector" summary="Python connector Service." namespace="Primavera.Lithium.PythonConnector" displayName="Python Connector Service" clientCredentialsClientSecret="fsessbfbdfbndgnfgnhj" clientCredentialsClientId="lithium-pythonconnector-clientcredentials" authorizationMode="Off" defaultScope="lithium-pythonconnector" generateSyncActions="false" hybridClientId="lithium-pythonconnector-hybrid" gUID="PCS" wasModified="true" designerVersion="54" xmlns="http://schemas.microsoft.com/dsltools/ServiceDesigner">
+  <models>
+    <modelHasModels Id="d26d6c2c-95f7-4c95-8eec-6da7590ae79d">
+      <modelType Id="8b6e2976-c17e-4cf5-8fcc-8cc82209e3b6" name="InputData" summary="The input data." displayName="Input Data">
+        <childProperties>
+          <modelTypeHasChildProperties Id="e52944d2-b024-4687-b4a2-fa242451f636">
+            <modelTypeScalarProperty Id="969b6ef9-c1a0-402e-bad1-3255fd606570" name="Key" summary="Input data key." displayName="Key" nameAndType="Key : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="b3236f34-735b-4016-9466-d838bf50d682">
+            <modelTypeScalarProperty Id="71e9eca5-5769-42f1-a54c-529322addb20" name="Date" summary="Input data date." displayName="Date" nameAndType="Date : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="d9fea342-72c8-4e01-a747-7be48b65b32a">
+            <modelTypeScalarProperty Id="f95b2df8-8bb7-4a7d-a087-145a194c4864" name="Value" summary="Input data value." displayName="Value" nameAndType="Value : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+        </childProperties>
+      </modelType>
+    </modelHasModels>
+    <modelHasModels Id="f8b9ceee-99f0-4089-8ad9-94d962a1bea2">
+      <modelType Id="84fe15ad-f940-4f6a-ba90-148d398ca8dc" name="OutputData" summary="The output data." displayName="Output Data">
+        <childProperties>
+          <modelTypeHasChildProperties Id="44dfeaac-aab8-4468-85b1-18d3224ed175">
+            <modelTypeScalarProperty Id="850ddb0c-73fa-44f9-a1ea-386896a8e900" name="Key" summary="Output data key." displayName="Key" nameAndType="Key : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="9ea61de0-df56-4fd3-940c-a25379a7b78e">
+            <modelTypeScalarProperty Id="518eaf4b-6292-484a-bca8-89c371e61bcc" name="StartTime" summary="Output data start time." displayName="Start Time" nameAndType="StartTime : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="d2f9468c-97dc-4b6f-b2a7-0629b49c4aad">
+            <modelTypeScalarProperty Id="76ef6dfc-9808-4598-a007-16ba4c1ff2a1" name="EndTime" summary="Output data end time." displayName="End Time" nameAndType="EndTime : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="5799573b-2076-470a-8b15-2ca609846a8f">
+            <modelTypeScalarProperty Id="582abad1-4727-405d-8954-f4027ca65dee" name="AnomalyType" summary="Output data anomaly type." displayName="Anomaly Type" nameAndType="AnomalyType : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="d43913c0-1d0a-4cb1-80a1-ba08edef0d4e">
+            <modelTypeScalarProperty Id="f70ab2f0-968b-46a7-9746-749a9a358a31" name="AnomalyScore" summary="Output data anomaly score." displayName="Anomaly Score" nameAndType="AnomalyScore : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="775a1a5d-ee97-4262-b3b1-51acb7398490">
+            <modelTypeScalarProperty Id="4ce007ee-bae7-4837-9ca6-5abb0fbc5803" name="DispersionScore" summary="Output data dispersion score." displayName="Dispersion Score" nameAndType="DispersionScore : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="bbb96f9a-d2ed-4e9c-8e45-667bbb5b4be9">
+            <modelTypeScalarProperty Id="6314297d-9586-4a78-af78-04546ee697b4" name="ConfidenceLevel" summary="Output data confidence level." displayName="Confidence Level" nameAndType="ConfidenceLevel : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="436bd856-8c89-41f2-a222-9372f3e6a118">
+            <modelTypeScalarProperty Id="24fc2700-6169-4270-9304-76b87ea46fca" name="GlobalIntensity" summary="Output data global intensity." displayName="Global Intensity" nameAndType="GlobalIntensity : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="d89447b4-1bfe-426a-8a4c-ee33ffad5db5">
+            <modelTypeScalarProperty Id="fd6f86b9-7e66-4e19-8eb2-f867ed39be0f" name="MovingIntensity" summary="Output data moving intensity." displayName="Moving Intensity" nameAndType="MovingIntensity : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="97e8277a-67aa-4bd4-84d2-d7041ce3e515">
+            <modelTypeScalarProperty Id="ebbbdce2-00de-4a45-82a8-1d4973c3e409" name="WeightedMovingIntensity" summary="Output data weighted moving intensity." displayName="Weighted Moving Intensity" nameAndType="WeightedMovingIntensity : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="abfca337-0a2d-4712-b92d-9b7490f828be">
+            <modelTypeScalarProperty Id="eb96352d-09d5-4fda-bc1e-93d0bb6c3a11" name="Correlations" summary="Output data correlations." displayName="Correlations" nameAndType="Correlations : String" validationRules="{}" />
+          </modelTypeHasChildProperties>
+          <modelTypeHasChildProperties Id="87242834-e471-4050-a901-482792dd3429">
+            <modelTypeScalarProperty Id="6be1a8fa-9782-437b-a24b-cc01c8f28e2c" name="Polarity" summary="Output data polarity." displayName="Polarity" nameAndType="Polarity : Double" type="Double" validationRules="{}" />
+          </modelTypeHasChildProperties>
+        </childProperties>
+      </modelType>
+    </modelHasModels>
+  </models>
+  <controllers>
+    <modelHasControllers Id="ec0d5cb4-23f2-4852-b5ef-fe844c6f4c83">
+      <controllerType Id="49ec2aa9-82f1-4054-8bad-249000d0b402" name="PythonConnector" summary="The python connector controller." displayName="Python Connector">
+        <childActions>
+          <controllerHasChildActions Id="a104aa8e-7690-48b6-afc9-a546914ed154">
+            <controllerTypeActionMoniker name="/PythonConnector/PythonConnector#GetResult" />
+          </controllerHasChildActions>
+        </childActions>
+      </controllerType>
+    </modelHasControllers>
+  </controllers>
+  <actions>
+    <modelHasActions Id="216f1c35-4d77-4eb2-a086-1d1033fd063c">
+      <controllerTypeAction Id="cb06185e-0e30-42c1-bd34-caacc0e750cc" name="PythonConnector#GetResult" summary="The python connector get result." returns="Returns the output data." returnValueType="Model" httpMethod="Post" displayName="Get Result" routeIgnoreControllerParameters="false" returnValueCardinality="List" name2="GetResult">
+        <childParameters>
+          <controllerTypeActionHasChildParameters Id="f421a2ee-f162-4ce2-aa68-eb7066553df5">
+            <controllerTypeActionModelParameter Id="63ec40fd-7bf4-49fa-ad5c-9204ed2dc265" name="InputData" summary="The input data." displayName="Input Data" nameAndType="InputData : InputData*" cardinality="List" validationRules="{}">
+              <referencedModel>
+                <controllerTypeActionModelParameterReferencesModelType Id="344da96c-3cb7-4018-9c6f-418bc13c0aea">
+                  <modelTypeMoniker name="/PythonConnector/InputData" />
+                </controllerTypeActionModelParameterReferencesModelType>
+              </referencedModel>
+            </controllerTypeActionModelParameter>
+          </controllerTypeActionHasChildParameters>
+        </childParameters>
+        <referencedModel>
+          <controllerTypeActionReferencesModelType Id="2525a049-89c4-4978-a47a-cf430978b7b6">
+            <modelTypeMoniker name="/PythonConnector/OutputData" />
+          </controllerTypeActionReferencesModelType>
+        </referencedModel>
+      </controllerTypeAction>
+    </modelHasActions>
+  </actions>
+</serviceModel>

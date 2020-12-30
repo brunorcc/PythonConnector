@@ -1,0 +1,335 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Lithium.PythonConnector.Models</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions">
+            <summary>
+            Defines constants that specify the API versions used by the Web API actions.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Literals">
+            <summary>
+            Defines constants that specify the API versions used by the Web API actions.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Literals.DefaultVersionLiteral">
+            <summary>
+            The service default API version literal.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Literals.OneDotZeroLiteral">
+            <summary>
+            The 1.0 API version literal.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Values">
+            <summary>
+            Defines constants that specify the API versions used by the Web API actions.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Values.DefaultVersion">
+            <summary>
+            The service default API version.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.Metadata.ApiVersions.Values.OneDotZero">
+            <summary>
+            The 1.0 API version.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.RoutesBase">
+            <summary>
+            Defines the base class for a class that defines constants that specify the routes used by the Web API actions.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.Metadata.RoutesBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.Metadata.RoutesBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.Metadata.RoutesBase.Resolve(System.Uri,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <summary>
+            Returns the full URI to access the specified route when the service is hosted in a given base URI.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="route">The route (as defined in <see cref="T:Primavera.Lithium.PythonConnector.Models.Metadata.Routes" />).</param>
+            <param name="properties">The objects that should be formatted. The key of the dictionary specifies the property name.</param>
+            <returns>
+            The full URI to access the specified route.
+            </returns>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.Routes">
+            <summary>
+            Defines constants that specify the routes used by the Web API actions.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Monitoring">
+            <summary>
+            Defines constants that specify the routes used by the monitoring actions.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Monitoring.Probe">
+            <summary>
+            Defines the route for the action that probes the service. This action is used to perform dependencies tests on the service.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Monitoring.Diagnostics">
+            <summary>
+            Defines the route for the action that diagnoses the service. This action is used to perform functional tests on the service.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Monitoring.Endpoints">
+            <summary>
+            Defines the route for the action that analyzes the endpoints of the service. This action is used to verify the service implementation.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Monitoring.Configuration">
+            <summary>
+            Defines the route for the action that analyzes the configuration of the service. This action is used to verify the service implementation.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.PythonConnector">
+            <summary>
+            Defines constants that specify the routes used by the python connector actions.
+            </summary>
+        </member>
+        <member name="F:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.PythonConnector.GetResult">
+            <summary>
+            Defines the route for the following action: Get Result.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.Metadata.Routes.Instance">
+            <summary>
+            Gets the instance
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.InputDataBase">
+            <summary>
+            Defines the base class for <see cref="T:Primavera.Lithium.PythonConnector.Models.InputData"/>.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.InputDataBase.Date">
+            <summary>
+            Input data date.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.InputDataBase.Key">
+            <summary>
+            Input data key.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.InputDataBase.Value">
+            <summary>
+            Input data value.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.InputDataBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.InputDataBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.InputDataBase.SetDefaultValues">
+            <summary>
+            Sets the default values.
+            </summary>
+            <remarks>
+            This method should be overridden to set the default values of properties.
+            </remarks>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.InputData">
+            <summary>
+            The input data.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.InputData.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.InputData"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.OutputDataBase">
+            <summary>
+            Defines the base class for <see cref="T:Primavera.Lithium.PythonConnector.Models.OutputData"/>.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.AnomalyScore">
+            <summary>
+            Output data anomaly score.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.AnomalyType">
+            <summary>
+            Output data anomaly type.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.ConfidenceLevel">
+            <summary>
+            Output data confidence level.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.Correlations">
+            <summary>
+            Output data correlations.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.DispersionScore">
+            <summary>
+            Output data dispersion score.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.EndTime">
+            <summary>
+            Output data end time.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.GlobalIntensity">
+            <summary>
+            Output data global intensity.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.Key">
+            <summary>
+            Output data key.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.MovingIntensity">
+            <summary>
+            Output data moving intensity.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.Polarity">
+            <summary>
+            Output data polarity.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.StartTime">
+            <summary>
+            Output data start time.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.OutputDataBase.WeightedMovingIntensity">
+            <summary>
+            Output data weighted moving intensity.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.OutputDataBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.OutputDataBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.OutputDataBase.SetDefaultValues">
+            <summary>
+            Sets the default values.
+            </summary>
+            <remarks>
+            This method should be overridden to set the default values of properties.
+            </remarks>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.OutputData">
+            <summary>
+            The output data.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.OutputData.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.OutputData"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.Models.ModelsResources">
+            <summary>
+            Provides means to access resource strings.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_InputData_Date">
+            <summary>
+            Gets the RES_Display_InputData_Date resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_InputData_Key">
+            <summary>
+            Gets the RES_Display_InputData_Key resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_InputData_Value">
+            <summary>
+            Gets the RES_Display_InputData_Value resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_AnomalyScore">
+            <summary>
+            Gets the RES_Display_OutputData_AnomalyScore resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_AnomalyType">
+            <summary>
+            Gets the RES_Display_OutputData_AnomalyType resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_ConfidenceLevel">
+            <summary>
+            Gets the RES_Display_OutputData_ConfidenceLevel resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_Correlations">
+            <summary>
+            Gets the RES_Display_OutputData_Correlations resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_DispersionScore">
+            <summary>
+            Gets the RES_Display_OutputData_DispersionScore resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_EndTime">
+            <summary>
+            Gets the RES_Display_OutputData_EndTime resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_GlobalIntensity">
+            <summary>
+            Gets the RES_Display_OutputData_GlobalIntensity resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_Key">
+            <summary>
+            Gets the RES_Display_OutputData_Key resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_MovingIntensity">
+            <summary>
+            Gets the RES_Display_OutputData_MovingIntensity resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_Polarity">
+            <summary>
+            Gets the RES_Display_OutputData_Polarity resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_StartTime">
+            <summary>
+            Gets the RES_Display_OutputData_StartTime resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.RES_Display_OutputData_WeightedMovingIntensity">
+            <summary>
+            Gets the RES_Display_OutputData_WeightedMovingIntensity resource string.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.ResourceManager">
+            <summary>
+            Gets the resource manager.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.Models.ModelsResources.Culture">
+            <summary>
+            Gets or sets the culture.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.Models.ModelsResources.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.Models.ModelsResources"/> class.
+            </summary>
+        </member>
+    </members>
+</doc>

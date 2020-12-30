@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Primavera.Hydrogen.DesignTime.UnitTesting</id>
+    <version>2.0.5.328</version>
+    <authors>PRIMAVERA Business Software Solutions, S.A.</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Class library that contains types that provide features to develop unit tests for Lithium components and microservices.</description>
+    <tags>PRIMAVERA Elevation Lithium Hydrogen</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Primavera.Hydrogen.Core" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="FluentAssertions" version="5.10.3" exclude="Build,Analyzers" />
+        <dependency id="FluentAssertions.Web" version="1.0.125" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.TestHost" version="3.1.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Console" version="3.1.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="3.1.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.NET.Test.Sdk" version="16.7.1" exclude="Build,Analyzers" />
+        <dependency id="Moq" version="4.15.1" exclude="Build,Analyzers" />
+        <dependency id="xunit" version="2.4.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <contentFiles>
+      <files include="any/netcoreapp3.1/testhost.exe" buildAction="Content" />
+      <files include="any/netcoreapp3.1/testhost.dll" buildAction="Content" />
+      <files include="any/netcoreapp3.1/testhost.exe" buildAction="Content" />
+      <files include="any/netcoreapp3.1/testhost.dll" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+</package>

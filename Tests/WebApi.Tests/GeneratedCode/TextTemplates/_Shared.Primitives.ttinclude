@@ -1,0 +1,36 @@
+﻿<#+
+
+// *** RequiresPhoneNumbersPrimitives
+
+public static bool RequiresPhoneNumbersPrimitives(ServiceModel serviceModel)
+{
+    foreach (ModelType modelType in serviceModel.Models)
+    {
+        if (RequiresPhoneNumbersPrimitives(modelType))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// *** RequiresPhoneNumbersPrimitives
+
+public static bool RequiresPhoneNumbersPrimitives(ModelType modelType)
+{
+    foreach (ModelTypeScalarProperty scalarProperty in modelType.ChildProperties.OfType<ModelTypeScalarProperty>())
+    {
+        if (scalarProperty.Type == ModelTypeScalarPropertyType.PhoneNumber)
+        {
+            if (scalarProperty.ValidationRules != null && scalarProperty.ValidationRules.IsInternationalPhoneNumber)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+#>

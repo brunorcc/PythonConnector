@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore.IdentityServer5</id>
+    <version>2.0.5.328</version>
+    <authors>PRIMAVERA Business Software Solutions, S.A.</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Class library that contains types that provide features, specific to ASP.NET Core and Identity Server 5, to develop integration tests for Lithium components and microservices.</description>
+    <tags>PRIMAVERA Elevation Lithium Hydrogen</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Primavera.Hydrogen.DesignTime.IntegrationTesting.AspNetCore" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="Primavera.Hydrogen.DesignTime.UnitTesting" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="Duende.IdentityServer" version="5.0.0-preview.1.4" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

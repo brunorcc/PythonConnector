@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "mLJoQQeMTm5V2kgJV9Z/Iqv0iZuJvfBmBjIELi7nOj27uVLnpjgzBoPwLzI28bd4dIQHvwJ/WNfiMagmQiYBwQ==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Lithium\\Microservices\\Carbon\\PCS\\development\\pcs\\Design\\Design.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

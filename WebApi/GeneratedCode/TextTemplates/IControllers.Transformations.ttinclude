@@ -1,0 +1,270 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Net"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("Microsoft.AspNetCore.Mvc"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Routing"));
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace + ".WebApi.Controllers");
+
+    // Monitoring controller
+
+    targetModel.Namespace
+        .AddInterface(new InterfaceModel("IMonitoringController")
+        {
+            Modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial,
+            Documentation = new DocumentationModel("Defines the interface of the controller that provides monitoring routes.")
+        })
+            .WithMethod(new MethodModel("ProbeAsync", "Task<IActionResult>")
+            {
+                Documentation = new DocumentationModel("Provides an action that probes the service. This action is used to perform dependencies tests on the service.")
+                {
+                    Returns = "OK."
+                }
+            })
+            .WithMethod(new MethodModel("DiagnosticsAsync", "Task<IActionResult>")
+            {
+                Documentation = new DocumentationModel("Provides an action that diagnoses the service. This action is used to perform functional tests on the service.")
+                {
+                    Returns = "OK."
+                }
+            })
+            .WithMethod(new MethodModel("EndpointsAsync", "Task<IActionResult>")
+            {
+                Documentation = new DocumentationModel("Provides an action that analyzes the endpoints of the service. This action is used to verify the service implementation.")
+                {
+                    Returns = "The list containing the endpoints."
+                }
+            })
+            .WithMethod(new MethodModel("ConfigurationAsync", "Task<IActionResult>")
+            {
+                Documentation = new DocumentationModel("Provides an action that analyzes the configuration of the service. This action is used to verify the service implementation.")
+                {
+                    Returns = "OK.",
+                    Remarks = "If the service uses blob storage, the configuration options will be dumped in a blob container named 'ConfigAnalyzer'. Otherwise, the configuration options will be saved in a file named 'ConfigAnalyzer.json'."
+                }
+            });
+
+    // Webhooks controller
+
+    if (sourceModel.Webhooks.Count > 0)
+    {
+        targetModel
+            .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Webhooks"))
+            .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.AspNetCore.Webhooks"));
+
+        targetModel.Namespace
+            .AddInterface(new InterfaceModel("IWebhooksController")
+            {
+                Modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial,
+                Documentation = new DocumentationModel("Defines the interface of the controller that provides monitoring routes.")
+            })
+                .AddMethod(new MethodModel("CreateSubscriptionAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to create a new webhook subscription.")
+                    {
+                        Returns = "The webhook subscription identifier."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "CreateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to create a new webhook subscription.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("UpdateSubscriptionAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to update a webhook subscription.")
+                    {
+                        Returns = "None."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "UpdateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to update a webhook subscription.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscriptionAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to retrieve a webhook subscription.")
+                    {
+                        Returns = "The webhook subscription."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscriptionAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to delete a webhook subscription.")
+                    {
+                        Returns = "None."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscriptionsAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to retrieve all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "A list containing the webhooks subscriptions."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscriptionsAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to delete all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "None."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("PingSubscriptionAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows pinging a webhook subscription.")
+                    {
+                        Returns = "None."
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetWebhooksMetadataAsync", "Task<IActionResult>")
+                {
+                    Documentation = new DocumentationModel("Provides an action that allows to retrieve metadata about all the webhooks available.")
+                    {
+                        Returns = "A list containing the metadata for all webhooks available."
+                    }
+                })
+                    .ParentModelAs<InterfaceModel>();
+    }
+}
+
+// *** TransformController
+
+public void TransformController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ControllerType sourceModel = sourceElement as ControllerType;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    // Ignore?
+
+    if (sourceModel.Visibility == ControllerTypeVisibility.ClientLibraryOnly)
+    {
+        return;
+    }
+
+    InterfaceModel interfaceModel = targetModel.Namespace
+        .AddInterface(new InterfaceModel("I{0}Controller".Format(sourceModel.Name))
+        {
+            Modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial,
+            Documentation = new DocumentationModel(sourceModel.Summary)
+        });
+
+    foreach (ControllerTypeAction action in sourceModel.ChildActions.OrderBy(n => n.Name2))
+    {
+        this.TransformControllerAction(action, interfaceModel);
+    }
+}
+
+// *** TransformControllerAction
+
+public void TransformControllerAction(ControllerTypeAction action, InterfaceModel interfaceModel)
+{
+    if (action.Visibility == ControllerTypeActionVisibility.ClientLibraryOnly)
+    {
+        return;
+    }
+
+    MethodModel methodModel = interfaceModel
+        .AddMethod(new MethodModel("{0}Async".Format(action.Name2), "Task<IActionResult>")
+        {
+            Documentation = new DocumentationModel(action.Summary)
+            {
+                Remarks = action.Remarks,
+                Returns = action.Returns
+            }
+        });
+
+    if (!action.RouteIgnoreControllerParameters)
+    {
+        foreach (ControllerTypeParameter parameter in action.ParentController.ChildParameters)
+        {
+            this.TransformControllerTypeParameter(parameter, methodModel);
+        }
+    }
+
+    foreach (ControllerTypeActionParameter parameter in action.ChildParameters)
+    {
+        this.TransformControllerTypeActionParameter(parameter, methodModel);
+    }
+}
+
+// *** TransformControllerTypeParameter
+
+public void TransformControllerTypeParameter(ControllerTypeParameter parameter, MethodModel methodModel)
+{
+    methodModel
+        .AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+        {
+            DefaultValue = NormalizeControllerParameterDefaultValue(parameter),
+            Documentation = new DocumentationModel(parameter.Summary)
+        });
+}
+
+// *** TransformControllerTypeActionParameter
+
+public void TransformControllerTypeActionParameter(ControllerTypeActionParameter parameter, MethodModel methodModel)
+{
+    methodModel
+        .AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+        {
+            DefaultValue = NormalizeControllerActionParameterDefaultValue(parameter),
+            Documentation = new DocumentationModel(parameter.Summary)
+        });
+}
+
+#>

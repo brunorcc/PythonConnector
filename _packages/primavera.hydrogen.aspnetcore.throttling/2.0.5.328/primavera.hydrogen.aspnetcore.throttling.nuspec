@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Primavera.Hydrogen.AspNetCore.Throttling</id>
+    <version>2.0.5.328</version>
+    <authors>PRIMAVERA Business Software Solutions, S.A.</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Class library that contains services for implementing throttling in ASP.NET Core applications.</description>
+    <tags>PRIMAVERA Elevation Lithium Hydrogen</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Primavera.Hydrogen.Core" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="Primavera.Hydrogen.IdentityModel" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="AspNetCoreRateLimit" version="3.2.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+</package>

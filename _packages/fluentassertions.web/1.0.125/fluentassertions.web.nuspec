@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>FluentAssertions.Web</id>
+    <version>1.0.125</version>
+    <authors>Adrian Iftode</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/adrianiftode/FluentAssertions.Web</projectUrl>
+    <description>This is a FluentAssertions extension for HttpResponseMessage to help with the Assert part and to extract enough information during the Fail part, so less time in debugging is spent.</description>
+    <tags>fluentassertions httpresponsemessage fluentassertionsweb unit unittest integration integrationtest functionaltest</tags>
+    <repository url="https://github.com/adrianiftode/FluentAssertions.Web" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="FluentAssertions" version="5.9.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,78 @@
+﻿<#+
+
+// *** WriteBuildAuthorityServerIdentityServer4
+
+public void WriteBuildAuthorityServerIdentityServer4(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            IList<IS4.Models.ApiResource> apiResources = new List<IS4.Models.ApiResource>()
+            {
+                new IS4.Models.ApiResource(Scopes.DefaultScope)
+                {
+                    Scopes = new List<IS4.Models.Scope>()
+                    {
+                        new IS4.Models.Scope(Scopes.DefaultScope),
+<#+
+
+    foreach (AuthorizationPolicy authorizationPolicy in serviceModel.AuthorizationPolicies.Where(i => i.Kind == AuthorizationPolicyKind.Scope).OrderBy(i => i.Name))
+    {
+
+#>
+                        new IS4.Models.Scope(Scopes.<#= authorizationPolicy.Name #>),
+<#+
+
+    }
+
+#>
+                    }
+                }
+            };
+
+            this.AddAdditionalApiResources(apiResources);
+
+            IList<IS4.Models.Client> clients = new List<IS4.Models.Client>()
+            {
+                new IS4.Models.Client()
+                {
+                    ClientId = clientId,
+                    ClientSecrets = new List<IS4.Models.Secret>()
+                    {
+                        new IS4.Models.Secret(
+                            ComputeHashString.Sha256(
+                                clientSecret))
+                    },
+                    AllowedGrantTypes = IS4.Models.GrantTypes.ClientCredentials,
+                    AllowedScopes = new List<string>()
+                    {
+                        Scopes.DefaultScope,
+<#+
+
+    foreach (AuthorizationPolicy authorizationPolicy in serviceModel.AuthorizationPolicies.Where(i => i.Kind == AuthorizationPolicyKind.Scope).OrderBy(i => i.Name))
+    {
+
+#>
+                        Scopes.<#= authorizationPolicy.Name #>),
+<#+
+
+    }
+
+#>
+                    }
+                }
+            };
+
+            this.AddAdditionalClients(clients);
+
+            return IdentityServer4TestHostBuilder
+                .Create()
+                .UseApiResources(apiResources)
+                .UseClients(clients)
+                .Build();
+<#+
+
+}
+
+#>

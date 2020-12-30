@@ -1,0 +1,98 @@
+﻿###################################################################################################
+# Lithium Global Editor Configuration
+#
+# Version 0.5, Sep 2020, global editorconfig (issue 43080)
+# Version 0.4, Sep 2020, editorconfig (issue 43080)
+# Version 0.3, Apr 2020, CS1998, CA1062, CA2007, VSTHRD*
+# Version 0.2, Feb 2020, CA1508 severity
+# Version 0.1, Sep 2019
+#
+# This file was imported by the Primavera.Hydrogen.DesignTime.Configuration package.
+# DO NOT EDIT MANUALLY!
+#
+# More info:
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+# https://github.com/dotnet/roslyn/issues/43080
+###################################################################################################
+
+#--------------------------------------------------------------------------------------------------
+# Common settings
+# https://editorconfig.org/#supported-properties
+#--------------------------------------------------------------------------------------------------
+
+# This is the global editorconfig file
+
+is_global = true
+
+#--------------------------------------------------------------------------------------------------
+# Language Conventions
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-language-conventions
+#--------------------------------------------------------------------------------------------------
+
+# Avoid var
+csharp_style_var_for_built_in_types = false:warning
+csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false:warning
+
+#--------------------------------------------------------------------------------------------------
+# Formatting Conventions
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-formatting-conventions
+#--------------------------------------------------------------------------------------------------
+
+#--------------------------------------------------------------------------------------------------
+# Naming Conventions
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-naming-conventions
+#--------------------------------------------------------------------------------------------------
+
+#--------------------------------------------------------------------------------------------------
+# Built-in analyzers
+#--------------------------------------------------------------------------------------------------
+
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = error
+
+#--------------------------------------------------------------------------------------------------
+# Microsoft.CodeAnalysis.FxCopAnalyzers
+# https://github.com/dotnet/roslyn-analyzers/blob/master/docs/Analyzer%20Configuration.md
+#--------------------------------------------------------------------------------------------------
+
+# CA1062: Validate arguments of public methods
+dotnet_code_quality.null_check_validation_methods = NotNull|NotNullOrEmpty|IsUrl|IsUriAbsolute|IsEmail|IsPhoneNumber|Uri|UriAbsolute|Email|PhoneNumber
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1508: Avoid dead conditional code (to avoid false positives)
+dotnet_diagnostic.CA1508.severity = none
+
+# CA1834:Consider using 'StringBuilder.Append(char)' when applicable
+dotnet_diagnostic.CA1834.severity = error
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = error
+
+# CA2016:Forward the 'CancellationToken' parameter to methods that take one
+dotnet_diagnostic.CA2016.severity = error
+
+#--------------------------------------------------------------------------------------------------
+# StyleCop.Analyzers
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md
+#--------------------------------------------------------------------------------------------------
+
+#--------------------------------------------------------------------------------------------------
+# Microsoft.VisualStudio.Threading.Analyzers
+# https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
+# NOTE: This apparently is still only respected in the rule set
+#--------------------------------------------------------------------------------------------------
+
+# VSTHRD002: Avoid problematic synchronous waits
+dotnet_diagnostic.VSTHRD002.severity = none
+
+# VSTHRD100: Avoid async void methods
+dotnet_diagnostic.VSTHRD100.severity = error
+
+# VSTHRD110: Observe result of async calls
+dotnet_diagnostic.VSTHRD110.severity = error
+
+# VSTHRD200: Use "Async" suffix for async methods
+dotnet_diagnostic.VSTHRD200.severity = error

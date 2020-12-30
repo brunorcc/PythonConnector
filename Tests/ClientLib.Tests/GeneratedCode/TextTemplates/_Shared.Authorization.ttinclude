@@ -1,0 +1,128 @@
+﻿<#+
+
+internal static partial class AuthorizationHelper
+{
+    // *** ControllerType.IsAuthorizationOn()
+
+    internal static bool IsAuthorizationOn(ControllerType controller)
+    {
+        if (controller.AuthorizationMode == AuthorizationMode.Off)
+        {
+            return false;
+        }
+
+        if (controller.ServiceModel.AuthorizationMode == AuthorizationMode.Off)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    // *** ControllerTypeAction.IsAuthorizationOn()
+
+    internal static bool IsAuthorizationOn(ControllerTypeAction action)
+    {
+        if (action.AuthorizationMode == AuthorizationMode.Off)
+        {
+            return false;
+        }
+
+        return AuthorizationHelper.IsAuthorizationOn(action.ParentController);
+    }
+
+    // *** ControllerType.GetScope()
+
+    internal static string GetScope(ControllerType controller)
+    {
+        if (AuthorizationHelper.IsAuthorizationOn(controller))
+        {
+            if (controller.AuthorizationPolicy.EqualsNoCase("(default)"))
+            {
+                return controller.ServiceModel.DefaultScope;
+            }
+
+            AuthorizationPolicy policy = controller.ServiceModel.AuthorizationPolicies.FirstOrDefault(i => i.Name.EqualsNoCase(controller.AuthorizationPolicy));
+            if (policy == null)
+            {
+                return "???";
+            }
+
+            return policy.Scope;
+        }
+
+        return string.Empty;
+    }
+
+    // *** ControllerTypeAction.GetScope()
+
+    internal static string GetScope(ControllerTypeAction action)
+    {
+        if (AuthorizationHelper.IsAuthorizationOn(action))
+        {
+            if (action.AuthorizationPolicy.EqualsNoCase("(controller)"))
+            {
+                return AuthorizationHelper.GetScope(action.ParentController);
+            }
+
+            AuthorizationPolicy policy = action.ServiceModel.AuthorizationPolicies.FirstOrDefault(i => i.Name.EqualsNoCase(action.AuthorizationPolicy));
+            if (policy == null)
+            {
+                return "???";
+            }
+
+            return policy.Scope;
+        }
+
+        return string.Empty;
+    }
+
+    // *** ControllerType.GetPolicy()
+
+    internal static string GetPolicy(ControllerType controller)
+    {
+        if (AuthorizationHelper.IsAuthorizationOn(controller))
+        {
+            if (controller.AuthorizationPolicy.EqualsNoCase("(default)"))
+            {
+                return "DefaultScope";
+            }
+
+            AuthorizationPolicy policy = controller.ServiceModel.AuthorizationPolicies.FirstOrDefault(i => i.Name.EqualsNoCase(controller.AuthorizationPolicy));
+            if (policy == null)
+            {
+                return "???";
+            }
+
+            return policy.Name;
+        }
+
+        return string.Empty;
+    }
+
+    // *** ControllerTypeAction.GetPolicy()
+
+    internal static string GetPolicy(ControllerTypeAction action)
+    {
+        if (AuthorizationHelper.IsAuthorizationOn(action))
+        {
+            if (action.AuthorizationPolicy.EqualsNoCase("(controller)"))
+            {
+                return AuthorizationHelper.GetPolicy(action.ParentController);
+            }
+
+            AuthorizationPolicy policy = action.ServiceModel.AuthorizationPolicies.FirstOrDefault(i => i.Name.EqualsNoCase(action.AuthorizationPolicy));
+            if (policy == null)
+            {
+                return "???";
+            }
+
+            return policy.Name;
+        }
+
+        return string.Empty;
+    }
+
+}
+
+#>

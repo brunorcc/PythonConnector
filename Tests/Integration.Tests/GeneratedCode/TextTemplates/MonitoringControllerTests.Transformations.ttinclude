@@ -1,0 +1,149 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.AuthorizationMode == AuthorizationMode.Off)
+    {
+        targetModel.WithComment("This file is empty because the service model authorization model is off.");
+        return;
+    }
+
+    if (!sourceModel.GenerateClientLibrary)
+    {
+        targetModel.WithComment("This file is empty because the service does not generate a client library.");
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Diagnostics.CodeAnalysis"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Net"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("FluentAssertions"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Client"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Routing"))
+        .WithNamespaceImport(new NamespaceImportModel("Xunit"))
+        .WithNamespaceImport(new NamespaceImportModel(sourceModel.Namespace + ".WebApi.Controllers"));
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace + ".Integration.Tests");
+
+    ClassModel testBaseClass = targetModel.Namespace
+        .AddClass(new ClassModel("MonitoringControllerTestsBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Abstract | ClassModifiers.Partial,
+            Documentation = new DocumentationModel("Defines the base class for <see cref=\"MonitoringControllerTests\"/>.")
+        })
+            .WithConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Protected,
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringControllerTestsBase\"/> class.")
+            })
+            .AddMethod(new MethodModel("TestProbeAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Tests the probe endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("TestDiagnosticsAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Tests the diagnostics endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("TestEndpointsAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Tests the endpoints endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("TestConfigurationAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Tests the configuration analyzer endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .ParentModelAs<ClassModel>();
+
+    ClassModel testClass = targetModel.Namespace
+        .AddClass(new ClassModel("MonitoringControllerTests")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Sealed | ClassModifiers.Partial,
+            Inheritance = "MonitoringControllerTestsBase",
+            Documentation = new DocumentationModel("Provides integration tests for <see cref=\"MonitoringController\"/>.")
+            {
+                SeeAlso = new List<string> { "MonitoringControllerTestsBase" }
+            }
+        })
+            .WithConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Public,
+                Inheritance = "base()",
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringControllerTests\"/> class.")
+            })
+            .AddMethod(new MethodModel("MonitoringController_ProbeAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Public,
+                Documentation = new DocumentationModel("Tests the probe endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .WithAttribute(new AttributeModel("Fact"))
+                .WithAttribute(new AttributeModel("SuppressMessage(\"Microsoft.Naming\", \"CA1707:IdentifiersShouldNotContainUnderscores\")"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("MonitoringController_DiagnosticsAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Public,
+                Documentation = new DocumentationModel("Tests the diagnostics endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .WithAttribute(new AttributeModel("Fact"))
+                .WithAttribute(new AttributeModel("SuppressMessage(\"Microsoft.Naming\", \"CA1707:IdentifiersShouldNotContainUnderscores\")"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("MonitoringController_EndpointsAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Public,
+                Documentation = new DocumentationModel("Tests the endpoints endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .WithAttribute(new AttributeModel("Fact"))
+                .WithAttribute(new AttributeModel("SuppressMessage(\"Microsoft.Naming\", \"CA1707:IdentifiersShouldNotContainUnderscores\")"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("MonitoringController_ConfigurationAsync", "Task")
+            {
+                Modifiers = MethodModifiers.Public,
+                Documentation = new DocumentationModel("Tests the configuration analyzer endpoint.")
+                {
+                    Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+                }
+            })
+                .WithAttribute(new AttributeModel("Fact"))
+                .WithAttribute(new AttributeModel("SuppressMessage(\"Microsoft.Naming\", \"CA1707:IdentifiersShouldNotContainUnderscores\")"))
+                .ParentModelAs<ClassModel>();
+}
+
+#>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>libphonenumber-csharp</id>
+    <version>8.12.11</version>
+    <title>libphonenumber-csharp</title>
+    <authors>Patrick Mézard,Tom Clegg,Jarrod Alexander,Google,libphonenumber contributors</authors>
+    <owners>Patrick Mézard,Tom Clegg,Jarrod Alexander,Google,libphonenumber contributors</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/twcclegg/libphonenumber-csharp</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/twcclegg/libphonenumber-csharp/master/icon.png</iconUrl>
+    <description>C# port of Google's common Java, C++ and Javascript library for parsing, formatting, storing and validating international phone numbers. http://code.google.com/p/libphonenumber/</description>
+    <tags>phonenumber phone libphonenumber e164 e.164 international</tags>
+    <repository type="git" url="https://github.com/twcclegg/libphonenumber-csharp" branch="master" commit="$APPVEYOR_REPO_COMMIT" />
+    <dependencies>
+      <group targetFramework=".NETFramework3.5" />
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="System.Collections.Immutable" version="1.7.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETPortable0.0-Profile259">
+        <dependency id="System.Collections.Immutable" version="1.7.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="1.7.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.Collections.Immutable" version="1.7.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

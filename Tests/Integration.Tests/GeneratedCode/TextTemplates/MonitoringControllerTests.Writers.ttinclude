@@ -1,0 +1,191 @@
+﻿<#+
+
+// *** WriteMonitoringProbe
+
+public void WriteMonitoringProbe(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            return this.TestProbeAsync();
+<#+
+
+}
+
+// *** WriteMonitoringDiagnostics
+
+public void WriteMonitoringDiagnostics(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            return this.TestDiagnosticsAsync();
+<#+
+
+}
+
+// *** WriteMonitoringEndpoints
+
+public void WriteMonitoringEndpoints(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            return this.TestEndpointsAsync();
+<#+
+
+}
+
+// *** WriteMonitoringConfiguration
+
+public void WriteMonitoringConfiguration(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            return this.TestConfigurationAsync();
+<#+
+
+}
+
+// *** WriteTestProbeAsync
+
+public void WriteTestProbeAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            using IntegrationTestFixture fixture = new IntegrationTestFixture()
+            {
+                CurrentOperation = "Monitoring.Probe"
+            };
+
+            using <#= serviceModel.Name #>Client serviceClient = await fixture.GetServiceClientAsync()
+                .ConfigureAwait(false);
+
+            ServiceOperationResult<string> result1 = await serviceClient.Monitoring.ProbeAsync().ConfigureAwait(false);
+            result1.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().Be("OK");
+<#+
+
+    if (serviceModel.GenerateSyncActions)
+    {
+
+#>
+
+            ServiceOperationResult<string> result2 = serviceClient.Monitoring.Probe();
+            result2.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result2.Body.Should().Be("OK");
+<#+
+
+    }
+}
+
+// *** WriteTestDiagnosticsAsync
+
+public void WriteTestDiagnosticsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            using IntegrationTestFixture fixture = new IntegrationTestFixture()
+            {
+                CurrentOperation = "Monitoring.Probe"
+            };
+
+            using <#= serviceModel.Name #>Client serviceClient = await fixture.GetServiceClientAsync()
+                .ConfigureAwait(false);
+
+            ServiceOperationResult<string> result1 = await serviceClient.Monitoring.DiagnosticsAsync().ConfigureAwait(false);
+            result1.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().Be("OK");
+<#+
+
+    if (serviceModel.GenerateSyncActions)
+    {
+
+#>
+
+            ServiceOperationResult<string> result2 = serviceClient.Monitoring.Diagnostics();
+            result2.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result2.Body.Should().Be("OK");
+<#+
+
+    }
+}
+
+// *** WriteTestEndpointsAsync
+
+public void WriteTestEndpointsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            using IntegrationTestFixture fixture = new IntegrationTestFixture()
+            {
+                CurrentOperation = "Monitoring.Probe"
+            };
+
+            using <#= serviceModel.Name #>Client serviceClient = await fixture.GetServiceClientAsync()
+                .ConfigureAwait(false);
+
+            ServiceOperationResult<IEnumerable<EndpointInfo>> result1 = await serviceClient.Monitoring.EndpointsAsync().ConfigureAwait(false);
+            result1.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().NotBeEmpty();
+<#+
+
+    if (serviceModel.GenerateSyncActions)
+    {
+
+#>
+
+            ServiceOperationResult<IEnumerable<EndpointInfo>> result2 = serviceClient.Monitoring.Endpoints();
+            result2.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().NotBeEmpty();
+<#+
+
+    }
+}
+
+// *** WriteTestConfigurationAsync
+
+public void WriteTestConfigurationAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            using IntegrationTestFixture fixture = new IntegrationTestFixture()
+            {
+                CurrentOperation = "Monitoring.Probe"
+            };
+
+            using <#= serviceModel.Name #>Client serviceClient = await fixture.GetServiceClientAsync()
+                .ConfigureAwait(false);
+
+            ServiceOperationResult<string> result1 = await serviceClient.Monitoring.ConfigurationAsync().ConfigureAwait(false);
+            result1.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().NotBeEmpty();
+<#+
+
+    if (serviceModel.GenerateSyncActions)
+    {
+
+#>
+
+            ServiceOperationResult<string> result2 = serviceClient.Monitoring.Configuration();
+            result2.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            result1.Body.Should().NotBeEmpty();
+<#+
+
+    }
+}
+
+#>

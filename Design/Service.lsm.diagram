@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<serviceModelDiagram dslVersion="2.0.0.0" Id="9ce92e1c-c224-40a6-b02b-4a5779641ffd" absoluteBounds="0, 0, 11, 8.5" name="Service" configuration="">
+  <serviceModelMoniker name="/PythonConnector" />
+  <nestedChildShapes>
+    <modelTypeShape Id="5f1e7d24-867d-4456-84ff-1d50a5138b95" absoluteBounds="0.5, 2.625, 2, 1.3362939453125002" fillColor="LightSalmon" textColor="Black" outlineColor="LightSalmon">
+      <modelTypeMoniker name="/PythonConnector/InputData" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bff64a11-3235-46b0-aad0-6541fa87e0a5" absoluteBounds="0.515, 3.035, 1.9700000000000002, 0.8262939453125" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </modelTypeShape>
+    <modelTypeShape Id="98e7bbef-7dca-4617-9fa9-f70640c0e749" absoluteBounds="3.75, 2.625, 2, 3.0670068359375" fillColor="LightSalmon" textColor="Black" outlineColor="LightSalmon">
+      <modelTypeMoniker name="/PythonConnector/OutputData" />
+      <nestedChildShapes>
+        <elementListCompartment Id="95f8da1b-f78e-414c-b1de-10aeb950d34a" absoluteBounds="3.765, 3.035, 1.9700000000000002, 2.5570068359375" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </modelTypeShape>
+    <controllerTypeShape Id="ab71c376-47d9-476c-b194-d2fa5ef89f0c" absoluteBounds="0.5, 0.5, 2, 0.75938964843750023" fillColor="Plum" textColor="Black" outlineColor="Plum">
+      <controllerTypeMoniker name="/PythonConnector/PythonConnector" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e56d82af-34fd-4d67-8582-8c07b10cb3b3" absoluteBounds="0.515, 0.91000000000000014, 1.9700000000000002, 0.2493896484375" name="Parameters" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </controllerTypeShape>
+    <controllerTypeActionShape Id="e87fa752-dc5b-49a2-936c-99708457123d" absoluteBounds="3.375, 0.5, 2, 0.95169108072916675" fillColor="PaleGreen" textColor="Black" outlineColor="PaleGreen">
+      <controllerTypeActionMoniker name="/PythonConnector/PythonConnector#GetResult" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a8f985fd-3fb5-499d-8593-dcd4d4396f21" absoluteBounds="3.39, 0.91000000000000014, 1.9700000000000002, 0.44169108072916663" name="Parameters" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </controllerTypeActionShape>
+    <controllerActionConnector Id="ad632967-7062-43ea-a41c-de67605a8200" edgePoints="[(2.5 : 0.87969482421875); (3.375 : 0.87969482421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <controllerHasChildActionsMoniker Id="a104aa8e-7690-48b6-afc9-a546914ed154" />
+      <nodes>
+        <controllerTypeShapeMoniker Id="ab71c376-47d9-476c-b194-d2fa5ef89f0c" />
+        <controllerTypeActionShapeMoniker Id="e87fa752-dc5b-49a2-936c-99708457123d" />
+      </nodes>
+    </controllerActionConnector>
+  </nestedChildShapes>
+</serviceModelDiagram>

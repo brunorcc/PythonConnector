@@ -1,0 +1,124 @@
+﻿<#+
+
+// *** WriteBaseFixtureClassConstructor
+
+public void WriteBaseFixtureClassConstructor(ModelWriter modelWriter, ConstructorBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            this.Initialize();
+<#+
+
+}
+
+// *** WriteInitialize
+
+public void WriteInitialize(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            // Authority server
+
+            this.AuthorityServer = this.BuildAuthorityServer(
+                this.ClientId,
+                this.ClientSecret);
+
+            // Application
+
+            this.Application = this.BuildApplication();
+<#+
+
+}
+
+// *** WriteDisposeProtected
+
+public void WriteDisposeProtected(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            // Already disposed?
+
+            if (this.disposed)
+            {
+                return;
+            }
+
+            // Called from Dispose()?
+
+            if (disposing)
+            {
+                if (this.Application != null)
+                {
+                    this.Application.Dispose();
+                    this.Application = null;
+                }
+
+                if (this.AuthorityServer != null)
+                {
+                    this.AuthorityServer.Dispose();
+                    this.AuthorityServer = null;
+                }
+            }
+
+            // Set flag
+
+            this.disposed = true;
+<#+
+
+}
+
+// *** WriteGetServiceClientAsync
+
+public void WriteGetServiceClientAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            // Need to disable caching for every service client
+            // to prevent unit tests from reusing tokens since the
+            // encryption fails (each test server uses different data
+            // protection keys)
+
+            string accessToken = await ClientCredentials
+                .ForAllScopes(
+                    this.AuthorityServer.Server.BaseAddress,
+                    this.fieldClientId,
+                    this.fieldClientSecret,
+                    this.AuthorityServer.CreateHandler())
+                .WithTokenCache(false)
+                .RetrieveAccessTokenAsync()
+                .ConfigureAwait(false);
+
+            return new <#= serviceModel.Name #>Client(
+                this.Application.Server.BaseAddress,
+                new AccessTokenCredentials(accessToken),
+                this.Application.CreateHandler());
+<#+
+
+}
+
+// *** WriteBuildApplication
+
+public void WriteBuildApplication(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            return WebApplicationTestHostBuilder
+                .Create()
+                .ConfigureAuthorityServer(this.AuthorityServer)
+                .UseStartup<MockStartup>()
+                .Build();
+<#+
+
+}
+
+#>

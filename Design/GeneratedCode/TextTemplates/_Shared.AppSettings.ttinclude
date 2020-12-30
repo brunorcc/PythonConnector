@@ -1,0 +1,220 @@
+﻿<#+
+
+// *** GetAppSettings
+
+public IList<AppSettingSpec> GetAppSettings(ServiceModel model)
+{
+    // Standard settings
+
+    IList<AppSettingSpec> standard = new List<AppSettingSpec>();
+
+    // ... Logging
+
+    standard.Add(new AppSettingSpec("Logging:IncludeScopes", "Indicates whether log scopes are enabled.", false, new AppSettingValueSpec(false)));
+    
+    standard.Add(new AppSettingSpec("Logging:Debug:LogLevel:Default", "The default log level for the Debug provider.", false, new AppSettingValueSpec("Information", "Warning")));
+    
+    standard.Add(new AppSettingSpec("Logging:Console:LogLevel:Default", "The default log level for the Console provider.", false, new AppSettingValueSpec("Information", "Warning")));
+    
+    standard.Add(new AppSettingSpec("Logging:ApplicationInsights:LogLevel:Default", "The default log level for the Application Insights provider.", false, new AppSettingValueSpec("Information", "Warning")));
+
+    // ... Host configuration
+
+    standard.Add(
+        new AppSettingSpec(
+            "HostConfiguration:IdentityServerBaseUri", 
+            "The Identity Server base address.", 
+            true, 
+            true, 
+            new AppSettingValueSpec(
+                "https://stg-identity.primaverabss.com", 
+                "https://stg-identity.primaverabss.com", 
+                "https://identity.primaverabss.com")));
+
+    foreach (ServiceDependency serviceDependency in model.ServiceDependencies.Where(s => !string.IsNullOrEmpty(s.Service)).OrderBy(s => s.Service))
+    {
+        ServiceInfo serviceInfo = ReferenceDataHelper.GetServiceByName(serviceDependency.Service);
+        if (serviceInfo != null)
+        {
+            string dv = serviceInfo.Deployments == null ? null : serviceInfo.Deployments.ContainsKey("DV") ? serviceInfo.Deployments["DV"].Address : null;
+            string st = serviceInfo.Deployments == null ? null : serviceInfo.Deployments.ContainsKey("ST") ? serviceInfo.Deployments["ST"].Address : null;
+            string pd = serviceInfo.Deployments == null ? null : serviceInfo.Deployments.ContainsKey("PD") ? serviceInfo.Deployments["PD"].Address : null;
+
+            AppSettingValueSpec value = new AppSettingValueSpec(dv, st, pd);
+
+            standard.Add(
+                new AppSettingSpec(
+                    "HostConfiguration:{0}ServiceBaseUri".Format(serviceInfo.Name), 
+                    "The {0} base address.".Format(serviceInfo.DisplayName), 
+                    true, 
+                    true,
+                    value));
+        }
+    }
+
+    // ... Telemetry
+
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:Enabled", "Indicates whether telemetry on Azure Application Insights is enabled.", false, new AppSettingValueSpec(true)));
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:IgnoreErrors", "Indicates whether errors while recording telemetry should be ignored.", false, new AppSettingValueSpec(true)));
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:DeveloperMode", "Indicates whether the developer mode is enabled. When enabled, telemetry records are dispatched faster.", false, new AppSettingValueSpec(true, false)));
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:EnableAdaptiveSampling", "Indicates whether adaptive sampling is enabled.", false, new AppSettingValueSpec(false)));
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:DefaultProperties:Lithium-Service", "The default property that identifies the Lithium service.", false, new AppSettingValueSpec(model.Name)));
+    standard.Add(new AppSettingSpec("AzureInsightsTelemetryOptions:InstrumentationKey", "The Azure Application Insights instrumentation key.", true));
+    
+    standard.Add(
+        new AppSettingSpec(
+            "AzureInsightsTelemetryOptions:RequestTracking:TrackRequestHeadersPaths:0", 
+            "The request paths (glob patterns allowed) for which all request headers should be tracked.", 
+            false, 
+            new AppSettingValueSpec("/api/*")));
+    
+    standard.Add(
+        new AppSettingSpec(
+            "AzureInsightsTelemetryOptions:RequestTracking:TrackResponseHeadersPaths:0", 
+            "The request paths (glob patterns allowed) for which all response headers should be tracked.", 
+            false, 
+            new AppSettingValueSpec("/api/*")));
+    
+    standard.Add(
+        new AppSettingSpec(
+            "AzureInsightsTelemetryOptions:RequestTracking:IgnoreAvailabilityTestsRequests",
+            "Indicates whether requests to availability endpoints should be ignored in telemetry.", 
+            false, 
+            new AppSettingValueSpec(true)));
+
+    standard.Add(
+        new AppSettingSpec(
+            "AzureInsightsTelemetryOptions:RequestTracking:IgnoreNotFoundPaths:0", 
+            "The request paths (glob patterns allowed) that should be ignored (not collected) if they return HttpStatusCode.NotFound.", 
+            false, 
+            new AppSettingValueSpec("/api/*")));
+
+    int i = 0;
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.TableStorage))
+    {
+        standard.Add(
+            new AppSettingSpec(
+                $"AzureInsightsTelemetryOptions:DependencyTracking:IgnoreNotFoundCommands:{i}", 
+                "The commands (glob patterns allowed) that should be ignored (not collected) if they return HttpStatusCode.NotFound.", 
+                false, 
+                new AppSettingValueSpec("*.table.core.windows.net*")));
+
+        i++;
+    }
+    
+    // ... Secrets storage
+
+    standard.Add(new AppSettingSpec("AzureKeyVaultSecretsStorageOptions:AutomaticAuthenticationEnabled", "Indicates whether automatic authentication with Azure KeyVault is enabled.", false, new AppSettingValueSpec(false, true, true)));
+    standard.Add(new AppSettingSpec("AzureKeyVaultSecretsStorageOptions:ClientId", "The client identifier that should be used to authenticate with Azure KeyVault (when automatic authentication is disabled or not configured.", false));
+    standard.Add(new AppSettingSpec("AzureKeyVaultSecretsStorageOptions:ClientSecret", "The client secret that should be used to authenticate with Azure KeyVault (when automatic authentication is disabled or not configured.", false));
+    standard.Add(new AppSettingSpec("AzureKeyVaultSecretsStorageOptions:ConfigurationStorageBaseUrl", "The base address of the Azure KeyVault that should be used for configuration.", false));
+
+    // ... Blob storage
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.BlobStorage))
+    {
+        standard.Add(
+            new AppSettingSpec("AzureBlobStorageOptions:ConnectionString", "The connection string used by the Blob Storage service.", true)
+            {
+                Secret = true
+            });
+    }
+
+    // ... Table storage
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.TableStorage))
+    {
+        standard.Add(
+            new AppSettingSpec("AzureTableStorageOptions:ConnectionString", "The connection string used by the Table Storage service.", true)
+            {
+                Secret = true
+            });
+    }
+
+    // ... Search
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.Search))
+    {
+        standard.Add(new AppSettingSpec("AzureSearchOptions:ServiceName", "The name of the Azure Search Service used by the Search service.", true));
+        standard.Add(new AppSettingSpec("AzureSearchOptions:AdminApiKey", "The API key of the Azure Search Service used by the Search service.", true));
+    }
+
+    // ... Distributed cache
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.DistributedCache))
+    {
+        standard.Add(
+            new AppSettingSpec("RedisCacheOptions:ConnectionString", "The connection string for the REDIS cache instance.", true)
+            {
+                Secret = true
+            });
+        
+        standard.Add(new AppSettingSpec("RedisCacheOptions:InstanceName", "The name of the REDIS cache instance that should be used.", false));
+        standard.Add(new AppSettingSpec("ResilientCacheOptions:MaxRetries", "The maximum number of times that operations on the REDIS cache should be retried.", false, new AppSettingValueSpec(2)));
+        standard.Add(new AppSettingSpec("ResilientCacheOptions:MinRetryBackoff", "The minimum back-off time between retries on the REDIS cache.", false, new AppSettingValueSpec("00:00:01")));
+    }
+
+    // ... Data protection
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.DataProtection))
+    {
+        string applicationName = "lithium-{0}".Format(model.Name.Transform().ToLowerCase());
+
+        standard.Add(new AppSettingSpec("AzureBlobStorageDataProtectionOptions:ApplicationName", "The application name that should be used by the Data Protection service.", false, new AppSettingValueSpec(applicationName)));
+        standard.Add(new AppSettingSpec("AzureBlobStorageDataProtectionOptions:UseBlobStorage", "Indicates whether Blob Storage should be used to store the Data Protection keys.", false, new AppSettingValueSpec(false, true)));
+    }
+
+    // ... Event bus
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.EventBus))
+    {
+        standard.Add(
+            new AppSettingSpec("AzureEventBusOptions:ConnectionString", "The connection string for the Service Bus instance", true)
+            {
+                Secret = true
+            });
+        
+        standard.Add(new AppSettingSpec("AzureEventBusOptions:EventHandlerOptions:AutoComplete", "Indicates whether events should be automatically completed after returning from user callback", false, new AppSettingValueSpec(true)));
+        standard.Add(new AppSettingSpec("AzureEventBusOptions:EventHandlerOptions:MaxConcurrentCalls", "The maximum concurrent calls to the callback event processor.", false, new AppSettingValueSpec(5)));
+    }
+
+    // ... Multi-model database
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.MultiModelDatabase))
+    {
+        standard.Add(
+            new AppSettingSpec("CosmosDbMultiModelDatabaseOptions:ConnectionString", "The connection string used by the CosmosDB service.", true)
+            {
+                Secret = true
+            });
+    }
+
+    // ... Throttling
+
+    if (model.Dependencies.Any(d => d.Kind == DependencyKind.Throttling))
+    {
+        standard.Add(
+            new AppSettingSpec("ThrottlingOptions:Enabled", "A value indicating whether throttling is enabled.", false, new AppSettingValueSpec(true)));
+        standard.Add(
+            new AppSettingSpec("ThrottlingOptions:ClientRateLimiting:Enabled", "A value indicating whether throttling based on client rate limiting is enabled.", false, new AppSettingValueSpec(true)));
+        standard.Add(
+            new AppSettingSpec("ThrottlingOptions:Caching:ClientRulePrefix", "The prefix that should be used for the client rules cache keys.", false, new AppSettingValueSpec("{0}_CRP".Format(model.GUID))));
+        standard.Add(
+            new AppSettingSpec("ThrottlingOptions:Caching:RateLimitCounterPrefix", "The prefix that should be used for the rate limit counters cache keys.", false, new AppSettingValueSpec("{0}_RLCP".Format(model.GUID))));
+    }
+
+    // ... Webhooks
+
+    if (model.Webhooks.Any())
+    {
+        standard.Add(new AppSettingSpec("WebhooksOptions:ApplicationName", "The name of the application that provides the webhooks.", false));
+        standard.Add(new AppSettingSpec("WebhooksOptions:EventsSupported", "The webhooks events supported by the application.", false));
+        standard.Add(new AppSettingSpec("WebhooksOptions:CallbackTimeout", "The timeout when invoking webhooks callback actions.", false));
+        standard.Add(new AppSettingSpec("WebhooksOptions:CallbackMaxRetries", "The maximum number of times the callback action will be invoked before the webhook subscription is inactivated.", false));
+    }
+
+    return standard;
+}
+
+#>

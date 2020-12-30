@@ -1,0 +1,843 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.Primitives.PhoneNumbers</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute">
+            <summary>
+            Specifies that a string data field value must represent a phone number in international
+            format (as parsed by <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber"/>).
+            </summary>
+            <remarks>
+            This attribute is also capable of validating items in enumerables (whose items are strings)
+            or in dictionaries (whose keys and values are strings).
+            The number of items validated, in that case, are limited to <see cref="P:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.MaxItemsValidated"/>.
+            </remarks>
+            <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.ReceiveSms">
+            <summary>
+            Gets a value indicating whether the phone number should be able to receive SMS.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.MaxItemsValidated">
+            <summary>
+            Gets or sets the maximum number of items that will be validated when the field value is an enumerable or a dictionary.
+            The default value is 50.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" /> class.
+            </summary>
+            <param name="receiveSms">A value indicating whether the phone number should be able to receive SMS.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.FormatErrorMessage(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber">
+            <summary>
+            Describes a international phone number.
+            It also provides static methods to parse, format, validate international phone numbers.
+            </summary>
+            <example>
+            A new instance can be initialized as follows:
+            <code>
+            <![CDATA[
+            PhoneNumber phoneNumber = PhoneNumber.Parse("+351961717319");
+            PhoneNumber phoneNumber = PhoneNumber.Parse("961717319", "PT");
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.RawNumber">
+            <summary>
+            Gets the raw number, as used to initialize this instance.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.CountryCode">
+            <summary>
+            Gets the country code.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.NationalNumber">
+            <summary>
+            Gets the national number.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Extension">
+            <summary>
+            Gets the extension.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.NumberKind">
+            <summary>
+            Gets the kind of the phone number.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.MayReceiveSms">
+            <summary>
+            Gets a value indicating whether the phone is capable of receiving SMS.
+            </summary>
+            <remarks>
+            Note that this may not be accurate because it is determined from the number kind.
+            A given number kind may be indicative that the number is capable of receiving SMS
+            and not the concrete number, for any specific reason (like contracts with the operator).
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Parse(System.String)">
+            <summary>
+            Parses a phone number, expected to be in international format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be parsed.</param>
+            <returns>
+            The parsed phone number.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException">
+            Raised when the provided string is not a phone number.
+            </exception>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Parse(System.String,System.String)">
+            <summary>
+            Parses a phone number, expected to be for the specified country/region.
+            </summary>
+            <param name="phoneNumber">The phone number that should be parsed.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <returns>
+            The parsed phone number.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException">
+            Raised when the provided string is not a phone number.
+            </exception>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.TryParse(System.String,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber@)">
+            <summary>
+            Tries to parse a phone number, expected to be in international format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be parsed.</param>
+            <param name="result">The parsed phone number. Null if it could not be parsed.</param>
+            <returns>
+            A value indicating whether the phone number could be parsed.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.TryParse(System.String,System.String,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber@)">
+            <summary>
+            Tries to parse a phone number, expected to be for the specified country/region.
+            </summary>
+            <param name="phoneNumber">The phone number that should be parsed.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <param name="result">The parsed phone number. Null if it could not be parsed.</param>
+            <returns>
+            A value indicating whether the phone number could be parsed.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Format(System.String)">
+            <summary>
+            Formats a phone number, expected to be in international format, according to the E.164 format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be formatted.</param>
+            <returns>
+            The formatted phone number.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Format(System.String,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat)">
+            <summary>
+            Formats a phone number, expected to be in international format, according to the specified format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be formatted.</param>
+            <param name="format">The format that should be used.</param>
+            <returns>
+            The formatted phone number.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Format(System.String,System.String)">
+            <summary>
+            Formats a phone number, expected to be for the specified country/region, according to the E.164 format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be formatted.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <returns>
+            The formatted phone number.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Format(System.String,System.String,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat)">
+            <summary>
+            Formats a phone number, expected to be for the specified country/region, according to the specified format.
+            </summary>
+            <param name="phoneNumber">The phone number that should be formatted.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <param name="format">The format that should be used.</param>
+            <returns>
+            The formatted phone number.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Validate(System.String)">
+            <summary>
+            Determines whether a phone number, expected to be in international format, is valid.
+            </summary>
+            <param name="phoneNumber">The phone number that should be validated.</param>
+            <returns>
+            <c>True</c> if the specified phone number is valid; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException">
+            Raised when the provided string is not a phone number.
+            </exception>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Validate(System.String,System.String)">
+            <summary>
+            Determines whether a phone number, expected to be for the specified country/region, is valid.
+            </summary>
+            <param name="phoneNumber">The phone number that should be validated.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <returns>
+            <c>True</c> if the specified phone number is valid; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException">
+            Raised when the provided string is not a phone number.
+            </exception>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.TryValidate(System.String)">
+            <summary>
+            Tries to determine whether a phone number, expected to be in international format, is valid.
+            No exception is raised if the phone number can not be parsed.
+            </summary>
+            <param name="phoneNumber">The phone number that should be validated.</param>
+            <returns>
+            <c>True</c> if the specified phone number is valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.TryValidate(System.String,System.String)">
+            <summary>
+            Tries to determine whether a phone number, expected to be for the specified country/region, is valid.
+            No exception is raised if the phone number can not be parsed.
+            </summary>
+            <param name="phoneNumber">The phone number that should be validated.</param>
+            <param name="region">
+            The country/region (ISO-3166-alpha2) that the number is expected to be from.
+            Used only if the number is not in international format.
+            </param>
+            <returns>
+            <c>True</c> if the specified phone number is valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.IsValid">
+            <summary>
+            Determines whether the phone number is valid in the respective region.
+            </summary>
+            <returns>
+            A value indicating whether the phone number is valid in the respective region.
+            </returns>
+            <remarks>
+            A value may be formally correct for a given region yet no be valid if, for example,
+            the carrier indicator is invalid. This method verifies that (for regions supported).
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.ToString">
+            <summary>
+            Converts to string.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.ToString(Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat)">
+            <summary>
+            Converts to string using the specified format.
+            </summary>
+            <param name="format">The format that should be used.</param>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.op_Equality(Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber)">
+            <summary>
+            Implements the operator ==.
+            </summary>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber.op_Inequality(Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber,Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber)">
+            <summary>
+            Implements the operator !=.
+            </summary>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat">
+            <summary>
+            Defines the format of a phone number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat.E164">
+            <summary>
+            The number is formatted according to E.164.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat.International">
+            <summary>
+            The number is formatted in international format.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat.National">
+            <summary>
+            The number is formatted in national format.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat.RFC3966">
+            <summary>
+            The number is formatted according to RFC 3966.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormatExtensions">
+            <summary>
+            Defines extension methods for the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat"/> type.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormatExtensions.ToPhoneNumberFormat(Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat)">
+            <summary>
+            Converts to specified <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat"/> value to the corresponding
+            <see cref="T:PhoneNumbers.PhoneNumberFormat"/> value.
+            </summary>
+            <param name="format">The <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberFormat"/> value.</param>
+            <returns>
+            The <see cref="T:PhoneNumbers.PhoneNumberFormat"/> value.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind">
+            <summary>
+            Defines the kind of a <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber"/>.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.FixedLine">
+            <summary>
+            The phone number is a fixed line number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.Mobile">
+            <summary>
+            The phone number is a mobile number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.FixedLineOrMobile">
+            <summary>
+            The phone number is a fixed line or mobile number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.TollFree">
+            <summary>
+            The phone number is a toll free number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.PremiumRate">
+            <summary>
+            The phone number is a premium rate number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.SharedCost">
+            <summary>
+            The phone number is a shared cost number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.Voip">
+            <summary>
+            The phone number is a VOIP number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.PersonalNumber">
+            <summary>
+            The phone number is a personal number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.Pager">
+            <summary>
+            The phone number is a pager number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.Uan">
+            <summary>
+            The phone number is a UAN number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.VoiceMail">
+            <summary>
+            The phone number is a voice mail number.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind.Unknown">
+            <summary>
+            The phone number is unknown.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKindExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind"/>
+            type.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKindExtensions.MayReceiveSms(Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind)">
+            <summary>
+            Determines whether the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind"/> indicates
+            that the corresponding phone number may be able to receive SMS, although
+            not guaranteed.
+            </summary>
+            <param name="kind">The kind.</param>
+            <returns>
+            A value indicating whether the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind"/> indicates
+            that the corresponding phone number may be able to receive SMS, although
+            not guaranteed.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException">
+            <summary>
+            Represents errors raised by <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumber"/> when parsing numbers. 
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException" /> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException" /> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException" /> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException.Create(PhoneNumbers.NumberParseException)">
+            <summary>
+            Creates an instance of <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException"/> derived from the
+            specified original exception.
+            </summary>
+            <param name="original">The original exception.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberParsingException"/> instance.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberTypeExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:PhoneNumbers.PhoneNumberType"/> type.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberTypeExtensions.ToPhoneNumberKind(PhoneNumbers.PhoneNumberType)">
+            <summary>
+            Returns the <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind"/> corresponding to the <see cref="T:PhoneNumbers.PhoneNumberType"/>
+            instance.
+            </summary>
+            <param name="type">The <see cref="T:PhoneNumbers.PhoneNumberType"/> instance.</param>
+            <returns>
+            The <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.PhoneNumberKind"/> instance.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_ArgItemsNotValidInternationalPhoneNumber">
+            <summary>
+              Looks up a localized string similar to Argument items should be valid international phone numbers..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_ArgNotValidInternationalPhoneNumber">
+            <summary>
+              Looks up a localized string similar to Argument is not a valid international phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_PhoneNumbers_InvalidCountryCode">
+            <summary>
+              Looks up a localized string similar to Could not parse the phone number. No valid country code was specified..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_PhoneNumbers_NotPhoneNumber">
+            <summary>
+              Looks up a localized string similar to Could not parse the phone number. The value is not a phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_PhoneNumbers_TooLong">
+            <summary>
+              Looks up a localized string similar to Could not parse the phone number. The value is too long to be a valid phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_PhoneNumbers_TooShort">
+            <summary>
+              Looks up a localized string similar to Could not parse the phone number. The value is too short to be a valid phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_Exception_PhoneNumbers_Unknown">
+            <summary>
+              Looks up a localized string similar to Could not parse the phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_InternationalPhoneNumberAttribute_ValidationError">
+            <summary>
+              Looks up a localized string similar to The {0} field is not a valid international phone number..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_InternationalPhoneNumberAttribute_ValidationError_CannotReceiveSms">
+            <summary>
+              Looks up a localized string similar to The {0} field is a phone number that is not capable of receiving SMS..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_InternationalPhoneNumberAttribute_ValidationError_CannotReceiveSms_Index">
+            <summary>
+              Looks up a localized string similar to The {0} field (index {1}) is a phone number that is not capable of receiving SMS..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.Primitives.PhoneNumbers.Properties.Resources.RES_InternationalPhoneNumberAttribute_ValidationError_Index">
+            <summary>
+              Looks up a localized string similar to The {0} field (index {1}) is not a valid international phone number..
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.Regions">
+            <summary>
+            Provides methods to manipulate phone number regions.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.Regions.GetRegionsSupported">
+            <summary>
+            Gets a list containing all the regions supported.
+            </summary>
+            <returns>
+            A list containing the codes of the regions supported.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.Regions.GetRegionsAndCountryCodesSupported">
+            <summary>
+            Gets a dictionary containing all the regions supported and the corresponding country codes.
+            </summary>
+            <returns>
+            A dictionary containing all the regions supported and the corresponding country codes.
+            The key is the region and the value is the corresponding country code.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.Regions.GetCountryCodeForRegion(System.String)">
+            <summary>
+            Gets the country code for the specified region.
+            </summary>
+            <param name="region">The region (e.g.: PT).</param>
+            <returns>
+            The country code for the specified region. Null if the region is invalid or not supported.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.Regions.GetRegionForCountryCode(System.String)">
+            <summary>
+            Gets the region for the specified country code.
+            </summary>
+            <param name="countryCode">The country code (e.g.: +351).</param>
+            <returns>
+            The region for the specified country code. Null if the country code is invalid or not supported.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Primavera.Hydrogen.SmartGuard"/> type
+            via <see cref="T:Primavera.Hydrogen.SmartGuardExtension"/>.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.IsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            Throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.IsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            Throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.IsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.Boolean)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether <paramref name="required"/> is required to
+            be not null.
+            </param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.IsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.Boolean,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether <paramref name="required"/> is required to
+            be not null.
+            </param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.InternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            Throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.InternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            Throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.InternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.Boolean)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether <paramref name="required"/> is required to
+            be not null.
+            </param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.InternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.String}},System.String,System.Boolean,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> is a valid international phone number.
+            Throws <see cref="T:System.ArgumentException" /> is it is not a valid international phone number.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if it is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether <paramref name="required"/> is required to
+            be not null.
+            </param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{System.String}}},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            Throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{System.String}}},System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            Throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{System.String}}},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether the items in <paramref name="value"/> are
+            required to be not null.
+            </param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{System.String}}},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether the items in <paramref name="value"/> are
+            required to be not null.
+            </param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IDictionary{System.String,System.String}}},System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            Throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IDictionary{System.String,System.String}}},System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            Throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IDictionary{System.String,System.String}}},System.Collections.Generic.IDictionary{System.String,System.String},System.Boolean)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether the items in <paramref name="value"/> are
+            required to be not null.
+            </param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.Primitives.PhoneNumbers.SmartGuardExtensionExtensions.ItemsInternationalPhoneNumber(Primavera.Hydrogen.SmartGuardExtension,System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IDictionary{System.String,System.String}}},System.Collections.Generic.IDictionary{System.String,System.String},System.Boolean,System.String)">
+            <summary>
+            Ensures the given <paramref name="value" /> items are valid international phone numbers.
+            Throws <see cref="T:System.ArgumentException" /> is any item is not.
+            If <paramref name="required"/> is true, throws <see cref="T:System.ArgumentNullException" /> if any item is null.
+            </summary>
+            <param name="extension">The extension.</param>
+            <param name="reference">The expression used to extract the name of the parameter.</param>
+            <param name="value">The value to check.</param>
+            <param name="required">A value indicating whether the items in <paramref name="value"/> are
+            required to be not null.
+            </param>
+            <param name="message">The error message.</param>
+            <remarks>
+            Validation of the phone number is performed with <see cref="T:Primavera.Hydrogen.Primitives.PhoneNumbers.InternationalPhoneNumberAttribute" />.
+            </remarks>
+        </member>
+    </members>
+</doc>

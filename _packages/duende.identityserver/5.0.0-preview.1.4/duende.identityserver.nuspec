@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Duende.IdentityServer</id>
+    <version>5.0.0-preview.1.4</version>
+    <authors>Duende Software</authors>
+    <owners>Duende Software</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/DuendeSoftware/IdentityServer</projectUrl>
+    <description>OpenID Connect and OAuth 2.0 Framework for ASP.NET Core</description>
+    <releaseNotes>https://github.com/DuendeSoftware/IdentityServer/releases</releaseNotes>
+    <copyright>Duende Software</copyright>
+    <tags>OAuth 2.0 OpenID Connect Security Identity IdentityServer ASP.NET Core</tags>
+    <repository type="git" url="https://github.com/DuendeSoftware/IdentityServer" commit="ae7cd23c1092387f06d2343e1186a89240be3224" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Duende.IdentityServer.Storage" version="5.0.0-preview.1.4" exclude="Build,Analyzers" />
+        <dependency id="IdentityModel" version="4.4.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Authentication.OpenIdConnect" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.IdentityModel.Protocols.OpenIdConnect" version="5.6.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework5.0">
+        <dependency id="Duende.IdentityServer.Storage" version="5.0.0-preview.1.4" exclude="Build,Analyzers" />
+        <dependency id="IdentityModel" version="4.4.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Authentication.OpenIdConnect" version="5.0.0-rc.2.20475.17" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.IdentityModel.Protocols.OpenIdConnect" version="6.8.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <icon>icon.png</icon>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+      <group targetFramework="net5.0">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+</package>

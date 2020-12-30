@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNetCore.Mvc.Versioning</id>
+    <version>4.2.0</version>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/Microsoft/aspnet-api-versioning/wiki</projectUrl>
+    <iconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</iconUrl>
+    <description>A service API versioning library for Microsoft ASP.NET Core.</description>
+    <releaseNotes>https://github.com/Microsoft/aspnet-api-versioning/releases/tag/v4.2.0</releaseNotes>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Microsoft AspNet AspNetCore Versioning</tags>
+    <repository type="git" url="https://github.com/Microsoft/aspnet-api-versioning" commit="beed143f753dc0e5d4b6a1abcd27ff9873e9d0c6" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+</package>

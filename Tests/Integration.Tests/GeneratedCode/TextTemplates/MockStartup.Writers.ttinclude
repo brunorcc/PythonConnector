@@ -1,0 +1,270 @@
+﻿<#+
+
+// *** WriteAddConfiguration
+
+public void WriteAddConfiguration(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            SmartGuard.NotNull(() => services, services);
+
+            base.AddConfiguration(services);
+
+            services.Configure<HostConfiguration>(this.ConfigureHostConfiguration);
+<#+
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.DistributedCache))
+    {
+
+#>
+
+            services.Configure<RedisCacheOptions>(this.ConfigureRedisCacheOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.SecretsStorage))
+    {
+
+#>
+
+            services.Configure<AzureKeyVaultSecretsStorageOptions>(this.ConfigureAzureKeyVaultSecretsStorageOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.TableStorage))
+    {
+
+#>
+
+            services.Configure<AzureTableStorageOptions>(this.ConfigureAzureTableStorageOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.BlobStorage))
+    {
+
+#>
+
+            services.Configure<AzureBlobStorageOptions>(this.ConfigureAzureBlobStorageOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.DataProtection))
+    {
+
+#>
+
+            services.Configure<AzureBlobStorageDataProtectionOptions>(this.ConfigureAzureBlobStorageDataProtectionOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.EventBus))
+    {
+
+#>
+
+            services.Configure<AzureEventBusOptions>(this.ConfigureAzureEventBusOptions);
+<#+
+
+    }
+
+    if (serviceModel.Dependencies.Any(d => d.Kind == DependencyKind.MultiModelDatabase))
+    {
+
+#>
+
+            services.Configure<CosmosDbMultiModelDatabaseOptions>(this.ConfigureCosmosDbMultiModelDatabaseOptions);
+<#+
+
+    }
+
+#>
+
+            IServiceProvider provider = services.BuildServiceProvider();
+            return provider.GetRequiredService<HostConfiguration>();
+<#+
+
+}
+
+// *** WriteAddBackgroundServices
+
+public void WriteAddBackgroundServices(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Disable any background service
+<#+
+
+}
+
+// *** WriteConfigureHostConfiguration
+
+public void WriteConfigureHostConfiguration(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            configuration.IdentityServerBaseUri = "http://localhost";
+<#+
+
+}
+
+// *** WriteConfigureRedisCacheOptions
+
+public void WriteConfigureRedisCacheOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            options.ConnectionString = ExternalTestResources.AzureResources.RedisCacheConnectionString;
+<#+
+
+}
+
+// *** WriteConfigureAzureKeyVaultSecretsStorageOptions
+
+public void WriteConfigureAzureKeyVaultSecretsStorageOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            options.AutomaticAuthenticationEnabled = false;
+            options.ClientId = ExternalTestResources.AzureResources.KeyVaultClientApplicationId;
+            options.ClientSecret = ExternalTestResources.AzureResources.KeyVaultClientApplicationKey;
+<#+
+
+}
+
+// *** WriteConfigureAzureTableStorageOptions
+
+public void WriteConfigureAzureTableStorageOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            options.ConnectionString = ExternalTestResources.AzureResources.ClassicTableStorageConnectionString;
+<#+
+
+}
+
+// *** WriteConfigureAzureBlobStorageOptions
+
+public void WriteConfigureAzureBlobStorageOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            options.ConnectionString = ExternalTestResources.AzureResources.ClassicTableStorageConnectionString;
+<#+
+
+}
+
+// *** WriteConfigureAzureEventBusOptions
+
+public void WriteConfigureAzureEventBusOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            options.ConnectionString = ExternalTestResources.AzureResources.ServiceBusConnectionString;
+            options.EventHandler = new EventHandlerOptions(false, 100);
+<#+
+
+}
+
+// *** WriteConfigureAzureBlobStorageDataProtectionOptions
+
+public void WriteConfigureAzureBlobStorageDataProtectionOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+    string applicationName = "lithium-{0}".Format(serviceModel.Name.Transform().ToLowerCase());
+
+#>
+            options.ApplicationName = "<#= applicationName #>";
+            options.UseBlobStorage = false;
+<#+
+
+}
+
+// *** WriteConfigureCosmosDbMultiModelDatabaseOptions
+
+public void WriteConfigureCosmosDbMultiModelDatabaseOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            options.ConnectionString = ExternalTestResources.AzureResources.CosmosDbConnectionString;
+<#+
+
+}
+
+// *** WriteConfigureMvc
+
+public void WriteConfigureMvc(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            SmartGuard.NotNull(() => services, services);
+            SmartGuard.NotNull(() => builder, builder);
+
+            base.ConfigureMvc(services, builder, hostConfiguration);
+
+            builder
+                .AddApplicationPart(typeof(MonitoringController).Assembly);
+<#+
+
+}
+
+// *** WriteOnJwtBearerAuthenticationFailed
+
+public void WriteOnJwtBearerAuthenticationFailed(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            await base.OnJwtBearerAuthenticationFailed(context).ConfigureAwait(false);
+
+            System.Diagnostics.Debugger.Break();
+<#+
+
+}
+
+// *** WriteConfigureJwtBearerOptions
+
+public void WriteConfigureJwtBearerOptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+    CSharpFileModel rootModel = model.RootModelAs<CSharpFileModel>();
+    ServiceModel serviceModel = rootModel.SourceModel as ServiceModel;
+
+#>
+            // Set the back-channel handler
+
+            IServiceProvider provider = services.BuildServiceProvider();
+            AuthorityServerHostAccessor accessor = provider.GetRequiredService<AuthorityServerHostAccessor>();
+            HttpMessageHandler handler = accessor.AuthorityServerHost?.CreateHandler();
+            if (handler != null)
+            {
+                options.BackchannelHttpHandler = handler;
+            }
+<#+
+
+}
+
+#>

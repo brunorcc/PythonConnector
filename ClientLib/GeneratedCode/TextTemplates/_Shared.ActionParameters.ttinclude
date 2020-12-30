@@ -1,0 +1,43 @@
+﻿<#+
+
+// *** NormalizeControllerParameterDefaultValue
+
+public string NormalizeControllerParameterDefaultValue(ControllerTypeParameter parameter)
+{
+    string defaultValue = parameter.DefaultValue;
+    if (!string.IsNullOrEmpty(defaultValue))
+    {
+        ControllerTypeScalarParameter scalarParameter = parameter as ControllerTypeScalarParameter;
+        if (scalarParameter != null && scalarParameter.Type == ControllerTypeScalarParameterType.String)
+        {
+            if (!defaultValue.StartsWith("\""))
+            {
+                defaultValue = "\"" + defaultValue + "\"";
+            }
+        }
+    }
+
+    return defaultValue;
+}
+
+// *** NormalizeControllerActionParameterDefaultValue
+
+public string NormalizeControllerActionParameterDefaultValue(ControllerTypeActionParameter parameter)
+{
+    string defaultValue = parameter.DefaultValue;
+    if (!string.IsNullOrEmpty(defaultValue))
+    {
+        ControllerTypeActionScalarParameter scalarParameter = parameter as ControllerTypeActionScalarParameter;
+        if (scalarParameter != null && scalarParameter.Type == ControllerTypeActionScalarParameterType.String)
+        {
+            if (!defaultValue.StartsWith("\""))
+            {
+                defaultValue = "\"" + defaultValue + "\"";
+            }
+        }
+    }
+
+    return defaultValue;
+}
+
+#>

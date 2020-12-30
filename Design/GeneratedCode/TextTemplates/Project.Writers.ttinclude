@@ -1,0 +1,35 @@
+﻿<#+
+
+public void WriteProperties(ModelWriter modelWriter, ServiceModel model)
+{
+    if (model == null)
+    {
+        return;
+    }
+    
+#>
+<Project>
+
+    <!-- NuGet properties -->
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <!-- Content -->
+
+    <ItemGroup>
+        <Content Include="GeneratedCode\Service.gen.lsspec.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="CustomCode\Service.lsspec.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>
+<#+
+
+}
+
+#>

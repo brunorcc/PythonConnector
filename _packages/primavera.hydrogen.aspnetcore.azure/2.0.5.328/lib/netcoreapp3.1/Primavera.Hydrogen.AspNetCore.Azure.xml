@@ -1,0 +1,356 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Hydrogen.AspNetCore.Azure</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationApplicationBuilderExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> type 
+            that sets up the Azure AppConfiguration refresh.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationApplicationBuilderExtensions.UseAzureAppConfigurationMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Configures a middleware for Azure App Configuration to use activity-based refresh
+            for data configured in the provider.
+            </summary>
+            <param name="builder">The application builder.</param>
+            <returns>
+            The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder" /> instance.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> type 
+            that reads configuration values from Azure AppConfiguration.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.AddAzureConfiguration(Microsoft.Extensions.Configuration.IConfigurationBuilder)">
+            <summary>
+            Adds key-value data from an Azure AppConfiguration store to a configuration. 
+            Service configuration values are read from the environment values.        
+            </summary>
+            <param name="configurationBuilder">The configuration builder.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder" /> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.AddAzureConfiguration(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String)">
+            <summary>
+            Adds key-value data from an Azure AppConfiguration store to a configuration. 
+            Service configuration values are read from the environment values.
+            </summary>
+            <param name="configurationBuilder">The configuration builder.</param>
+            <param name="appConfigurationName">The application configuration name key.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder" /> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.AddAzureConfiguration(Microsoft.Extensions.Configuration.IConfigurationBuilder,Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions)">
+            <summary>
+            Adds key-value data from an Azure AppConfiguration store to a configuration.
+            </summary>
+            <param name="configurationBuilder">The configuration builder.</param>
+            <param name="options">The Azure AppConfiguration service options.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder" /> instance.
+            </returns>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.AppConfigurationConnect(Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions,Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)">
+            <summary>
+            Handles Azure App Configuration connection settings.
+            </summary>
+            <param name="options">The options.</param>
+            <param name="o">The o.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.GetEnvironmentVariableValue(System.String)">
+            <summary>
+            Gets the environment variable.
+            </summary>
+            <param name="variable">The variable.</param>
+            <returns>
+            The environment variable value.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceCollectionExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> type 
+            that reads configuration values from Azure AppConfiguration.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceCollectionExtensions.AddAzureAppConfigurationServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds Azure App Configuration services to service collection.
+            </summary>
+            <param name="services">The services.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> instance.
+            </returns>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants">
+            <summary>
+             Defines constants used by the Azure AppConfiguration service.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.DefaultCacheExpirationInSeconds">
+            <summary>
+            The default cache expiration in seconds.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.AzureAppConfigurationProviderName">
+            <summary>
+            The azure application configuration provider name.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.ConfigurationEnvironments">
+            <summary>
+            Defines constants for the Azure AppConfiguration environments.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.ConfigurationEnvironments.PrimaryAppConfigurationService">
+            <summary>
+            The key for the primary Azure AppConfiguration service.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.ConfigurationEnvironments.PrimaryAppConfigurationServiceFailover">
+            <summary>
+            The key for the primary Azure AppConfiguration service fail-over.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.ConfigurationEnvironments.SecondaryAppConfigurationService">
+            <summary>
+            The key for the secondary Azure AppConfiguration service.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.ConfigurationEnvironments.SecondaryAppConfigurationServiceFailover">
+            <summary>
+            The key for the secondary Azure AppConfiguration service fail-over.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.Validation">
+            <summary>
+            Defines constants used in validation.
+            </summary>
+        </member>
+        <member name="F:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceConstants.Validation.AppConfigurationNameRegularExpression">
+            <summary>
+            The Azure AppConfiguration name regular expression.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException">
+            <summary>
+            Represents errors that can occur with the configuration of the Azure AppConfiguration Service.
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceException"/> class.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified.</param>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions">
+            <summary>
+            Defines the configuration options used to configure the azure app configuration services by the
+            <see cref="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationConfigurationBuilderExtensions.AddAzureConfiguration(Microsoft.Extensions.Configuration.IConfigurationBuilder)"/>
+            extension methods.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.AppConfigurationName">
+            <summary>
+            Gets or sets the name of the Azure AppConfiguration service.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.HasAzureEnvCrendentials">
+            <summary>
+            Gets or sets a value indicating whether azure env crendentials have been set.
+            </summary>
+            <value>
+              <c>true</c> if azure env crendentials have been set; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.ConnectionString">
+            <summary>
+            Gets or sets the connection string.
+            used to authenticate with Azure AppConfiguration.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.Endpoint">
+            <summary>
+            Gets or sets the endpoint for the azure app configuration. 
+            If the endpoint is set, the Azure ManagedIdentityCredential will be used. This only works when deployed on an azure app service.        
+            </summary>
+            <value>
+            The endpoint for the azure app configuration.
+            </value>
+            <remarks>
+            This only works when deployed on an azure app service.
+            Do not use when in development.
+            </remarks>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.KeyFilter">
+            <summary>
+            Gets or sets the key filter to apply when querying Azure AppConfiguration for key-values.
+            The characters asterisk (*), comma (,) and backslash (\) are reserved and must
+            be escaped using a backslash (\). Built-in key filter options: Microsoft.Extensions.Configuration.AzureAppConfiguration.KeyFilter.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.LabelFilter">
+            <summary>
+            Gets or sets the label filter to apply when querying Azure AppConfiguration for key-values.
+            By default the null label will be used. Built-in label filter options: Microsoft.Extensions.Configuration.AzureAppConfiguration.LabelFilter
+            The characters asterisk (*) and comma (,) are not supported. Backslash (\) character
+            is reserved and must be escaped using another backslash (\).
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.TrimPrefix">
+            <summary>
+            Gets or sets the trim prefix.
+            Trims the provided prefix from the keys of all key-values retrieved from Azure.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.CacheExpirationTime">
+            <summary>
+            Gets or sets the cache expiration time.
+            Minimum time that must elapse before the cache is expired. Default is 30 seconds.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.SentinelKey">
+            <summary>
+            Gets or sets the sentinel key.
+            This key indicates that all configuration values should be refreshed after this key is updated.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions"/> class.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.Configuration.AzureAppConfigurationServiceOptions.Validate">
+            <summary>
+            Validates the configuration options.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions">
+            <summary>
+            Defines the configuration options used to configure the data protection services by the
+            <see cref="M:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureDataProtectionServiceCollectionExtensions.AddDataProtectionWithBlobStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/>
+            extension methods.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions.UseBlobStorage">
+            <summary>
+            Gets or sets a value indicating whether the blob storage should be used.
+            The default value is true.
+            This setting allows, for example, to disable persisting the data protection keys in the blob
+            storage in development environments.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions.ApplicationName">
+            <summary>
+            Gets or sets the name of the application.
+            This should be a unique name for the application on the servers where it will run, and should conform
+            to Azure Blob Storage naming rules because it will be used as the name of the blob that will store
+            the data protection keys.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions"/> class.
+            </summary>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureDataProtectionServiceCollectionExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> type that allow
+            configuring data protection services.
+            </summary>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureDataProtectionServiceCollectionExtensions.AddDataProtectionWithBlobStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds data protection services to the specified service collection, persisting the data protection
+            keys on Azure Blob Storage.
+            </summary>
+            <param name="services">The service collection.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.
+            </returns>
+            <remarks>
+            Data protection keys will be stored in a blob on Azure Blob Storage (the blob name is specified by the
+            application name in <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions"/>) so they can be shared between
+            different Web servers.
+            The <see cref="T:Primavera.Hydrogen.Storage.Blobs.IBlobStorageService"/> should be configured previously for Azure Blob Storage.
+            </remarks>
+        </member>
+        <member name="M:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureDataProtectionServiceCollectionExtensions.AddDataProtectionWithBlobStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions})">
+            <summary>
+            Adds data protection services to the specified service collection, persisting the data protection
+            keys on Azure Blob Storage.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="configureDelegate">The configuration delegate.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instance.
+            </returns>
+            <remarks>
+            Data protection keys will be stored in a blob on Azure Blob Storage (the blob name is specified by the
+            application name in <see cref="T:Primavera.Hydrogen.AspNetCore.Azure.DataProtection.AzureBlobStorageDataProtectionOptions"/>) so they can be shared between
+            different Web servers.
+            The <see cref="T:Primavera.Hydrogen.Storage.Blobs.IBlobStorageService"/> should be configured previously for Azure Blob Storage.
+            </remarks>
+        </member>
+        <member name="T:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.RES_Exception_AzureAppConfigurationServiceOptions_AppConfigurationName_Required">
+            <summary>
+              Looks up a localized string similar to Invalid configuration options. The Azure AppConfiguration name is required..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.RES_Exception_AzureAppConfigurationServiceOptions_CacheExpirationTime_Invalid">
+            <summary>
+              Looks up a localized string similar to Invalid configuration options. The cache expiration time must be greater than 0..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.RES_Exception_AzureAppConfigurationServiceOptions_ConnectionString_Required">
+            <summary>
+              Looks up a localized string similar to Invalid configuration options. Either a connection string or an app configuration endpoint is required..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.RES_Exception_DataProtection_ApplicationNameRequired">
+            <summary>
+              Looks up a localized string similar to The data protection application name is required. Make sure that the application name is defined in the application settings..
+            </summary>
+        </member>
+        <member name="P:Primavera.Hydrogen.AspNetCore.Azure.Properties.Resources.RES_Exception_DataProtection_BlobStorageNotConfiguredForAzure">
+            <summary>
+              Looks up a localized string similar to Could not initialize data protection on blob storage. The blob storage service is not configured correctly to use Azure Blob Storage..
+            </summary>
+        </member>
+    </members>
+</doc>

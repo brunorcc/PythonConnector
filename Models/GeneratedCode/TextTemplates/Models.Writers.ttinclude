@@ -1,0 +1,162 @@
+﻿<#+
+
+// *** WriteBaseConstructor
+
+public void WriteBaseConstructor(ModelWriter modelWriter, ConstructorBodyModel model)
+{
+    ConstructorModel parentConstructor = model.ParentModelAs<ConstructorModel>();
+    ModelType sourceModel = parentConstructor.GetFacet<ModelType>("ModelType");
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    // Initialize list properties
+
+    IEnumerable<ModelTypeProperty> listProperties = sourceModel.ChildProperties.Where(p => p.Cardinality == ModelTypePropertyCardinality.List && !p.ReadOnlyModifier).OrderBy(p => p.Name);
+
+    if (listProperties.Count() > 0)
+    {
+
+#>
+            // Initialize list properties
+
+<#+
+
+        foreach (ModelTypeProperty property in listProperties)
+        {
+
+#>
+            this.<#= property.Name #> = new List<<#= property.ToCSharpType() #>>();
+
+<#+
+
+        }
+    }
+
+    // Initialize dictionary properties
+
+    IEnumerable<ModelTypeProperty> dictionaryProperties = sourceModel.ChildProperties.Where(p => p.Cardinality == ModelTypePropertyCardinality.Dictionary && !p.ReadOnlyModifier).OrderBy(p => p.Name);
+
+    if (dictionaryProperties.Count() > 0)
+    {
+
+#>
+            // Initialize dictionary properties
+
+<#+
+
+        foreach (ModelTypeProperty property in dictionaryProperties)
+        {
+
+#>
+            this.<#= property.Name #> = new Dictionary<string, <#= property.ToCSharpType() #>>(StringComparer.OrdinalIgnoreCase);
+
+<#+
+
+        }
+    }
+
+#>
+            // Initialize default values
+
+            this.SetDefaultValues();
+<#+
+
+}
+
+
+// *** WriteSetDefaultValues
+
+public void WriteSetDefaultValues(ModelWriter modelWriter, MethodBodyModel model)
+{
+    MethodModel parentMethod = model.ParentModelAs<MethodModel>();
+    ModelType sourceModel = parentMethod.GetFacet<ModelType>("ModelType");
+
+    bool addSpace = false;
+
+    if (sourceModel != null && sourceModel.BaseModel != null)
+    {
+        addSpace = true;
+
+#>
+            // Default behavior
+
+            base.SetDefaultValues();
+<#+
+
+    }
+
+    bool first = true;
+
+    foreach (ModelTypeProperty property in sourceModel.ChildProperties.OrderBy(p => p.Name))
+    {
+        if (!string.IsNullOrEmpty(property.DefaultValue))
+        {
+            if (first)
+            {
+                first = false;
+
+                if (addSpace)
+                {
+                    modelWriter.AppendLine();
+                }
+
+#>
+            // Default values
+
+<#+
+
+            }
+
+            if (property is ModelTypeEnumProperty)
+            {
+
+#>
+            this.<#= property.Name #> = Models.<#= property.DefaultValue #>;
+<#+
+
+            }
+            else
+            {
+
+#>
+            this.<#= property.Name #> = <#= property.DefaultValue #>;
+<#+
+
+            }
+        }
+    }
+}
+
+// *** WriteGetAccessor
+
+public void WriteGetAccessor(ModelWriter modelWriter, PropertyGetAccessorModel model)
+{
+    PropertyModel property = model.ParentModelAs<PropertyModel>();
+
+#>
+            <#= model.Modifiers.ToCSharp() #>get
+            {
+                return this.Get<#= property.Name #>Value();
+            }
+<#+
+
+}
+
+// *** WriteSetAccessor
+
+public void WriteSetAccessor(ModelWriter modelWriter, PropertySetAccessorModel model)
+{
+    PropertyModel property = model.ParentModelAs<PropertyModel>();
+
+#>
+            <#= model.Modifiers.ToCSharp() #>set
+            {
+                this.Set<#= property.Name #>Value(value);
+            }
+<#+
+
+}
+
+#>

@@ -1,0 +1,28 @@
+﻿<Project>
+
+    <!-- Assembly name and namespace -->
+
+    <PropertyGroup>
+        <RootNamespace>Primavera.Lithium.PythonConnector.Integration.Tests</RootNamespace>
+        <AssemblyName>Primavera.Lithium.PythonConnector.Integration.Tests</AssemblyName>
+    </PropertyGroup>
+
+    <!-- Output path and XML documentation file -->
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- NuGet properties -->
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,153 @@
+﻿<#+
+
+// *** TransformWebhooks
+
+public void TransformWebhooks(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (!sourceModel.Webhooks.Any())
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Webhooks"));
+
+    ClassModel baseClassModel = targetModel.Namespace.Classes[0];
+
+    baseClassModel
+        .WithField(new FieldModel("fieldLastClientId", "string"))
+        .WithField(new FieldModel("fieldLastSubscriptionId", "string"))
+        .WithField(new FieldModel("fieldLastCallbackUrl", "Uri"))
+        .WithField(new FieldModel("fieldLastSecret", "string", "\"one-complex-secret\""))
+        .WithField(new FieldModel("fieldLastEventName", "string"));
+
+    baseClassModel
+        .WithMethod(new MethodModel("ShowWebhooksMenuAsync", "Task<bool>")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Shows the webhooks menu.")
+            {
+                Returns = "A value indicating whether the user chose to quit the application."
+            }
+        })
+        .WithMethod(new MethodModel("CreateWebhookSubscriptionAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Creates a new webhook subscription.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("UpdateWebhookSubscriptionAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Updates an existing webhook subscription.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("DeleteWebhookSubscriptionAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Deletes an existing webhook subscription.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("GetWebhookSubscriptionAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Retrieves an existing webhook subscription.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("DeleteWebhookSubscriptionsAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Deletes all the webhook subscriptions for a client application.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("GetWebhookSubscriptionsAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Retrieves all the webhook subscriptions for a client application.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("PingWebhookSubscriptionAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Pings a webhook subscription.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .WithMethod(new MethodModel("GetWebhooksMetadataAsync", "Task")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel("Gets metadata about all the webhooks available.")
+            {
+                Returns = "The <see cref=\"Task\"/> that represents the asynchronous operation."
+            }
+        })
+        .AddMethod(new MethodModel("WriteWebhookSubscription")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Writes the specified webhook subscription to the console.")
+        })
+            .WithParameter(new MethodParameterModel("spacing", "string")
+            {
+                Documentation = new DocumentationModel("The spacing.")
+            })
+            .WithParameter(new MethodParameterModel("subscription", "WebhookSubscription")
+            {
+                Documentation = new DocumentationModel("The webhook subscription.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("WriteWebhookSubscriptions")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Writes the specified webhook subscriptions to the console.")
+        })
+            .WithParameter(new MethodParameterModel("subscriptions", "IEnumerable<WebhookSubscription>")
+            {
+                Documentation = new DocumentationModel("The webhook subscriptions.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("WriteWebhookMetadata")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Writes the specified webhook metadata to the console.")
+        })
+            .WithParameter(new MethodParameterModel("spacing", "string")
+            {
+                Documentation = new DocumentationModel("The spacing.")
+            })
+            .WithParameter(new MethodParameterModel("metadata", "WebhookMetadata")
+            {
+                Documentation = new DocumentationModel("The webhook metadata.")
+            })
+            .ParentModelAs<ClassModel>()
+        .AddMethod(new MethodModel("WriteWebhookMetadatas")
+        {
+            Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel("Writes the specified webhook metadata to the console.")
+        })
+            .WithParameter(new MethodParameterModel("metadata", "IEnumerable<WebhookMetadata>")
+            {
+                Documentation = new DocumentationModel("The webhooks metadata.")
+            })
+            .ParentModelAs<ClassModel>();
+}
+
+#>

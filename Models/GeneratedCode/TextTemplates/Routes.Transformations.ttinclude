@@ -1,0 +1,132 @@
+﻿<#+
+
+internal class RoutesTransformation : ServiceModelTransformation<CSharpFileModel>
+{
+    // *** Overrides
+
+    public override bool CanTransform(DomainModelElement sourceElement, CSharpFileModel targetModel)
+    {
+        return sourceElement is ControllerType;
+    }
+
+    public override void Transform(DomainModelElement sourceElement, CSharpFileModel targetModel)
+    {
+        if (targetModel == null)
+        {
+            return;
+        }
+
+        if (sourceElement is ControllerType controllerType)
+        {
+            bool generate = true;
+
+            if (!controllerType.ServiceModel.GenerateWebApi)
+            {
+                generate = false;
+            }
+            else if (controllerType.Visibility == ControllerTypeVisibility.ClientLibraryOnly && !controllerType.GenerateClientLibraryImplementation)
+            {
+                generate = false;
+            }
+
+            if (!generate)
+            {
+                return;
+            }
+
+            ClassModel parentClassModel = targetModel.Namespace.Classes.FirstOrDefault(c => c.Name.EqualsNoCase("Routes"));
+
+            ClassModel classModel = parentClassModel.AddClass(new ClassModel(controllerType.Name)
+            {
+                Modifiers = ClassModifiers.Public | ClassModifiers.Static | ClassModifiers.Partial,
+                Documentation = new DocumentationModel(
+                    "Defines constants that specify the routes used by the {0} actions.".Format(controllerType.DisplayName.Transform().ToLowerCase()))
+            });
+
+            if (controllerType.ChildActions.Any(
+                a => a.ChildParameters.Any(
+                    p =>
+                    {
+                        if (p is ControllerTypeActionScalarParameter scalarParameter)
+                        {
+                            return scalarParameter.Binding == ControllerTypeActionScalarParameterBinding.FromQuery;
+                        }
+                        else if (p is ControllerTypeActionEnumParameter enumParameter)
+                        {
+                            return enumParameter.Binding == ControllerTypeActionEnumParameterBinding.FromQuery;
+                        }
+
+                        return false;
+                    })))
+            {
+                ClassModel qsClassModel = classModel.AddClass(new ClassModel("WithQueryString")
+                {
+                    Modifiers = ClassModifiers.Public | ClassModifiers.Static | ClassModifiers.Partial,
+                    Documentation = new DocumentationModel(
+                        "Defines constants that specify the routes used by the {0} actions, including the query string parameters.".Format(controllerType.DisplayName.Transform().ToLowerCase()))
+                });
+
+                foreach (ControllerTypeAction controllerAction in controllerType.ChildActions
+                    .Where(i => i.ChildParameters.Any(
+                        p =>
+                        {
+                            if (p is ControllerTypeActionScalarParameter scalarParameter)
+                            {
+                                return scalarParameter.Binding == ControllerTypeActionScalarParameterBinding.FromQuery;
+                            }
+                            else if (p is ControllerTypeActionEnumParameter enumParameter)
+                            {
+                                return enumParameter.Binding == ControllerTypeActionEnumParameterBinding.FromQuery;
+                            }
+
+                            return false;
+                        }))
+                    .OrderBy(i => i.Name2))
+                {
+                    string route = new ActionRouteBuilder(controllerAction)
+                        .Build(true, false);
+
+                    qsClassModel.WithConstant(new ConstantModel(controllerAction.Name2, "string", "\"{0}\"".Format(route))
+                    {
+                        Modifiers = ConstantModifiers.Public,
+                        Documentation = new DocumentationModel("Defines the route for the following action: {0}.".Format(controllerAction.DisplayName))
+                    });
+                }
+            }
+
+            foreach (ControllerTypeAction controllerAction in controllerType.ChildActions
+                .Where(
+                    n => 
+                    {
+                        if (n.ParentController.Visibility == ControllerTypeVisibility.ClientLibraryOnly)
+                        {
+                            if (!n.ParentController.GenerateClientLibraryImplementation)
+                            {
+                                return false;
+                            }
+
+                            return n.GenerateClientLibraryImplementation;
+                        }
+                        else if (n.Visibility == ControllerTypeActionVisibility.ClientLibraryOnly)
+                        {
+                            return n.GenerateClientLibraryImplementation;
+                        }
+                    
+                        return true;
+                    })
+                .OrderBy(n => n.Name2))
+            {
+                string route = new ActionRouteBuilder(controllerAction)
+                    .Build();
+
+                classModel.WithConstant(new ConstantModel(controllerAction.Name2, "string", "\"{0}\"".Format(route))
+                {
+                    Modifiers = ConstantModifiers.Public,
+                    Documentation = new DocumentationModel("Defines the route for the following action: {0}.".Format(controllerAction.DisplayName))
+                });
+            }
+        }
+    }
+}
+
+#>

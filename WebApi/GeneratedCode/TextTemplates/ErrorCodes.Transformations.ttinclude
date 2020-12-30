@@ -1,0 +1,961 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"));
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace + ".WebApi.Controllers");
+
+    targetModel.Namespace
+        .AddClass(new ClassModel("ErrorCodes")
+        {
+            Modifiers = ClassModifiers.Internal | ClassModifiers.Partial | ClassModifiers.Static,
+            Documentation = new DocumentationModel("Provides the error codes that can be returned by the Web API.")
+        })
+            .WithConstant(new ConstantModel("RequestArgsInvalid", "string", "\"RequestArgsInvalid\"")
+            {
+                Modifiers = ConstantModifiers.Internal,
+                Documentation = new DocumentationModel("The request arguments are invalid.")
+            });
+}
+
+// *** TransformController
+
+public void TransformController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ControllerType sourceModel = sourceElement as ControllerType;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.Visibility == ControllerTypeVisibility.ClientLibraryOnly)
+    {
+        return;
+    }
+
+    ClassModel classModel = targetModel.Namespace.Classes[0];
+
+    foreach (ControllerTypeParameter parameter in sourceModel.ChildParameters.OrderBy(m => m.Name))
+    {
+        this.AddErrorCodes(parameter, classModel);
+    }
+
+    foreach (ControllerTypeAction action in sourceModel.ChildActions
+        .Where(m => m.Visibility != ControllerTypeActionVisibility.ClientLibraryOnly)
+        .OrderBy(m => m.Name2))
+    {
+        this.AddErrorCodes(action, classModel);
+    }
+}
+
+// *** AddErrorCodes (ControllerTypeAction)
+
+public void AddErrorCodes(ControllerTypeAction action, ClassModel classModel)
+{
+    foreach (ControllerTypeActionParameter parameter in action.ChildParameters.OrderBy(m => m.Name))
+    {
+        this.AddErrorCodes(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodes (ControllerTypeParameter)
+
+public void AddErrorCodes(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    this.AddErrorCodes(parameter as ControllerTypeScalarParameter, classModel);
+}
+
+// *** AddErrorCodes (ControllerTypeActionParameter)
+
+public void AddErrorCodes(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    this.AddErrorCodes(parameter as ControllerTypeActionScalarParameter, classModel);
+    this.AddErrorCodes(parameter as ControllerTypeActionEnumParameter, classModel);
+    this.AddErrorCodes(parameter as ControllerTypeActionModelParameter, classModel);
+}
+
+// *** AddErrorCodes (ControllerTypeScalarParameter)
+
+public void AddErrorCodes(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter == null)
+    {
+        return;
+    }
+
+    this.AddErrorCodesBoolean(parameter, classModel);
+    this.AddErrorCodesByteArray(parameter, classModel);
+    this.AddErrorCodesDateTime(parameter, classModel);
+    this.AddErrorCodesEmail(parameter, classModel);
+    this.AddErrorCodesPassword(parameter, classModel);
+    this.AddErrorCodesString(parameter, classModel);
+    this.AddErrorCodesUrl(parameter, classModel);
+    this.AddErrorCodesPhoneNumber(parameter, classModel);
+    this.AddErrorCodesGuid(parameter, classModel);
+
+    this.AddErrorCodesNumber(parameter, classModel);
+}
+
+// *** AddErrorCodes (ControllerTypeActionScalarParameter)
+
+public void AddErrorCodes(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter == null)
+    {
+        return;
+    }
+
+    this.AddErrorCodesBoolean(parameter, classModel);
+    this.AddErrorCodesByteArray(parameter, classModel);
+    this.AddErrorCodesDateTime(parameter, classModel);
+    this.AddErrorCodesEmail(parameter, classModel);
+    this.AddErrorCodesPassword(parameter, classModel);
+    this.AddErrorCodesString(parameter, classModel);
+    this.AddErrorCodesUrl(parameter, classModel);
+    this.AddErrorCodesPhoneNumber(parameter, classModel);
+    this.AddErrorCodesGuid(parameter, classModel);
+
+    this.AddErrorCodesNumber(parameter, classModel);
+}
+
+// *** AddErrorCodesBoolean
+
+private void AddErrorCodesBoolean(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.Boolean)
+    {
+        return;
+    }
+}
+
+// *** AddErrorCodesBoolean
+
+private void AddErrorCodesBoolean(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.Boolean)
+    {
+        return;
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesByteArray
+
+private void AddErrorCodesByteArray(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.ByteArray)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesByteArray
+
+private void AddErrorCodesByteArray(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.ByteArray)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesDateTime
+
+private void AddErrorCodesDateTime(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.DateTime)
+    {
+        return;
+    }
+}
+
+// *** AddErrorCodesDateTime
+
+private void AddErrorCodesDateTime(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.DateTime)
+    {
+        return;
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesNumber
+
+private void AddErrorCodesNumber(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    switch (parameter.Type)
+    {
+        case ControllerTypeScalarParameterType.Decimal:
+        case ControllerTypeScalarParameterType.Double:
+        case ControllerTypeScalarParameterType.Long:
+        case ControllerTypeScalarParameterType.Integer:
+            break;
+        default:
+            return;
+    }
+
+    if (parameter.ValidationRules.LessThan != null)
+    {
+        this.AddErrorCodeLessThan(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.GreaterThan != null)
+    {
+        this.AddErrorCodeGreaterThan(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesNumber
+
+private void AddErrorCodesNumber(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    switch (parameter.Type)
+    {
+        case ControllerTypeActionScalarParameterType.Decimal:
+        case ControllerTypeActionScalarParameterType.Double:
+        case ControllerTypeActionScalarParameterType.Long:
+        case ControllerTypeActionScalarParameterType.Integer:
+            break;
+        default:
+            return;
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.LessThan != null)
+    {
+        this.AddErrorCodeLessThan(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.GreaterThan != null)
+    {
+        this.AddErrorCodeGreaterThan(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesEmail
+
+private void AddErrorCodesEmail(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.Email)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+
+    this.AddErrorCodeNotEmail(parameter, classModel);
+}
+
+// *** AddErrorCodesEmail
+
+private void AddErrorCodesEmail(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.Email)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+
+    this.AddErrorCodeNotEmail(parameter, classModel);
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesGuid
+
+private void AddErrorCodesGuid(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.Guid)
+    {
+        return;
+    }
+}
+
+// *** AddErrorCodesGuid
+
+private void AddErrorCodesGuid(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.Guid)
+    {
+        return;
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesPassword
+
+private void AddErrorCodesPassword(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.Password)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesPassword
+
+private void AddErrorCodesPassword(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.Password)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesString
+
+private void AddErrorCodesString(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.String)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesString
+
+private void AddErrorCodesString(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.String)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.MinLength != null)
+    {
+        this.AddErrorCodeMinLength(parameter, classModel);
+    }
+    
+    if (parameter.ValidationRules.MaxLength != null)
+    {
+        this.AddErrorCodeMaxLength(parameter, classModel);
+    }
+    
+    if (!string.IsNullOrEmpty(parameter.ValidationRules.RegularExpression))
+    {
+        this.AddErrorCodeRegularExpression(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesUrl
+
+private void AddErrorCodesUrl(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.Url)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.IsAbsoluteUri)
+    {
+        this.AddErrorCodeNotAbsoluteUri(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesUrl
+
+private void AddErrorCodesUrl(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.Url)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.ValidationRules.IsAbsoluteUri)
+    {
+        this.AddErrorCodeNotAbsoluteUri(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodesPhoneNumber
+
+private void AddErrorCodesPhoneNumber(ControllerTypeScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeScalarParameterType.PhoneNumber)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    this.AddErrorCodeNotPhoneNumber(parameter, classModel);
+}
+
+// *** AddErrorCodesPhoneNumber
+
+private void AddErrorCodesPhoneNumber(ControllerTypeActionScalarParameter parameter, ClassModel classModel)
+{
+    if (parameter.Type != ControllerTypeActionScalarParameterType.PhoneNumber)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    this.AddErrorCodeNotPhoneNumber(parameter, classModel);
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodes (ControllerTypeActionEnumParameter)
+
+public void AddErrorCodes(ControllerTypeActionEnumParameter parameter, ClassModel classModel)
+{
+    if (parameter == null || parameter.ValidationRules == null)
+    {
+        return;
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodes (ControllerTypeActionModelParameter)
+
+public void AddErrorCodes(ControllerTypeActionModelParameter parameter, ClassModel classModel)
+{
+    if (parameter == null || parameter.ValidationRules == null)
+    {
+        return;
+    }
+
+    if (parameter.ValidationRules.IsRequired)
+    {
+        this.AddErrorCodeRequired(parameter, classModel);
+    }
+
+    if (parameter.Cardinality != ControllerTypeActionParameterCardinality.Single && parameter.ValidationRules.NotEmpty)
+    {
+        this.AddErrorCodeNotEmpty(parameter, classModel);
+    }
+}
+
+// *** AddErrorCodeRequired
+
+private void AddErrorCodeRequired(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}Required".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}Required".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is required.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeRequired
+
+private void AddErrorCodeRequired(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}Required".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}Required".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is required.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotEmpty
+
+private void AddErrorCodeNotEmpty(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}NotEmpty".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}NotEmpty".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is empty.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeMinLength
+
+private void AddErrorCodeMinLength(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}MinLength".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}MinLength".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} length is too short.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeMinLength
+
+private void AddErrorCodeMinLength(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}MinLength".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}MinLength".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} length is too short.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeMaxLength
+
+private void AddErrorCodeMaxLength(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}MaxLength".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}MaxLength".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} length is too long.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeMaxLength
+
+private void AddErrorCodeMaxLength(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}MaxLength".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}MaxLength".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} length is too long.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeLessThan
+
+private void AddErrorCodeLessThan(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}LessThan".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}LessThan".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} exceeds maximum value.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeLessThan
+
+private void AddErrorCodeLessThan(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}LessThan".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}LessThan".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} exceeds maximum value.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeGreaterThan
+
+private void AddErrorCodeGreaterThan(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}GreaterThan".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}GreaterThan".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is too small.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeGreaterThan
+
+private void AddErrorCodeGreaterThan(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}GreaterThan".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}GreaterThan".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is too small.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeRegularExpression
+
+private void AddErrorCodeRegularExpression(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}RegularExpression".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}RegularExpression".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} does not match regular expression.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeRegularExpression
+
+private void AddErrorCodeRegularExpression(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}RegularExpression".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}RegularExpression".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} does not match regular expression.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotEmail
+
+private void AddErrorCodeNotEmail(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}NotEmail".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}NotEmail".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not a valid email address.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotEmail
+
+private void AddErrorCodeNotEmail(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}NotEmail".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}NotEmail".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not a valid email address.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotPhoneNumber
+
+private void AddErrorCodeNotPhoneNumber(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}NotPhoneNumber".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}NotPhoneNumber".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not a valid phone number.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotPhoneNumber
+
+private void AddErrorCodeNotPhoneNumber(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}NotPhoneNumber".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}NotPhoneNumber".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not a valid phone number.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotAbsoluteUri
+
+private void AddErrorCodeNotAbsoluteUri(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}NotAbsoluteUri".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}NotAbsoluteUri".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not an absolute URI.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeNotAbsoluteUri
+
+private void AddErrorCodeNotAbsoluteUri(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}NotAbsoluteUri".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}NotAbsoluteUri".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is not an absolute URI.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeInvalid
+
+private void AddErrorCodeInvalid(ControllerTypeParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}Invalid".Format(parameter.ParentController.Name, parameter.Name);
+    string value = "{0}Invalid".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is invalid.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeInvalid
+
+private void AddErrorCodeInvalid(ControllerTypeActionParameter parameter, ClassModel classModel)
+{
+    string name = "{0}{1}{2}Invalid".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name);
+    string value = "{0}Invalid".Format(parameter.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + value + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0} is invalid.".Format(parameter.Name))
+        });
+}
+
+// *** AddErrorCodeInvalid
+
+private void AddErrorCodeInvalid(ControllerTypeActionParameter parameter, ModelTypeModelProperty property, ClassModel classModel)
+{
+    string name = "{0}{1}{2}{3}Invalid".Format(parameter.ParentAction.ParentController.Name, parameter.ParentAction.Name2, parameter.Name, property.Name);
+    string value = "{0}{1}Invalid".Format(parameter.Name, property.Name);
+
+    classModel
+        .WithConstant(new ConstantModel(name, "string", "\"" + name + "\"")
+        {
+            Modifiers = ConstantModifiers.Internal,
+            Documentation = new DocumentationModel("{0}.{1} is invalid.".Format(parameter.DisplayName, property.Name))
+        });
+}
+
+#>

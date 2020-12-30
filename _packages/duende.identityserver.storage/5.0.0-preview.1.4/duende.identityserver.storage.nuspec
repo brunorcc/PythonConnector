@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Duende.IdentityServer.Storage</id>
+    <version>5.0.0-preview.1.4</version>
+    <authors>Duende Software</authors>
+    <owners>Duende Software</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/DuendeSoftware/IdentityServer</projectUrl>
+    <description>Storage interfaces and models for Duende IdentityServer</description>
+    <releaseNotes>https://github.com/DuendeSoftware/IdentityServer/releases</releaseNotes>
+    <copyright>Duende Software</copyright>
+    <tags>OAuth 2.0 OpenID Connect Security Identity IdentityServer ASP.NET Core</tags>
+    <repository type="git" url="https://github.com/DuendeSoftware/IdentityServer" commit="ae7cd23c1092387f06d2343e1186a89240be3224" />
+    <dependencies>
+      <group targetFramework=".NETFramework5.0">
+        <dependency id="IdentityModel" version="4.4.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="IdentityModel" version="4.4.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <icon>icon.png</icon>
+  </metadata>
+</package>

@@ -1,0 +1,31 @@
+﻿<#+
+
+// *** ServiceModelTransformation
+
+internal class ServiceModelTransformation : ServiceModelTransformation<ResourcesFileModel>
+{
+    // *** Overrides
+
+    public override bool CanTransform(DomainModelElement sourceElement, ResourcesFileModel targetModel)
+    {
+        return sourceElement is ServiceModel;
+    }
+
+    public override void Transform(DomainModelElement sourceElement, ResourcesFileModel targetModel)
+    {
+        if (targetModel == null)
+        {
+            return;
+        }
+
+        ServiceModel serviceModel = sourceElement as ServiceModel;
+
+        foreach (Webhook webhook in serviceModel.Webhooks.OrderBy(i => i.Name))
+        {
+            targetModel.WithResource(new ResourceModel("RES_Webhook_{0}_EventDescription".Format(webhook.Name), webhook.EventDescription));
+            targetModel.WithResource(new ResourceModel("RES_Webhook_{0}_PayloadDescription".Format(webhook.Name), webhook.PayloadDescription));
+        }
+    }
+}
+
+#>

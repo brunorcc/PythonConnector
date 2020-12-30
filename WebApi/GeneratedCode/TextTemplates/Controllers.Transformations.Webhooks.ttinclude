@@ -1,0 +1,181 @@
+﻿<#+
+
+// *** TransformWebhooksController
+
+public void TransformWebhooksController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (sourceModel.Webhooks.Count == 0)
+    {
+        return;
+    }
+
+    // Namespaces
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Webhooks"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.AspNetCore.Webhooks"));
+
+    // Base class
+
+    ClassModel baseClass = targetModel.Namespace
+        .AddClass(new ClassModel("WebhooksControllerBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial | ClassModifiers.Abstract,
+            Inheritance = "CustomApiControllerBase, IWebhooksController",
+            Documentation = new DocumentationModel("Defines base class for the controller that provides the webhooks routes.")
+            {
+                Remarks = "This is the base class of the MVC controller."
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .WithProperty(new PropertyModel("Logger", "ILogger")
+            {
+                Documentation = new DocumentationModel("Gets the logger."),
+                Modifiers = PropertyModifiers.Protected,
+                GetAccessor = new PropertyGetAccessorModel(),
+                Facets = new Dictionary<string, object>()
+                {
+                    ["BaseControllerLogger"] = true,
+                    ["ControllerName"] = "Webhooks"
+                }
+            })
+            .WithProperty(new PropertyModel("WebhooksSubscriptionsService", "IWebhooksSubscriptionsService")
+            {
+                Documentation = new DocumentationModel("Gets the webhooks subscriptions service."),
+                Modifiers = PropertyModifiers.Protected,
+                GetAccessor = new PropertyGetAccessorModel(),
+            })
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Protected,
+                Inheritance = "base()",
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"WebhooksControllerBase\" /> class.")
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("CreateSubscriptionAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpPost({0}.Models.Metadata.Routes.Webhooks.CreateSubscription)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(string), (int)HttpStatusCode.Created)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.Conflict)"))
+                .WithParameter(new MethodParameterModel("request", "CreateWebhookSubscriptionRequest"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("UpdateSubscriptionAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpPut({0}.Models.Metadata.Routes.Webhooks.UpdateSubscription)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.Conflict)"))
+                .WithParameter(new MethodParameterModel("request", "UpdateWebhookSubscriptionRequest"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("GetSubscriptionAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Webhooks.GetSubscription)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(WebhookSubscription), (int)HttpStatusCode.OK)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithParameter(new MethodParameterModel("clientId", "string"))
+                .WithParameter(new MethodParameterModel("subscriptionId", "string"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("DeleteSubscriptionAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpDelete({0}.Models.Metadata.Routes.Webhooks.DeleteSubscription)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithParameter(new MethodParameterModel("clientId", "string"))
+                .WithParameter(new MethodParameterModel("subscriptionId", "string"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("GetSubscriptionsAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Webhooks.GetSubscriptions)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(IEnumerable<WebhookSubscription>), (int)HttpStatusCode.OK)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithParameter(new MethodParameterModel("clientId", "string"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("DeleteSubscriptionsAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpDelete({0}.Models.Metadata.Routes.Webhooks.DeleteSubscriptions)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithParameter(new MethodParameterModel("clientId", "string"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("PingSubscriptionAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpPost({0}.Models.Metadata.Routes.Webhooks.PingSubscription)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.NotFound)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .WithParameter(new MethodParameterModel("clientId", "string"))
+                .WithParameter(new MethodParameterModel("subscriptionId", "string"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("GetWebhooksMetadataAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Webhooks.GetWebhooksMetadata)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(IEnumerable<WebhookMetadata>), (int)HttpStatusCode.OK)"))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(ServiceError), (int)HttpStatusCode.BadRequest)"))
+                .ParentModelAs<ClassModel>();
+
+    // Class
+
+    targetModel.Namespace
+        .AddClass(new ClassModel("WebhooksController")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial,
+            Inheritance = "WebhooksControllerBase",
+            Documentation = new DocumentationModel("Defines the controller that provides the webhooks routes.")
+            {
+                Remarks = "This is the MVC controller."
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Public,
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"WebhooksController\" /> class.")
+            })
+                .ParentModelAs<ClassModel>();
+
+    // Authorization
+
+    if (sourceModel.AuthorizationMode == AuthorizationMode.On)
+    {
+        baseClass.WithAttribute(new AttributeModel("Authorize(Constants.Policies.DefaultScope)"));
+    }
+
+}
+
+#>

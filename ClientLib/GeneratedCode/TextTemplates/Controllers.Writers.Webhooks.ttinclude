@@ -1,0 +1,364 @@
+﻿<#+
+
+// *** WriteCreateSubscriptionAsync
+
+public void WriteCreateSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNull(() => request, request);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = new Uri(
+                UriHelper.Combine(
+                    this.Client.BaseUri.AbsoluteUri,
+                    Models.Metadata.Routes.Webhooks.CreateSubscription));
+
+            // Result
+
+            return this.Actions.ExecutePostAsync<CreateWebhookSubscriptionRequest, string>(requestUri, request, HttpStatusCode.Created, cancellationToken);
+<#+
+
+}
+
+// *** WriteUpdateSubscriptionAsync
+
+public void WriteUpdateSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNull(() => request, request);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = new Uri(
+                UriHelper.Combine(
+                    this.Client.BaseUri.AbsoluteUri,
+                    Models.Metadata.Routes.Webhooks.UpdateSubscription));
+
+            // Result
+
+            return this.Actions.ExecutePutNoResultAsync<UpdateWebhookSubscriptionRequest>(requestUri, request, HttpStatusCode.OK, cancellationToken);
+<#+
+
+}
+
+// *** WriteDeleteSubscriptionAsync
+
+public void WriteDeleteSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNullOrEmpty(() => clientId, clientId);
+            SmartGuard.NotNullOrEmpty(() => subscriptionId, subscriptionId);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = Models.Metadata.Routes.Instance.Resolve(
+                this.Client.BaseUri,
+                Models.Metadata.Routes.Webhooks.DeleteSubscription,
+                new Dictionary<string, object>()
+                {
+                    ["clientId"] = clientId,
+                    ["subscriptionId"] = subscriptionId
+                });
+
+            // Result
+
+            return this.Actions.ExecuteDeleteNoResultAsync(requestUri, HttpStatusCode.NoContent, cancellationToken);
+<#+
+
+}
+
+// *** WriteGetSubscriptionAsync
+
+public void WriteGetSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNullOrEmpty(() => clientId, clientId);
+            SmartGuard.NotNullOrEmpty(() => subscriptionId, subscriptionId);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = Models.Metadata.Routes.Instance.Resolve(
+                this.Client.BaseUri,
+                Models.Metadata.Routes.Webhooks.GetSubscription,
+                new Dictionary<string, object>()
+                {
+                    ["clientId"] = clientId,
+                    ["subscriptionId"] = subscriptionId
+                });
+
+            // Result
+
+            return this.Actions.ExecuteGetAsync<WebhookSubscription>(requestUri, HttpStatusCode.OK, cancellationToken);
+<#+
+
+}
+
+// *** WriteDeleteSubscriptionsAsync
+
+public void WriteDeleteSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNullOrEmpty(() => clientId, clientId);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = Models.Metadata.Routes.Instance.Resolve(
+                this.Client.BaseUri,
+                Models.Metadata.Routes.Webhooks.DeleteSubscriptions,
+                new Dictionary<string, object>()
+                {
+                    ["clientId"] = clientId
+                });
+
+            // Result
+
+            return this.Actions.ExecuteDeleteNoResultAsync(requestUri, HttpStatusCode.NoContent, cancellationToken);
+<#+
+
+}
+
+// *** WriteGetSubscriptionsAsync
+
+public void WriteGetSubscriptionsAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNullOrEmpty(() => clientId, clientId);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = Models.Metadata.Routes.Instance.Resolve(
+                this.Client.BaseUri,
+                Models.Metadata.Routes.Webhooks.GetSubscriptions,
+                new Dictionary<string, object>()
+                {
+                    ["clientId"] = clientId
+                });
+
+            // Result
+
+            return this.Actions.ExecuteGetAsync<IEnumerable<WebhookSubscription>>(requestUri, HttpStatusCode.OK, cancellationToken);
+<#+
+
+}
+
+// *** WritePingSubscriptionAsync
+
+public void WritePingSubscriptionAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Begin Validation
+
+            SmartGuard.NotNullOrEmpty(() => clientId, clientId);
+            SmartGuard.NotNullOrEmpty(() => subscriptionId, subscriptionId);
+
+            // End Validation
+
+            // Route
+
+            Uri requestUri = Models.Metadata.Routes.Instance.Resolve(
+                this.Client.BaseUri,
+                Models.Metadata.Routes.Webhooks.PingSubscription,
+                new Dictionary<string, object>()
+                {
+                    ["clientId"] = clientId,
+                    ["subscriptionId"] = subscriptionId
+                });
+
+            // Result
+
+            return this.Actions.ExecutePostNoResultAsync(requestUri, HttpStatusCode.OK, cancellationToken);
+<#+
+
+}
+
+// *** WriteGetWebhooksMetadataAsync
+
+public void WriteGetWebhooksMetadataAsync(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Route
+
+            Uri requestUri = new Uri(
+                UriHelper.Combine(
+                    this.Client.BaseUri.AbsoluteUri,
+                    Models.Metadata.Routes.Webhooks.GetWebhooksMetadata));
+
+            // Result
+
+            return this.Actions.ExecuteGetAsync<IEnumerable<WebhookMetadata>>(requestUri, HttpStatusCode.OK, cancellationToken);
+<#+
+
+}
+
+// *** WriteCreateSubscription
+
+public void WriteCreateSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.CreateSubscriptionAsync(
+                    request)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteUpdateSubscription
+
+public void WriteUpdateSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.UpdateSubscriptionAsync(
+                    request)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteDeleteSubscription
+
+public void WriteDeleteSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.DeleteSubscriptionAsync(
+                    clientId,
+                    subscriptionId)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteGetSubscription
+
+public void WriteGetSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.GetSubscriptionAsync(
+                    clientId,
+                    subscriptionId)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteDeleteSubscriptions
+
+public void WriteDeleteSubscriptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.DeleteSubscriptionsAsync(
+                    clientId)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteGetSubscriptions
+
+public void WriteGetSubscriptions(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.GetSubscriptionsAsync(
+                    clientId)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WritePingSubscription
+
+public void WritePingSubscription(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.PingSubscriptionAsync(
+                    clientId,
+                    subscriptionId)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+// *** WriteGetWebhooksMetadata
+
+public void WriteGetWebhooksMetadata(ModelWriter modelWriter, MethodBodyModel model)
+{
+
+#>
+            // Result
+            
+            return this.GetWebhooksMetadataAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+<#+
+
+}
+
+#>

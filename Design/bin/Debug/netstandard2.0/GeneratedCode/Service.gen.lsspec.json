@@ -1,0 +1,313 @@
+﻿{
+  "description": {
+    "id": "PCS",
+    "name": "PythonConnector",
+    "displayName": "Python Connector Service",
+    "summary": "Python connector Service."
+  },
+  "dependencies": [],
+  "serviceDependencies": [],
+  "backgroundServices": [],
+  "appSettings": {
+    "standard": [
+      {
+        "name": "Logging:IncludeScopes",
+        "description": "Indicates whether log scopes are enabled.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": false
+        }
+      },
+      {
+        "name": "Logging:Debug:LogLevel:Default",
+        "description": "The default log level for the Debug provider.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "dv": "Information",
+          "pd": "Warning"
+        }
+      },
+      {
+        "name": "Logging:Console:LogLevel:Default",
+        "description": "The default log level for the Console provider.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "dv": "Information",
+          "pd": "Warning"
+        }
+      },
+      {
+        "name": "Logging:ApplicationInsights:LogLevel:Default",
+        "description": "The default log level for the Application Insights provider.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "dv": "Information",
+          "pd": "Warning"
+        }
+      },
+      {
+        "name": "HostConfiguration:IdentityServerBaseUri",
+        "description": "The Identity Server base address.",
+        "global": true,
+        "secret": false,
+        "alwaysOverride": true,
+        "value": {
+          "dv": "https://stg-identity.primaverabss.com",
+          "st": "https://stg-identity.primaverabss.com",
+          "pd": "https://identity.primaverabss.com"
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:Enabled",
+        "description": "Indicates whether telemetry on Azure Application Insights is enabled.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": true
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:IgnoreErrors",
+        "description": "Indicates whether errors while recording telemetry should be ignored.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": true
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:DeveloperMode",
+        "description": "Indicates whether the developer mode is enabled. When enabled, telemetry records are dispatched faster.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "dv": true,
+          "pd": false
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:EnableAdaptiveSampling",
+        "description": "Indicates whether adaptive sampling is enabled.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": false
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:DefaultProperties:Lithium-Service",
+        "description": "The default property that identifies the Lithium service.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": "PythonConnector"
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:InstrumentationKey",
+        "description": "The Azure Application Insights instrumentation key.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": true,
+        "value": {}
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:RequestTracking:TrackRequestHeadersPaths:0",
+        "description": "The request paths (glob patterns allowed) for which all request headers should be tracked.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": "/api/*"
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:RequestTracking:TrackResponseHeadersPaths:0",
+        "description": "The request paths (glob patterns allowed) for which all response headers should be tracked.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": "/api/*"
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:RequestTracking:IgnoreAvailabilityTestsRequests",
+        "description": "Indicates whether requests to availability endpoints should be ignored in telemetry.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": true
+        }
+      },
+      {
+        "name": "AzureInsightsTelemetryOptions:RequestTracking:IgnoreNotFoundPaths:0",
+        "description": "The request paths (glob patterns allowed) that should be ignored (not collected) if they return HttpStatusCode.NotFound.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "pd": "/api/*"
+        }
+      },
+      {
+        "name": "AzureKeyVaultSecretsStorageOptions:AutomaticAuthenticationEnabled",
+        "description": "Indicates whether automatic authentication with Azure KeyVault is enabled.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {
+          "dv": false,
+          "st": true,
+          "pd": true
+        }
+      },
+      {
+        "name": "AzureKeyVaultSecretsStorageOptions:ClientId",
+        "description": "The client identifier that should be used to authenticate with Azure KeyVault (when automatic authentication is disabled or not configured.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {}
+      },
+      {
+        "name": "AzureKeyVaultSecretsStorageOptions:ClientSecret",
+        "description": "The client secret that should be used to authenticate with Azure KeyVault (when automatic authentication is disabled or not configured.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {}
+      },
+      {
+        "name": "AzureKeyVaultSecretsStorageOptions:ConfigurationStorageBaseUrl",
+        "description": "The base address of the Azure KeyVault that should be used for configuration.",
+        "global": false,
+        "secret": false,
+        "alwaysOverride": false,
+        "value": {}
+      }
+    ],
+    "custom": []
+  },
+  "apiResource": {
+    "scopes": [],
+    "claims": []
+  },
+  "clients": [],
+  "endpoints": [
+    {
+      "controller": "Monitoring",
+      "name": "Probe",
+      "route": "GET api/v{version:apiVersion}/monitoring/probe",
+      "summary": "Allows probing the health of the service.",
+      "apiVersions": [
+        {
+          "version": "1.0",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "controller": "Monitoring",
+      "name": "Diagnostics",
+      "route": "GET api/v{version:apiVersion}/monitoring/diagnostics",
+      "summary": "Allows diagnosing the health of the service.",
+      "apiVersions": [
+        {
+          "version": "1.0",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "controller": "Monitoring",
+      "name": "Endpoints",
+      "route": "GET api/v{version:apiVersion}/monitoring/endpoints",
+      "summary": "Allows verifying the endpoints of the service.",
+      "apiVersions": [
+        {
+          "version": "1.0",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "controller": "Monitoring",
+      "name": "Configuration",
+      "route": "GET api/v{version:apiVersion}/monitoring/configuration",
+      "summary": "Allows verifying the configuration of the service.",
+      "apiVersions": [
+        {
+          "version": "1.0",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "controller": "PythonConnector",
+      "name": "GetResult",
+      "route": "POST /api/v{version:apiVersion}/pythonconnector",
+      "summary": "The python connector get result.",
+      "apiVersions": [
+        {
+          "version": "1.0",
+          "isDefault": true
+        }
+      ]
+    }
+  ],
+  "webhooks": [],
+  "apiVersions": [
+    {
+      "version": "1.0",
+      "isDefault": true
+    }
+  ],
+  "authorizationPolicies": [],
+  "features": [
+    {
+      "name": "ClientLibCSharp",
+      "summary": "Provides a C# client library to consume the service Web API.",
+      "isAvailable": true
+    },
+    {
+      "name": "WebApi",
+      "summary": "Provides a Web API.",
+      "isAvailable": true
+    },
+    {
+      "name": "Webhooks",
+      "summary": "Provides webhooks in the Web API.",
+      "isAvailable": false
+    },
+    {
+      "name": "WebApiVersioning",
+      "summary": "Uses versioning in the Web API.",
+      "isAvailable": true
+    },
+    {
+      "name": "BackgroundServices",
+      "summary": "Includes background services has hosted services.",
+      "isAvailable": false
+    },
+    {
+      "name": "OidcAuthentication",
+      "summary": "Uses OIDC authentication.",
+      "isAvailable": false
+    }
+  ]
+}

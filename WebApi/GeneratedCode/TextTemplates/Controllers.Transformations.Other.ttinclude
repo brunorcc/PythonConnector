@@ -1,0 +1,189 @@
+﻿<#+
+
+// *** TransformCustomApiController
+
+public void TransformCustomApiController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Net"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Diagnostics.CodeAnalysis"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("Microsoft.AspNetCore.Authorization"))
+        .WithNamespaceImport(new NamespaceImportModel("Microsoft.AspNetCore.Mvc"))
+        .WithNamespaceImport(new NamespaceImportModel("Microsoft.Extensions.Logging"))
+        .WithNamespaceImport(new NamespaceImportModel("Microsoft.Extensions.DependencyInjection"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.AspNetCore.Mvc"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.AspNetCore.Configuration"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.AspNetCore.Routing"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Routing"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Text.Json"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Storage.Blobs"));
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace + ".WebApi.Controllers");
+
+    // Custom API controller base class
+
+    targetModel.Namespace
+        .AddClass(new ClassModel("CustomApiControllerBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial | ClassModifiers.Abstract,
+            Inheritance = "ApiControllerBase",
+            Documentation = new DocumentationModel("Defines a base class that allows sharing behavior between all controllers.")
+        });
+}
+
+// *** TransformMonitoringController
+
+public void TransformMonitoringController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    // Monitoring base class
+
+    ClassModel baseClass = targetModel.Namespace
+        .AddClass(new ClassModel("MonitoringControllerBase")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial | ClassModifiers.Abstract,
+            Inheritance = "CustomApiControllerBase, IMonitoringController",
+            Documentation = new DocumentationModel("Defines base class for the controller that provides the monitoring routes.")
+            {
+                Remarks = "This is the base class of the MVC controller."
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .WithProperty(new PropertyModel("Logger", "ILogger")
+            {
+                Documentation = new DocumentationModel("Gets the logger."),
+                Modifiers = PropertyModifiers.Protected,
+                GetAccessor = new PropertyGetAccessorModel(),
+                Facets = new Dictionary<string, object>()
+                {
+                    ["BaseControllerLogger"] = true,
+                    ["ControllerName"] = "Monitoring"
+                }
+            })
+            .WithProperty(new PropertyModel("EndpointAnalyzer", "IEndpointAnalyzerService")
+            {
+                Documentation = new DocumentationModel("Gets the endpoint analyzer service."),
+                Modifiers = PropertyModifiers.Protected,
+                GetAccessor = new PropertyGetAccessorModel()
+            })
+            .WithProperty(new PropertyModel("ConfigurationAnalyzer", "IConfigurationAnalyzerService")
+            {
+                Documentation = new DocumentationModel("Gets the configuration analyzer service."),
+                Modifiers = PropertyModifiers.Protected,
+                GetAccessor = new PropertyGetAccessorModel()
+            })
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Protected,
+                Inheritance = "base()",
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringControllerBase\" /> class.")
+            })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("ProbeAsync", "Task<IActionResult>")
+            {
+                Modifiers = MethodModifiers.Public | MethodModifiers.Abstract,
+                Documentation = new DocumentationModel(true)
+            })
+                .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Monitoring.Probe)".Format(sourceModel.Namespace)))
+                .WithAttribute(new AttributeModel("ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)"))
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("SaveConfigurationInBlobStorageAsync", "Task<string>")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual | MethodModifiers.Async,
+                Documentation = new DocumentationModel("Saves the specified configuration options to the blob storage.")
+                {
+                    Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe address of the blob storage container where the configuration was stored."
+                }
+            })
+                .WithParameter(new MethodParameterModel("options", "IDictionary<string, string>")
+                {
+                    Documentation = new DocumentationModel("The configuration options.")
+                })
+                .ParentModelAs<ClassModel>()
+            .AddMethod(new MethodModel("SaveConfigurationInFileSystem", "string")
+            {
+                Modifiers = MethodModifiers.Protected | MethodModifiers.Virtual,
+                Documentation = new DocumentationModel("Saves the specified configuration options in the file system.")
+                {
+                    Returns = "The file system location where the configuration was stored."
+                }
+            })
+                .WithParameter(new MethodParameterModel("options", "IDictionary<string, string>")
+                {
+                    Documentation = new DocumentationModel("The configuration options.")
+                })
+                .ParentModelAs<ClassModel>();
+
+    // Diagnostics method
+
+    MethodModel diagnosticsMethod = baseClass
+        .AddMethod(new MethodModel("DiagnosticsAsync", "Task<IActionResult>")
+        {
+            Modifiers = MethodModifiers.Public | MethodModifiers.Abstract,
+            Documentation = new DocumentationModel(true)
+        })
+            .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Monitoring.Diagnostics)".Format(sourceModel.Namespace)))
+            .WithAttribute(new AttributeModel("ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)"));
+
+    // Endpoints method
+
+    MethodModel endpointsMethod = baseClass
+        .AddMethod(new MethodModel("EndpointsAsync", "Task<IActionResult>")
+        {
+            Modifiers = MethodModifiers.Public | MethodModifiers.Virtual,
+            Documentation = new DocumentationModel(true)
+        })
+            .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Monitoring.Endpoints)".Format(sourceModel.Namespace)))
+            .WithAttribute(new AttributeModel("ProducesResponseType(typeof(IEnumerable<EndpointInfo>), (int)HttpStatusCode.OK)"));
+
+    // Configuration method
+
+    MethodModel configurationMethod = baseClass
+        .AddMethod(new MethodModel("ConfigurationAsync", "Task<IActionResult>")
+        {
+            Modifiers = MethodModifiers.Public | MethodModifiers.Virtual | MethodModifiers.Async,
+            Documentation = new DocumentationModel(true)
+        })
+            .WithAttribute(new AttributeModel("HttpGet({0}.Models.Metadata.Routes.Monitoring.Configuration)".Format(sourceModel.Namespace)))
+            .WithAttribute(new AttributeModel("ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)"));
+
+    // Monitoring class
+
+    targetModel.Namespace
+        .AddClass(new ClassModel("MonitoringController")
+        {
+            Modifiers = ClassModifiers.Public | ClassModifiers.Partial,
+            Inheritance = "MonitoringControllerBase",
+            Documentation = new DocumentationModel("Defines the controller that provides the monitoring routes.")
+            {
+                Remarks = "This is the MVC controller."
+            }
+        })
+            .WithAttribute(new AttributeModel("SuppressMessage(\"Maintainability Rules\", \"SA1402:FileMayOnlyContainASingleType\", Justification = \"Because of code generation design.\")"))
+            .WithAttribute(new AttributeModel("ApiExplorerSettings(IgnoreApi = true)"))
+            .AddConstructor(new ConstructorModel()
+            {
+                Modifiers = ConstructorModifiers.Public,
+                Documentation = new DocumentationModel("Initializes a new instance of the <see cref=\"MonitoringController\" /> class.")
+            })
+                .ParentModelAs<ClassModel>();
+}
+
+#>

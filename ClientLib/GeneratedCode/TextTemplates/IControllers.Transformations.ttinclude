@@ -1,0 +1,647 @@
+﻿<#+
+
+// *** TransformServiceModel
+
+public void TransformServiceModel(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ServiceModel sourceModel = sourceElement as ServiceModel;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (!sourceModel.GenerateClientLibrary)
+    {
+        targetModel.WithComment("This file is empty because the service model does not generate a client library.");
+        return;
+    }
+
+    targetModel
+        .WithNamespaceImport(new NamespaceImportModel("System"))
+        .WithNamespaceImport(new NamespaceImportModel("System.CodeDom.Compiler"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Collections.Generic"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading"))
+        .WithNamespaceImport(new NamespaceImportModel("System.Threading.Tasks"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Client"))
+        .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Routing"));
+
+    if (sourceModel.Webhooks.Any())
+    {
+        targetModel
+            .WithNamespaceImport(new NamespaceImportModel("Primavera.Hydrogen.Rest.Webhooks"));
+    }
+
+    targetModel.Namespace = new NamespaceModel(sourceModel.Namespace);
+
+    // Monitoring interface
+
+    if (sourceModel.GenerateWebApi)
+    {
+        InterfaceModel interfaceModel = targetModel
+            .Namespace
+            .AddInterface(new InterfaceModel("IMonitoringOperations")
+            {
+                Modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial,
+                Inheritance = "IDisposable",
+                Documentation = new DocumentationModel("Provides monitoring operations on the service.")
+                {
+                    SeeAlso = new List<string>(new string[] { "System.IDisposable"})
+                }
+            });
+
+        interfaceModel.AddMethod(new MethodModel("ProbeAsync", "Task<ServiceOperationResult<string>>")
+        {
+            Documentation = new DocumentationModel("Probes the service.")
+            {
+                Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.",
+                Exceptions = new Dictionary<string, string>()
+                {
+                    ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                }
+            }
+        })
+            .AddParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+            {
+                DefaultValue = "default(CancellationToken)",
+                Documentation = new DocumentationModel("The cancellation token.")
+            });
+
+        interfaceModel.AddMethod(new MethodModel("DiagnosticsAsync", "Task<ServiceOperationResult<string>>")
+        {
+            Documentation = new DocumentationModel("Diagnoses the service.")
+            {
+                Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.",
+                Exceptions = new Dictionary<string, string>()
+                {
+                    ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                }
+            }
+        })
+            .AddParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+            {
+                DefaultValue = "default(CancellationToken)",
+                Documentation = new DocumentationModel("The cancellation token.")
+            });
+
+        interfaceModel.AddMethod(new MethodModel("EndpointsAsync", "Task<ServiceOperationResult<IEnumerable<EndpointInfo>>>")
+        {
+            Documentation = new DocumentationModel("Analyzes the service endpoints.")
+            {
+                Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.",
+                Exceptions = new Dictionary<string, string>()
+                {
+                    ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                }
+            }
+        })
+            .AddParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+            {
+                DefaultValue = "default(CancellationToken)",
+                Documentation = new DocumentationModel("The cancellation token.")
+            });
+
+        interfaceModel.AddMethod(new MethodModel("ConfigurationAsync", "Task<ServiceOperationResult<string>>")
+        {
+            Documentation = new DocumentationModel("Analyzes the service configuration.")
+            {
+                Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.",
+                Exceptions = new Dictionary<string, string>()
+                {
+                    ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                }
+            }
+        })
+            .AddParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+            {
+                DefaultValue = "default(CancellationToken)",
+                Documentation = new DocumentationModel("The cancellation token.")
+            });
+
+        if (sourceModel.GenerateSyncActions)
+        {
+            interfaceModel.AddMethod(new MethodModel("Probe", "ServiceOperationResult<string>")
+            {
+                Documentation = new DocumentationModel("Probes the service.")
+                {
+                    Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.",
+                    Exceptions = new Dictionary<string, string>()
+                    {
+                        ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                    }
+                }
+            });
+
+            interfaceModel.AddMethod(new MethodModel("Diagnostics", "ServiceOperationResult<string>")
+            {
+                Documentation = new DocumentationModel("Diagnoses the service.")
+                {
+                    Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.",
+                    Exceptions = new Dictionary<string, string>()
+                    {
+                        ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                    }
+                }
+            });
+
+            interfaceModel.AddMethod(new MethodModel("Endpoints", "ServiceOperationResult<IEnumerable<EndpointInfo>>")
+            {
+                Documentation = new DocumentationModel("Analyzes the service endpoints.")
+                {
+                    Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.",
+                    Exceptions = new Dictionary<string, string>()
+                    {
+                        ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                    }
+                }
+            });
+
+            interfaceModel.AddMethod(new MethodModel("Configuration", "ServiceOperationResult<string>")
+            {
+                Documentation = new DocumentationModel("Analyzes the service configuration.")
+                {
+                    Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.",
+                    Exceptions = new Dictionary<string, string>()
+                    {
+                        ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                    }
+                }
+            });
+        }
+    }
+
+    // Webhooks interface
+
+    if (sourceModel.Webhooks.Any())
+    {
+        InterfaceModel webhooksInterface = targetModel
+            .Namespace
+            .AddInterface(new InterfaceModel("IWebhooksOperations")
+            {
+                Modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial,
+                Inheritance = "IDisposable",
+                Documentation = new DocumentationModel("Provides operations to manage webhooks.")
+                {
+                    SeeAlso = new List<string>(new string[] { "System.IDisposable"})
+                }
+            })
+                .AddMethod(new MethodModel("CreateSubscriptionAsync", "Task<ServiceOperationResult<string>>")
+                {
+                    Documentation = new DocumentationModel("Creates a new webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.\nThe webhook subscription identifier.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "CreateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to create a new webhook subscription.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("UpdateSubscriptionAsync", "Task<ServiceOperationResult>")
+                {
+                    Documentation = new DocumentationModel("Updates a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "UpdateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to update a webhook subscription.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscriptionAsync", "Task<ServiceOperationResult<WebhookSubscription>>")
+                {
+                    Documentation = new DocumentationModel("Retrieves a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.\nThe webhook subscription.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscriptionAsync", "Task<ServiceOperationResult>")
+                {
+                    Documentation = new DocumentationModel("Deletes a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscriptionsAsync", "Task<ServiceOperationResult<IEnumerable<WebhookSubscription>>>")
+                {
+                    Documentation = new DocumentationModel("Retrieves all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.\nThe list of webhook subscriptions.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscriptionsAsync", "Task<ServiceOperationResult>")
+                {
+                    Documentation = new DocumentationModel("Deletes all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("PingSubscriptionAsync", "Task<ServiceOperationResult>")
+                {
+                    Documentation = new DocumentationModel("Pings a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetWebhooksMetadataAsync", "Task<ServiceOperationResult<IEnumerable<WebhookMetadata>>>")
+                {
+                    Documentation = new DocumentationModel("Retrieves metadata about all the webhooks available.")
+                    {
+                        Returns = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.\nA list containing the metadata for all webhooks available.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+                    {
+                        DefaultValue = "default(CancellationToken)",
+                        Documentation = new DocumentationModel("The cancellation token.")
+                    })
+                    .ParentModelAs<InterfaceModel>();
+
+        if (sourceModel.GenerateSyncActions)
+        {
+            webhooksInterface
+                .AddMethod(new MethodModel("CreateSubscription", "ServiceOperationResult<string>")
+                {
+                    Documentation = new DocumentationModel("Creates a new webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.\nThe webhook subscription identifier.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "CreateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to create a new webhook subscription.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("UpdateSubscription", "ServiceOperationResult")
+                {
+                    Documentation = new DocumentationModel("Updates a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("request", "UpdateWebhookSubscriptionRequest")
+                    {
+                        Documentation = new DocumentationModel("The request to update a webhook subscription.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscription", "ServiceOperationResult<WebhookSubscription>")
+                {
+                    Documentation = new DocumentationModel("Retrieves a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.\nThe webhook subscription.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscription", "ServiceOperationResult")
+                {
+                    Documentation = new DocumentationModel("Deletes a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetSubscriptions", "ServiceOperationResult<IEnumerable<WebhookSubscription>>")
+                {
+                    Documentation = new DocumentationModel("Retrieves all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.\nThe list of webhook subscriptions.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("DeleteSubscriptions", "ServiceOperationResult")
+                {
+                    Documentation = new DocumentationModel("Deletes all the webhook subscriptions for a client application.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("PingSubscription", "ServiceOperationResult")
+                {
+                    Documentation = new DocumentationModel("Pings a webhook subscription.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult\"/> result.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                })
+                    .WithParameter(new MethodParameterModel("clientId", "string")
+                    {
+                        Documentation = new DocumentationModel("The client application identifier.")
+                    })
+                    .WithParameter(new MethodParameterModel("subscriptionId", "string")
+                    {
+                        Documentation = new DocumentationModel("The webhook subscription identifier.")
+                    })
+                    .ParentModelAs<InterfaceModel>()
+                .AddMethod(new MethodModel("GetWebhooksMetadata", "ServiceOperationResult<IEnumerable<WebhookMetadata>>")
+                {
+                    Documentation = new DocumentationModel("Retrieves metadata about all the webhooks available.")
+                    {
+                        Returns = "The <see cref=\"ServiceOperationResult{T}\"/> result.\nA list containing the metadata for all webhooks available.",
+                        Exceptions = new Dictionary<string, string>()
+                        {
+                            ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                        }
+                    }
+                });
+        }
+    }
+
+}
+
+// *** TransformController
+
+public void TransformController(DomainModelElement sourceElement, CSharpFileModel targetModel)
+{
+    ControllerType sourceModel = sourceElement as ControllerType;
+    if (sourceModel == null)
+    {
+        return;
+    }
+
+    if (!sourceModel.ServiceModel.GenerateClientLibrary)
+    {
+        return;
+    }
+
+    if (sourceModel.Visibility == ControllerTypeVisibility.WebApiOnly)
+    {
+        return;
+    }
+
+    InterfaceModifiers modifiers = InterfaceModifiers.Public | InterfaceModifiers.Partial;
+
+    if (sourceModel.AccessModifier == ControllerTypeAccessModifier.Internal)
+    {
+        modifiers = InterfaceModifiers.Internal | InterfaceModifiers.Partial;
+    };
+
+    InterfaceModel interfaceModel = targetModel
+        .Namespace
+        .AddInterface(new InterfaceModel("I" + sourceModel.Name + "Operations")
+        {
+            Modifiers = modifiers,
+            Inheritance = "IDisposable",
+            Documentation = new DocumentationModel(sourceModel.Summary)
+            {
+                SeeAlso = new List<string>(new string[] { "System.IDisposable"})
+            }
+        });
+
+    bool generateSync = sourceModel.ServiceModel.GenerateSyncActions;
+
+    foreach (ControllerTypeAction action in sourceModel.ChildActions
+        .Where(a => a.ParentController.Visibility != ControllerTypeVisibility.WebApiOnly && a.Visibility != ControllerTypeActionVisibility.WebApiOnly)
+        .OrderBy(a => a.Name2))
+    {
+        string returnType = action.ToCSharpType();
+        string returnsDoc;
+        string returnsDocSync;
+        if (string.IsNullOrEmpty(returnType))
+        {
+            returnType = "ServiceOperationResult";
+            returnsDoc = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult\"/> result.";
+            returnsDocSync = "The <see cref=\"ServiceOperationResult\"/> result.";
+        }
+        else
+        {
+            returnType = "ServiceOperationResult<{0}>".Format(returnType);
+            returnsDoc = "The <see cref=\"Task{TResult}\"/> that represents the asynchronous operation.\nThe <see cref=\"ServiceOperationResult{T}\"/> result.";
+            returnsDocSync = "The <see cref=\"ServiceOperationResult{T}\"/> result.";
+        }
+
+        MethodModel method1 = interfaceModel.AddMethod(new MethodModel(action.Name2 + "Async", "Task<{0}>".Format(returnType))
+        {
+            Documentation = new DocumentationModel(action.Summary)
+            {
+                Remarks = action.Remarks,
+                Returns = returnsDoc,
+                Exceptions = new Dictionary<string, string>()
+                {
+                    ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                }
+            }
+        });
+
+        if (!action.RouteIgnoreControllerParameters)
+        {
+            foreach (ControllerTypeParameter parameter in action.ParentController.ChildParameters)
+            {
+                method1.AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+                {
+                    DefaultValue = NormalizeControllerParameterDefaultValue(parameter),
+                    Documentation = new DocumentationModel(parameter.Summary)
+                });
+            }
+        }
+
+        foreach (ControllerTypeActionParameter parameter in action.ChildParameters)
+        {
+            method1.AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+            {
+                DefaultValue = NormalizeControllerActionParameterDefaultValue(parameter),
+                Documentation = new DocumentationModel(parameter.Summary)
+            });
+        }
+
+        method1.AddParameter(new MethodParameterModel("cancellationToken", "CancellationToken")
+        {
+            DefaultValue = "default(CancellationToken)",
+            Documentation = new DocumentationModel("The cancellation token.")
+        });
+
+        if (generateSync)
+        {
+            MethodModel method2 = interfaceModel.AddMethod(new MethodModel(action.Name2, returnType)
+            {
+                Documentation = new DocumentationModel(action.Summary)
+                {
+                    Remarks = action.Remarks,
+                    Returns = returnsDocSync,
+                    Exceptions = new Dictionary<string, string>()
+                    {
+                        ["ServiceException"] = "Raised when the operation returns an unexpected status code."
+                    }
+                }
+            });
+
+            if (!action.RouteIgnoreControllerParameters)
+            {
+                foreach (ControllerTypeParameter parameter in action.ParentController.ChildParameters)
+                {
+                    method2.AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+                    {
+                        DefaultValue = NormalizeControllerParameterDefaultValue(parameter),
+                        Documentation = new DocumentationModel(parameter.Summary)
+                    });
+                }
+            }
+
+            foreach (ControllerTypeActionParameter parameter in action.ChildParameters)
+            {
+                method2.AddParameter(new MethodParameterModel(parameter.Name.Transform().ToCamelCase(), parameter.ToCSharpType())
+                {
+                    DefaultValue = NormalizeControllerActionParameterDefaultValue(parameter),
+                    Documentation = new DocumentationModel(parameter.Summary)
+                });
+            }
+        }
+    }
+}
+
+#>

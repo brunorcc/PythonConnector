@@ -1,0 +1,20 @@
+﻿<#+
+
+// *** WriteConstructor
+
+public void WriteConstructor(ModelWriter modelWriter, ConstructorBodyModel model)
+{
+
+#>
+            // Initialize properties
+
+            this.Environments = new EnvironmentsConfiguration();
+
+            // Set default values
+
+            this.SetDefaultValues();
+<#+
+
+}
+
+#>

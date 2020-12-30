@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Primavera.Hydrogen.Storage.Azure</id>
+    <version>2.0.5.328</version>
+    <authors>PRIMAVERA Business Software Solutions, S.A.</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Class library that contains types that define generic storage services that use Microsoft Azure storage services.</description>
+    <tags>PRIMAVERA Elevation Lithium Hydrogen</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Primavera.Hydrogen.Storage.Abstractions" version="2.0.5.328" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Cosmos" version="3.15.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Cosmos.Table" version="1.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Storage.Blob" version="11.2.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Http" version="3.1.10" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <contentFiles>
+      <files include="any/netstandard2.0/ThirdPartyNotice.txt" buildAction="Content" />
+      <files include="any/netstandard2.0/ThirdPartyNotice.txt" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+</package>

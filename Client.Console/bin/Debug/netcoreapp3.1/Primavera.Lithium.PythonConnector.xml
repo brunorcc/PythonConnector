@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Primavera.Lithium.PythonConnector</name>
+    </assembly>
+    <members>
+        <member name="T:Primavera.Lithium.PythonConnector.MonitoringOperationsBase">
+            <summary>
+            Defines the base class for the type that provides monitoring operations on the service.
+            </summary>
+            <seealso cref="T:Primavera.Lithium.PythonConnector.IMonitoringOperations" />
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.Client">
+            <summary>
+            Gets or sets the service client.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.Actions">
+            <summary>
+            Gets or sets the service client actions.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.#ctor(Primavera.Lithium.PythonConnector.PythonConnectorClientBase,Primavera.Hydrogen.Rest.Client.ServiceClientActions{Primavera.Lithium.PythonConnector.PythonConnectorClientBase})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.MonitoringOperationsBase" /> class.
+            </summary>
+            <param name="client">The service client.</param>
+            <param name="actions">The service client actions.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.ProbeAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.DiagnosticsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.EndpointsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.ConfigurationAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperationsBase.Initialize">
+            <summary>
+            Performs additional initialization.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.MonitoringOperations">
+            <summary>
+            Provides monitoring operations on the service.
+            </summary>
+            <seealso cref="T:Primavera.Lithium.PythonConnector.MonitoringOperationsBase" />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.MonitoringOperations.#ctor(Primavera.Lithium.PythonConnector.PythonConnectorClientBase,Primavera.Hydrogen.Rest.Client.ServiceClientActions{Primavera.Lithium.PythonConnector.PythonConnectorClientBase})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.MonitoringOperations" /> class.
+            </summary>
+            <param name="client">The service client.</param>
+            <param name="actions">The service client actions.</param>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase">
+            <summary>
+            The python connector controller.
+            </summary>
+            <seealso cref="T:Primavera.Lithium.PythonConnector.IPythonConnectorOperations" />
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.Client">
+            <summary>
+            Gets or sets the service client.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.Actions">
+            <summary>
+            Gets or sets the service client actions.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.#ctor(Primavera.Lithium.PythonConnector.PythonConnectorClientBase,Primavera.Hydrogen.Rest.Client.ServiceClientActions{Primavera.Lithium.PythonConnector.PythonConnectorClientBase})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase" /> class.
+            </summary>
+            <param name="client">The service client.</param>
+            <param name="actions">The service client actions.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.GetResultAsync(System.Collections.Generic.IEnumerable{Primavera.Lithium.PythonConnector.Models.InputData},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase.Initialize">
+            <summary>
+            Performs additional initialization.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.PythonConnectorOperations">
+            <summary>
+            The python connector controller.
+            </summary>
+            <seealso cref="T:Primavera.Lithium.PythonConnector.PythonConnectorOperationsBase" />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorOperations.#ctor(Primavera.Lithium.PythonConnector.PythonConnectorClientBase,Primavera.Hydrogen.Rest.Client.ServiceClientActions{Primavera.Lithium.PythonConnector.PythonConnectorClientBase})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorOperations" /> class.
+            </summary>
+            <param name="client">The service client.</param>
+            <param name="actions">The service client actions.</param>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.IMonitoringOperations">
+            <summary>
+            Provides monitoring operations on the service.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.IMonitoringOperations.ProbeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Probes the service.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The <see cref="T:Primavera.Hydrogen.Rest.Client.ServiceOperationResult`1"/> result.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Rest.Client.ServiceException">Raised when the operation returns an unexpected status code.</exception>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.IMonitoringOperations.DiagnosticsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Diagnoses the service.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The <see cref="T:Primavera.Hydrogen.Rest.Client.ServiceOperationResult`1"/> result.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Rest.Client.ServiceException">Raised when the operation returns an unexpected status code.</exception>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.IMonitoringOperations.EndpointsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Analyzes the service endpoints.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The <see cref="T:Primavera.Hydrogen.Rest.Client.ServiceOperationResult`1"/> result.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Rest.Client.ServiceException">Raised when the operation returns an unexpected status code.</exception>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.IMonitoringOperations.ConfigurationAsync(System.Threading.CancellationToken)">
+            <summary>
+            Analyzes the service configuration.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The <see cref="T:Primavera.Hydrogen.Rest.Client.ServiceOperationResult`1"/> result.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Rest.Client.ServiceException">Raised when the operation returns an unexpected status code.</exception>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.IPythonConnectorOperations">
+            <summary>
+            The python connector controller.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.IPythonConnectorOperations.GetResultAsync(System.Collections.Generic.IEnumerable{Primavera.Lithium.PythonConnector.Models.InputData},System.Threading.CancellationToken)">
+            <summary>
+            The python connector get result.
+            </summary>
+            <param name="inputData">The input data.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task`1"/> that represents the asynchronous operation.
+            The <see cref="T:Primavera.Hydrogen.Rest.Client.ServiceOperationResult`1"/> result.
+            </returns>
+            <exception cref="T:Primavera.Hydrogen.Rest.Client.ServiceException">Raised when the operation returns an unexpected status code.</exception>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.IPythonConnectorClient">
+            <summary>
+            Defines the interface of the service client that allows accessing the Python Connector Service Web API.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.IPythonConnectorClient.Monitoring">
+            <summary>
+            Provides monitoring operations on the service.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.IPythonConnectorClient.PythonConnector">
+            <summary>
+            The python connector controller.
+            </summary>
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase">
+            <summary>
+            Defines the base class for the service client that allows accessing the Python Connector Service API.
+            </summary>
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.Monitoring">
+            <inheritdoc />
+        </member>
+        <member name="P:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.PythonConnector">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+            <param name="handler">The root message handler.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials,System.Net.Http.HttpMessageHandler,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+            <param name="handler">The root message handler.</param>
+            <param name="disposeHandler">True if the inner handler should be disposed of, false if the inner handler is intended to be reused.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}},System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+            <param name="handler">The root message handler.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}},System.Net.Http.HttpMessageHandler,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClientBase" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+            <param name="handler">The root message handler.</param>
+            <param name="disposeHandler">True if the inner handler should be disposed of, false if the inner handler is intended to be reused.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.InitializeApiVersion">
+            <inheritdoc />
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClientBase.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:Primavera.Lithium.PythonConnector.PythonConnectorClient">
+            <summary>
+            Defines the service client that allows accessing the Python Connector Service API.
+            </summary>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+            <param name="handler">The root message handler.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,Primavera.Hydrogen.Rest.Client.ServiceClientCredentials,System.Net.Http.HttpMessageHandler,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="credentials">The credentials that should be used to access the service.</param>
+            <param name="handler">The root message handler.</param>
+            <param name="disposeHandler">True if the inner handler should be disposed of, false if the inner handler is intended to be reused.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}},System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+            <param name="handler">The root message handler.</param>
+        </member>
+        <member name="M:Primavera.Lithium.PythonConnector.PythonConnectorClient.#ctor(System.Uri,System.Func{Primavera.Hydrogen.Rest.Client.AuthenticationCallbackArgs,System.Threading.Tasks.Task{System.String}},System.Net.Http.HttpMessageHandler,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Primavera.Lithium.PythonConnector.PythonConnectorClient" /> class.
+            </summary>
+            <param name="baseUri">The base URI of the service.</param>
+            <param name="callback">The callback that will be invoked during authentication to get the access token.</param>
+            <param name="handler">The root message handler.</param>
+            <param name="disposeHandler">True if the inner handler should be disposed of, false if the inner handler is intended to be reused.</param>
+        </member>
+    </members>
+</doc>

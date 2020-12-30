@@ -1,0 +1,47 @@
+﻿<#+
+
+// *** WriteReferenceControllers
+
+public void WriteReferenceControllers(ModelWriter w, ServiceModel m)
+{
+    IList<ControllerType> controllers = m.Controllers
+        .OrderBy(i => i.Name)
+        .Where(i => i.Visibility != ControllerTypeVisibility.WebApiOnly)
+        .ToList();
+
+    if (controllers.Count == 0)
+    {
+        return;
+    }
+
+    w.AppendLine("### Operations Classes");
+    w.AppendLine();
+
+    foreach (ControllerType controllerType in controllers)
+    {
+        this.WriteReferenceController(w, controllerType);
+    }
+}
+
+// *** WriteReferenceController
+
+public void WriteReferenceController(ModelWriter w, ControllerType m)
+{
+    if (m.AccessModifier == ControllerTypeAccessModifier.Internal)
+    {
+        return;
+    }
+
+    w.AppendLine("#### <a name=\"{0}Operations\"></a>`{0}Operations`", m.Name);
+    w.AppendLine();
+    w.AppendLine(m.Summary);
+    w.AppendLine();
+    w.AppendLine("- Namespace: `{0}`", m.ServiceModel.Namespace);
+    w.AppendLine("- Inheritance: `{0}OperationsBase` (`I{0}Operations`)", m.Name);
+    w.AppendLine();
+    w.AppendLine("##### Methods");
+    w.AppendLine();
+    this.WriteReferenceControllerActions(w, m);
+}
+
+#>
