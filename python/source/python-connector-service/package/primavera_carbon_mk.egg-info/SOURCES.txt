@@ -1,0 +1,12 @@
+setup.py
+primavera/__init__.py
+primavera/carbon/__init__.py
+primavera/carbon/pcs/__init__.py
+primavera/carbon/pcs/applications/__init__.py
+primavera/carbon/pcs/applications/standalone.py
+primavera_carbon_mk.egg-info/PKG-INFO
+primavera_carbon_mk.egg-info/SOURCES.txt
+primavera_carbon_mk.egg-info/dependency_links.txt
+primavera_carbon_mk.egg-info/not-zip-safe
+primavera_carbon_mk.egg-info/requires.txt
+primavera_carbon_mk.egg-info/top_level.txt
