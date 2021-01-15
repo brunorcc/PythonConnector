@@ -1,7 +1,7 @@
 # PythonConnector
 
 The objective´s project is connect a lithium 
- weapi to a python package.
+ webapi to a python package.
  
  ## Requirements
  
