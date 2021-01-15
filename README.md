@@ -1,6 +1,6 @@
 # PythonConnector
 
-The objective´s project is connect a lithium 
+The project´s objective is connect a lithium 
  webapi to a python package.
  
  ## Requirements
